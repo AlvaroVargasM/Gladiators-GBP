@@ -10,6 +10,9 @@
 #include "GenericNode.h"
 #include "Zone.h"
 
+/**
+ * This a class for the game matrix, it has a linked of linked lists for representing the board.
+ */
 class IntimidationZone {
 private:
     GenericLinkedList<GenericLinkedList<Zone>> zoneMatrix;
