@@ -5,4 +5,4 @@ set(CMAKE_CXX_STANDARD 17)
 
 SET(CMAKE_CXX_FLAGS  -pthread)
 
-add_executable(Server Logic main.cpp Logic/GenericLinkedList.h Logic/GenericNode.h Logic/IntimidationZone.h Logic/IntimidationZone.cpp)
+add_executable(Server Logic main.cpp Logic/GenericLinkedList.h Logic/GenericNode.h Logic/Zone.cpp Logic/Zone.h)
