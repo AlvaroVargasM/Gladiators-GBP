@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>menu_bg.jpg</file>
+        <file>arena.jpg</file>
+        <file>grid.png</file>
     </qresource>
 </RCC>

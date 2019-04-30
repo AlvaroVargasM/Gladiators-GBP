@@ -28,7 +28,6 @@ SOURCES += \
         main.cpp \
         display.cpp \
     genericnode.cpp \
-    genericlinkedlist.cpp \
     menu.cpp \
     statistics.cpp
 
@@ -51,3 +50,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     images.qrc
+
+DISTFILES += \
+    arena.jpg \
+    arena.jpg
