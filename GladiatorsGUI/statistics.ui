@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Display</class>
- <widget class="QMainWindow" name="Display">
+ <class>Statistics</class>
+ <widget class="QMainWindow" name="Statistics">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -9,12 +9,6 @@
     <width>800</width>
     <height>600</height>
    </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
@@ -31,9 +25,8 @@
   <property name="windowTitle">
    <string>GladiatorsGBP</string>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QWidget" name="centralwidget"/>
  </widget>
- <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections/>
 </ui>

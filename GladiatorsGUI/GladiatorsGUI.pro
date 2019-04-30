@@ -28,17 +28,26 @@ SOURCES += \
         main.cpp \
         display.cpp \
     genericnode.cpp \
-    genericlinkedlist.cpp
+    genericlinkedlist.cpp \
+    menu.cpp \
+    statistics.cpp
 
 HEADERS += \
         display.h \
     genericnode.h \
-    genericlinkedlist.h
+    genericlinkedlist.h \
+    menu.h \
+    statistics.h
 
 FORMS += \
-        display.ui
+        display.ui \
+    menu.ui \
+    statistics.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    images.qrc
