@@ -26,10 +26,14 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        display.cpp
+        display.cpp \
+    genericnode.cpp \
+    genericlinkedlist.cpp
 
 HEADERS += \
-        display.h
+        display.h \
+    genericnode.h \
+    genericlinkedlist.h
 
 FORMS += \
         display.ui
