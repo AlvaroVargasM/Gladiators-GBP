@@ -1,4 +1,5 @@
 #include "genericnode.h"
+#include <iostream>
 
 /**
  * Generic Node constructor
@@ -41,3 +42,6 @@ template<class T>
 void GenericNode<T>::setNext(GenericNode<T> *next) {
     this->next = next;
 }
+
+template class GenericNode<std::string>;
+template class GenericNode<int>;
