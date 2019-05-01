@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    genericlinkedlist.cpp \
         main.cpp \
         display.cpp \
     genericnode.cpp \

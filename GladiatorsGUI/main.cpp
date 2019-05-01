@@ -12,9 +12,13 @@ int main(int argc, char *argv[])
     Display display;
     Statistics statistics;
 
-    //menu.show();
+    menu.show();
 
-    display.show();
+
+    /*GenericLinkedList<std::string>* list = new GenericLinkedList<std::string>;
+    for(int i = 0; i<25; i++){
+        list->add("Prueba");
+    }list->printList();*/
 
     return a.exec();
 }
