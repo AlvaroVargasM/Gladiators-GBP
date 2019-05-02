@@ -86,8 +86,8 @@ GenericNode<T> *GenericLinkedList<T>::getHead() {
  * @return
  */
 template <class T>
-int* GenericLinkedList<T>::getLength() {
-    return &this->length;
+int GenericLinkedList<T>::getLength() {
+    return this->length;
 }
 
 
