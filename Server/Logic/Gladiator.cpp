@@ -63,3 +63,11 @@ int Gladiator::getResistance() {
 void Gladiator::setResistance(int resistance) {
     this->resistance = resistance;
 }
+
+int Gladiator::getFitness() {
+    return this->fitness;
+}
+
+void Gladiator::setFitness(int fitness) {
+    this->fitness = fitness;
+}
