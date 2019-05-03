@@ -21,6 +21,7 @@ public:
     void printList();
 private:
     GenericNode<T>* header;
+    GenericNode<T>* last;
     int length;
 };
 
