@@ -23,6 +23,7 @@ Display::Display(QWidget *parent) :
 
     view = new QGraphicsView(this);
     scene = new QGraphicsScene(0,0,700,550,this);
+    towers = new GenericLinkedList<Tower>;
 
     QGraphicsPixmapItem *scenebg = scene->addPixmap(QPixmap(":/arena.jpg"));
     scenebg->setPos(-300,-100);
@@ -143,14 +144,38 @@ void Display::setAnimation(std::string gladiator, std::string action)
     gif->start();
 }
 
+std::string Display::splitCommand(std::string *command)
+{
+    std::string subCommand = command->substr(0, command->find("."));
+    command->erase(0, command->find(".")+1);
+    return subCommand;
+}
+
+void Display::runCommands(GenericLinkedList<std::string> *commands)
+{
+    for(int i=0;i<commands->getLength();i++){
+        std::string command = commands->get(i)->getData();
+
+        std::string action = splitCommand(&command);
+
+        if(action=="move"){
+            std::string id = splitCommand(&command);
+            move(id,command);
+        }
+    }
+}
+
 //button for testing
 void Display::test()
 {
-    move("a","down");
-    move("a","right");
+    GenericLinkedList<std::string>* list = new GenericLinkedList<std::string>;
+    list->add("move.a.down");
+    list->add("move.a.down");
+    list->add("move.a.right");
+    list->add("move.a.right");
+    list->add("move.b.down");
 
-    move("b","right");
-    move("b","right");
+    runCommands(list);
 }
 
 

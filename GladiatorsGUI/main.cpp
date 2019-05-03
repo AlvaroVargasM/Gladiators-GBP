@@ -7,6 +7,7 @@
 #include "display.h"
 #include "statistics.h"
 
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -14,7 +15,7 @@ int main(int argc, char *argv[])
     Display display;
     Statistics statistics;
 
-    //display.show();
+    display.show();
 
     return a.exec();
 }

@@ -30,14 +30,16 @@ SOURCES += \
         display.cpp \
     genericnode.cpp \
     menu.cpp \
-    statistics.cpp
+    statistics.cpp \
+    tower.cpp
 
 HEADERS += \
         display.h \
     genericnode.h \
     genericlinkedlist.h \
     menu.h \
-    statistics.h
+    statistics.h \
+    tower.h
 
 FORMS += \
         display.ui \

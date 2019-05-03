@@ -1,5 +1,6 @@
 #include "genericnode.h"
 #include <iostream>
+#include "tower.h"
 
 /**
  * Generic Node constructor
@@ -45,3 +46,5 @@ void GenericNode<T>::setNext(GenericNode<T> *next) {
 
 template class GenericNode<std::string>;
 template class GenericNode<int>;
+template class GenericNode<Tower>;
+

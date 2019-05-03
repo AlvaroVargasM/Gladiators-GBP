@@ -6,7 +6,8 @@
 #include <QGraphicsScene>
 #include <QLabel>
 
-//#include "tower.h"
+#include "genericlinkedlist.h"
+#include "tower.h"
 
 namespace Ui {
 class Display;
@@ -46,6 +47,21 @@ public:
      */
     void setAnimation(std::string gladiator,std::string action);
 
+    /**
+     * @brief splitCommand Splits a subcommand out of a command string.
+     * @param command Command string.
+     * @return A subcommand.
+     */
+    std::string splitCommand(std::string *command);
+
+    /**
+     * @brief runCommands Displays all the commands in a given list.
+     * @param commands List holding the commands.
+     */
+    void runCommands(GenericLinkedList<std::string> *commands);
+
+
+
     QGraphicsScene *scene; /**< Window QGraphicsScene. All the visual elements are added inside this scene for display. */
 
 private:
@@ -54,6 +70,9 @@ private:
 
     QLabel *starGldtr; /**< QLabel that holds the sprite of the A Star Gladiator. */
     QLabel *backGldtr; /**< QLabel that holds the sprite of the Backtracking Gladiator. */
+    GenericLinkedList<Tower>* towers; /**< Lists that contains all the towers created. */
+
+
 
     //button test
     public slots: void test();
