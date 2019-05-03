@@ -14,6 +14,14 @@ int main(int argc, char *argv[])
     Display display;
     Statistics statistics;
 
+    GenericLinkedList<std::string>* list = new GenericLinkedList<std::string>;
+
+    list->add("Uno");
+    list->add("Dos");
+    list->add("Tres");
+
+    list->printList();
+
     //display.show();
 
     return a.exec();

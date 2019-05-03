@@ -8,6 +8,7 @@ template <class T>
 GenericLinkedList<T>::GenericLinkedList() {
     this->length = 0;
     this->header = nullptr;
+    this->last = nullptr;
 }
 
 /**
