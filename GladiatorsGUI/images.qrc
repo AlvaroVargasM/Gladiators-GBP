@@ -3,5 +3,13 @@
         <file>menu_bg.jpg</file>
         <file>arena.jpg</file>
         <file>grid.png</file>
+        <file>adead.gif</file>
+        <file>ahit.gif</file>
+        <file>astand.gif</file>
+        <file>awalk.gif</file>
+        <file>bdead.gif</file>
+        <file>bhit.gif</file>
+        <file>bstand.gif</file>
+        <file>bwalk.gif</file>
     </qresource>
 </RCC>

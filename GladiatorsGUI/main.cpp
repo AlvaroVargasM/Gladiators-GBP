@@ -1,4 +1,6 @@
 #include <QApplication>
+#include <QtDebug>
+#include <QString>
 
 #include "genericlinkedlist.h"
 #include "menu.h"
@@ -12,13 +14,24 @@ int main(int argc, char *argv[])
     Display display;
     Statistics statistics;
 
-    menu.show();
-
-
-    /*GenericLinkedList<std::string>* list = new GenericLinkedList<std::string>;
-    for(int i = 0; i<25; i++){
-        list->add("Prueba");
-    }list->printList();*/
+    //display.show();
 
     return a.exec();
 }
+
+/* Example of linked list usage and iteration.
+ * When using it with a new class the line
+ * "template class GenericNode<theClassBeingUsed>"
+ * has to be added at the end of both list and node cpp files.
+ *
+GenericLinkedList<std::string>* list = new GenericLinkedList<std::string>;
+
+list->add("Uno");
+list->add("Dos");
+list->add("Tres");
+
+for(int i=0;i<list->getLength();i++){
+    std::string str = list->get(i)->getData();
+    qDebug() << QString::fromStdString(str);
+}
+*/

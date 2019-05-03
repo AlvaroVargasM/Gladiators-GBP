@@ -17,10 +17,11 @@ public:
     void remove(int);
     GenericNode<T>* get(int);
     GenericNode<T>* getHead();
-    int* getLength();
+    int getLength();
     void printList();
 private:
     GenericNode<T>* header;
+    GenericNode<T>* last;
     int length;
 };
 
