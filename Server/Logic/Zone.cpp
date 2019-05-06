@@ -13,6 +13,7 @@ Zone::Zone() {
     this->f = 0;
     this->start = false;
     this->end = false;
+
 }
 
 int Zone::getId() const {
@@ -85,4 +86,8 @@ bool Zone::isEnd() const {
 
 void Zone::setEnd(bool end) {
     this->end = end;
+}
+
+void Zone::addNeighbor(int * coord) {
+    this->neighbors->add(coord);
 }

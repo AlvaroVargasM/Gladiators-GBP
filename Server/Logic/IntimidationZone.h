@@ -18,7 +18,7 @@ private:
     GenericLinkedList<GenericLinkedList<Zone>> zoneMatrix;
 
 public:
-    IntimidationZone();
+    IntimidationZone(int n, int m);
 
     Zone* getZone(int i, int j);
 };
