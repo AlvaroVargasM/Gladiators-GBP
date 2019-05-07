@@ -6,6 +6,7 @@
 #define TESTSERVER_GenericLinkedList_H
 
 
+#include <iostream>
 #include "GenericNode.h"
 
 /**
@@ -23,6 +24,7 @@ public:
     int* getLength();
 private:
     GenericNode<T>* header;
+    GenericNode<T>* last;
     int length;
 };
 
@@ -34,6 +36,7 @@ template <class T>
 GenericLinkedList<T>::GenericLinkedList() {
     this->length = 0;
     this->header = nullptr;
+    this->last = nullptr;
 }
 
 /**
@@ -46,12 +49,17 @@ void GenericLinkedList<T>::add(T data) {
     GenericNode<T>* temp = new GenericNode<T>(data);
     if(this->length == 0){
         this->header = temp;
-        this->length++;
     }else{
-        temp->setNext(this->header);
-        this->header = temp;
-        this->length++;
+        if(this->last == nullptr){
+            this->header->setNext(temp);
+            this->last = temp;
+        }else{
+            this->last->setNext(temp);
+            this->last = temp;
+        }
     }
+    this->length++;
+    //std::cout << "Added " << data << " to the list" << std::endl;
 }
 
 /**

@@ -8,11 +8,38 @@
  * The default constructor for the class, it will create a matrix using linked ist with linked lists
  * and Zone class objects
  */
-IntimidationZone::IntimidationZone() {
-    for(int i = 0;i < 10;++i) {
+IntimidationZone::IntimidationZone(int n, int m) {
+    for(int i = 0;i < n;++i) {
         GenericLinkedList<Zone> list;
-        for(int i = 0;i < 10;++i) {
+        for(int j = 0;j < m;++j) {
             Zone z;
+            if(i > 0){
+                int arr[2] = {i-1, j};
+                z.addNeighbor(arr);
+                if(j > 0){
+                    int arr[2] = {i-1, j-1};
+                    z.addNeighbor(arr);
+                }if(j < m-1){
+                    int arr[2] = {i-1, j+1};
+                    z.addNeighbor(arr);
+                }
+            }if(j > 0){
+                int arr[2] = {i, j-1};
+                z.addNeighbor(arr);
+            }if(j < m-1){
+                int arr[2] = {i, j+1};
+                z.addNeighbor(arr);
+            }if(i < n-1){
+                int arr[2] = {i+1, j};
+                z.addNeighbor(arr);
+                if(j > 0){
+                    int arr[2] = {i+1, j-1};
+                    z.addNeighbor(arr);
+                }if(j < m-1){
+                    int arr[2] = {i+1, j+1};
+                    z.addNeighbor(arr);
+                }
+            }
             list.add(z);
         }
         this->zoneMatrix.add(list);

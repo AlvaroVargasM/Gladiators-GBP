@@ -17,6 +17,8 @@ private:
     int lower_Body_Strength;
     int resistance;
 
+    int fitness;
+
 public:
     Gladiator();
 
@@ -47,6 +49,10 @@ public:
     int getResistance();
 
     void setResistance(int resistance);
+
+    int getFitness();
+
+    void setFitness(int fitness);
 };
 
 

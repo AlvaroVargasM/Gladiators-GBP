@@ -6,6 +6,8 @@
 #define GLADIATORS_GBP_ZONE_H
 
 
+#include "GenericLinkedList.h"
+
 class Zone {
 private:
     int id;
@@ -17,6 +19,7 @@ private:
     int f;
     bool start;
     bool end;
+    GenericLinkedList<int*>* neighbors = new GenericLinkedList<int*>;
 
 public:
     Zone();
@@ -56,6 +59,8 @@ public:
     bool isEnd() const;
 
     void setEnd(bool end);
+
+    void addNeighbor(int[2]);
 };
 
 
