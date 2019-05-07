@@ -46,5 +46,5 @@ void GenericNode<T>::setNext(GenericNode<T> *next) {
 
 template class GenericNode<std::string>;
 template class GenericNode<int>;
-template class GenericNode<Tower>;
+template class GenericNode<Tower*>;
 

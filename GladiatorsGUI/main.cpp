@@ -6,6 +6,7 @@
 #include "menu.h"
 #include "display.h"
 #include "statistics.h"
+#include "tower.h"
 
 
 int main(int argc, char *argv[])
@@ -15,8 +16,9 @@ int main(int argc, char *argv[])
     Display display;
     Statistics statistics;
 
-    display.show();
 
+
+    display.show();
     return a.exec();
 }
 

@@ -3,6 +3,7 @@
 
 #include <QLabel>
 
+
 /**
  * @brief The Tower class Tower object. It's sprite depends on the type specified.
  */
