@@ -6,6 +6,8 @@
 #include "menu.h"
 #include "display.h"
 #include "statistics.h"
+#include "tower.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -14,16 +16,9 @@ int main(int argc, char *argv[])
     Display display;
     Statistics statistics;
 
-    GenericLinkedList<std::string>* list = new GenericLinkedList<std::string>;
 
-    list->add("Uno");
-    list->add("Dos");
-    list->add("Tres");
 
-    list->printList();
-
-    //display.show();
-
+    display.show();
     return a.exec();
 }
 

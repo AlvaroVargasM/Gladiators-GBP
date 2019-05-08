@@ -1,4 +1,5 @@
 #include "genericlinkedlist.h"
+#include "tower.h"
 
 /**
  * This constructor doesn't take any parameters
@@ -63,7 +64,6 @@ void GenericLinkedList<T>::remove(int i) {
     if(i == 1){
         GenericNode<T>* temp = this->header;
         this->header = this->header->getNext();
-        //delete(temp);
     }else {
         GenericNode<T> *tmp = get(i);
         GenericNode<T> *temp = get(i - 1);
@@ -95,7 +95,6 @@ int GenericLinkedList<T>::getLength() {
     return this->length;
 }
 
-
 /**
  * This function prints the content of all of the nodes one by one
  * @tparam T
@@ -109,3 +108,4 @@ void GenericLinkedList<T>::printList() {
 
 template class GenericLinkedList<std::string>;
 template class GenericLinkedList<int>;
+template class GenericLinkedList<Tower*>;

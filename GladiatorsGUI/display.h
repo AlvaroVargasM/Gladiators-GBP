@@ -5,8 +5,10 @@
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <QLabel>
+#include <QList>
 
-//#include "tower.h"
+#include "genericlinkedlist.h"
+#include "tower.h"
 
 namespace Ui {
 class Display;
@@ -46,6 +48,39 @@ public:
      */
     void setAnimation(std::string gladiator,std::string action);
 
+    /**
+     * @brief splitCommand Splits a subcommand out of a command string.
+     * @param command Command string.
+     * @return A subcommand.
+     */
+    std::string splitCommand(std::string *command);
+
+    /**
+     * @brief runCommands Displays all the commands in a given list.
+     * @param commands List holding the commands.
+     */
+    void runCommands(QList<std::string> *commands);
+
+    /**
+     * @brief setInfo Set's all the gladiators info in the panels.
+     * @param infoList List that contains the gladiator's info.
+     */
+    void setInfo(QList<std::string> *infoList);
+
+    /**
+     * @brief shootArrow Animates an arrow being shoot from a tower to a gladiator.
+     * @param towerId Tower shooting.
+     * @param gladiator Gladiator that will be hit.
+     */
+    void shootArrow(std::string towerId, std::string gladiatorId);
+
+    /**
+     * @brief hitGladiator Updates the gladiator life when is shot.
+     * @param gladiatorId Gladiator identification.
+     * @param arrowType Type of arrow shot.
+     */
+    void hitGladiator(std::string gladiatorId, std::string arrowType);
+
     QGraphicsScene *scene; /**< Window QGraphicsScene. All the visual elements are added inside this scene for display. */
 
 private:
@@ -54,6 +89,11 @@ private:
 
     QLabel *starGldtr; /**< QLabel that holds the sprite of the A Star Gladiator. */
     QLabel *backGldtr; /**< QLabel that holds the sprite of the Backtracking Gladiator. */
+    //GenericLinkedList<Tower*> *towers; /**< Lists that contains all the towers created. */
+    QList<Tower*> *towers;
+
+    QList<QLabel*> *infoLabels;/**< Lists that contains all the information labels from the panel. */
+
 
     //button test
     public slots: void test();

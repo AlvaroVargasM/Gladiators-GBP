@@ -11,5 +11,11 @@
         <file>bhit.gif</file>
         <file>bstand.gif</file>
         <file>bwalk.gif</file>
+        <file>explosivetower.png</file>
+        <file>firetower.png</file>
+        <file>normaltower.png</file>
+        <file>explosivearrow.png</file>
+        <file>firearrow.png</file>
+        <file>normalarrow.png</file>
     </qresource>
 </RCC>
