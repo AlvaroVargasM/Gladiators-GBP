@@ -25,18 +25,58 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    connector.cpp \
     genericlinkedlist.cpp \
         main.cpp \
         display.cpp \
     genericnode.cpp \
     menu.cpp \
+    netpackage.cpp \
     statistics.cpp
 
 HEADERS += \
+    connector.h \
         display.h \
     genericnode.h \
     genericlinkedlist.h \
+    libraries/rapidjson/allocators.h \
+    libraries/rapidjson/cursorstreamwrapper.h \
+    libraries/rapidjson/document.h \
+    libraries/rapidjson/encodedstream.h \
+    libraries/rapidjson/encodings.h \
+    libraries/rapidjson/error/en.h \
+    libraries/rapidjson/error/error.h \
+    libraries/rapidjson/filereadstream.h \
+    libraries/rapidjson/filewritestream.h \
+    libraries/rapidjson/fwd.h \
+    libraries/rapidjson/internal/biginteger.h \
+    libraries/rapidjson/internal/diyfp.h \
+    libraries/rapidjson/internal/dtoa.h \
+    libraries/rapidjson/internal/ieee754.h \
+    libraries/rapidjson/internal/itoa.h \
+    libraries/rapidjson/internal/meta.h \
+    libraries/rapidjson/internal/pow10.h \
+    libraries/rapidjson/internal/regex.h \
+    libraries/rapidjson/internal/stack.h \
+    libraries/rapidjson/internal/strfunc.h \
+    libraries/rapidjson/internal/strtod.h \
+    libraries/rapidjson/internal/swap.h \
+    libraries/rapidjson/istreamwrapper.h \
+    libraries/rapidjson/memorybuffer.h \
+    libraries/rapidjson/memorystream.h \
+    libraries/rapidjson/msinttypes/inttypes.h \
+    libraries/rapidjson/msinttypes/stdint.h \
+    libraries/rapidjson/ostreamwrapper.h \
+    libraries/rapidjson/pointer.h \
+    libraries/rapidjson/prettywriter.h \
+    libraries/rapidjson/rapidjson.h \
+    libraries/rapidjson/reader.h \
+    libraries/rapidjson/schema.h \
+    libraries/rapidjson/stream.h \
+    libraries/rapidjson/stringbuffer.h \
+    libraries/rapidjson/writer.h \
     menu.h \
+    netpackage.h \
     statistics.h
 
 FORMS += \
