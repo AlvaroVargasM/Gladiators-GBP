@@ -59,13 +59,13 @@ public:
      * @brief runCommands Displays all the commands in a given list.
      * @param commands List holding the commands.
      */
-    void runCommands(QList<std::string> *commands);
+    void runCommands(GenericLinkedList<std::string> *commands);
 
     /**
      * @brief setInfo Set's all the gladiators info in the panels.
      * @param infoList List that contains the gladiator's info.
      */
-    void setInfo(QList<std::string> *infoList);
+    void setInfo(GenericLinkedList<std::string> *infoList);
 
     /**
      * @brief shootArrow Animates an arrow being shoot from a tower to a gladiator.
@@ -82,6 +82,13 @@ public:
     void hitGladiator(std::string gladiatorId, std::string arrowType);
 
     QGraphicsScene *scene; /**< Window QGraphicsScene. All the visual elements are added inside this scene for display. */
+
+protected:
+    /**
+     * @brief showEvent Restarts the window every time is shown.
+     * @param ev Event signal.
+     */
+    void showEvent(QShowEvent *ev);
 
 private:
     Ui::Display *ui; /**< Qt form of Display class. Used to arrange the visual objects. */

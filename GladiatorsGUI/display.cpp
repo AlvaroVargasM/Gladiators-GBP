@@ -11,10 +11,6 @@
 #include <iostream>
 
 
-/**
- * @brief Display class constructor.
- * @param parent
- */
 Display::Display(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Display)
@@ -23,7 +19,6 @@ Display::Display(QWidget *parent) :
 
     view = new QGraphicsView(this);
     scene = new QGraphicsScene(0,0,700,550,this);
-    //towers = new GenericLinkedList<Tower*>;
     towers = new QList<Tower*>;
     infoLabels = new QList<QLabel*>;
 
@@ -169,21 +164,12 @@ Display::Display(QWidget *parent) :
     this->setCentralWidget(view);
 }
 
-
-/**
- * @brief Display class destructor.
- */
 Display::~Display()
 {
     delete ui;
     this->close();
 }
 
-/**
- * @brief move Moves a game object one square in the direction give.
- * @param id Game object identificator.
- * @param direction Direction wich the object has to move.
- */
 void Display::move(std::string id, std::string direction)
 {
     QLabel *sprite = new QLabel();
@@ -223,11 +209,6 @@ void Display::move(std::string id, std::string direction)
     if(id=="a" || id=="b") setAnimation(id,"stand");
 }
 
-/**
- * @brief setAnimation Changes the animation gif of a given gladiator.
- * @param gladiator Gladiator's id.
- * @param action Animation action to be displayed.
- */
 void Display::setAnimation(std::string gladiator, std::string action)
 {
     QLabel *gldtrLabel;
@@ -252,20 +233,20 @@ std::string Display::splitCommand(std::string *command)
     return subCommand;
 }
 
-void Display::runCommands(QList<std::string> *commands)
+void Display::runCommands(GenericLinkedList<std::string> *commands)
 {
-    //for(int i=0;i<commands->getLength();i++){
-        //std::string command = commands->get(i)->getData();
-    foreach(std::string command, *commands){
+
+    for(int i=0;i<commands->getLength();i++){
+        std::string command = commands->get(i)->getData();
 
         std::string action = splitCommand(&command);
 
         if(action=="move"){
+            //move.a.right
             std::string id = splitCommand(&command);
             move(id,command);
         }else if(action=="create"){
             //create.1.normal.5.2
-
             std::string id = splitCommand(&command);
             std::string type = splitCommand(&command);
             int xpos  = std::stoi(splitCommand(&command));
@@ -276,22 +257,21 @@ void Display::runCommands(QList<std::string> *commands)
             tower->setType(type);
             tower->setPos(xpos,ypos);
 
-            //add to QList
             towers->append(tower);
-            //towers->add(tower);
             scene->addWidget(tower);
-
-
+        }else if(action=="shoot"){
+            //shoot.1.a
+            std::string shooter = splitCommand(&command);
+            shootArrow(shooter,command);
         }
     }
 }
 
-void Display::setInfo(QList<std::string> *infoList)
+void Display::setInfo(GenericLinkedList<std::string> *infoList)
 {
-    int n=0;
-    foreach(std::string data, *infoList){
-        infoLabels->at(n)->setText(QString::fromStdString(data));
-        n++;
+    for(int i=0;i<infoList->getLength();i++){
+        std::string str = infoList->get(i)->getData();
+        infoLabels->at(i)->setText(QString::fromStdString(str));
     }
 }
 
@@ -387,54 +367,51 @@ void Display::hitGladiator(std::string gladiatorId, std::string arrowType)
     infoLabels->at(index)->setText(QString::number(health));
 }
 
+void Display::showEvent(QShowEvent *ev)
+{
+    //initialize();
+}
+
 //button for testing
 void Display::test()
 {
-    /*GenericLinkedList<std::string>* list = new GenericLinkedList<std::string>;
-    list->add("move.a.down");
-    list->add("move.a.down");
-    list->add("move.a.right");
-    list->add("move.a.right");
-    list->add("move.b.down");
-    runCommands(list);*/
+    GenericLinkedList<std::string> *infoList = new GenericLinkedList<std::string>;
+    infoList->add("1");
+    infoList->add("1");
+    infoList->add("Startacus");
+    infoList->add("Backtracking");
+    infoList->add("26");
+    infoList->add("30");
+    infoList->add("60");
+    infoList->add("50");
+    infoList->add("4");
+    infoList->add("3");
+    infoList->add("High");
+    infoList->add("Medium");
+    infoList->add("Outstanding");
+    infoList->add("Average");
+    infoList->add("8");
+    infoList->add("7");
+    infoList->add("6");
+    infoList->add("9");
+    infoList->add("80");
+    infoList->add("65");
+    infoList->add("2.25");
+    infoList->add("5.33");
+    setInfo(infoList);
 
-    QList<std::string> *list = new QList<std::string>;
+    GenericLinkedList<std::string> *list = new GenericLinkedList<std::string>;
     /*for(int i =0;i<8;i++){
         list->append("move.a.right");
         list->append("move.b.down");
     }*/
-    list->append("move.a.right");
-    list->append("move.b.down");
-    list->append("create.1.normal.5.5");
+    list->add("move.a.right");
+    list->add("move.b.down");list->add("move.b.down");list->add("move.b.down");
+    list->add("create.1.normal.6.2");
+    list->add("shoot.1.a");
+    list->add("shoot.1.b");
     runCommands(list);
 
-    QList<std::string> *infoList = new QList<std::string>;
-    infoList->append("1");
-    infoList->append("1");
-    infoList->append("Startacus");
-    infoList->append("Backtracking");
-    infoList->append("26");
-    infoList->append("30");
-    infoList->append("60");
-    infoList->append("50");
-    infoList->append("4");
-    infoList->append("3");
-    infoList->append("High");
-    infoList->append("Medium");
-    infoList->append("Outstanding");
-    infoList->append("Average");
-    infoList->append("8");
-    infoList->append("7");
-    infoList->append("6");
-    infoList->append("9");
-    infoList->append("80");
-    infoList->append("65");
-    infoList->append("2.25");
-    infoList->append("5.33");
-    setInfo(infoList);
-
-    shootArrow("1","a");
-    shootArrow("1","b");
 }
 
 
