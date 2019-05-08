@@ -19,7 +19,8 @@ private:
     int f;
     bool start;
     bool end;
-    GenericLinkedList<int*>* neighbors = new GenericLinkedList<int*>;
+    GenericLinkedList<Zone*>* neighbors = new GenericLinkedList<Zone*>;
+    Zone* previous;
 
 public:
     Zone();
@@ -60,7 +61,13 @@ public:
 
     void setEnd(bool end);
 
-    void addNeighbor(int[2]);
+    void addNeighbor(Zone*);
+
+    GenericLinkedList<Zone*>* getNeighbors();
+
+    Zone* getParent();
+
+    void setParent(Zone*);
 };
 
 

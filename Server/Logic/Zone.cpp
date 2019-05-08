@@ -13,6 +13,7 @@ Zone::Zone() {
     this->f = 0;
     this->start = false;
     this->end = false;
+    this->previous = nullptr;
 
 }
 
@@ -65,7 +66,7 @@ void Zone::setH(int h) {
 }
 
 int Zone::getF() const {
-    return this->f;
+    return this->g + this->h;
 }
 
 void Zone::setF(int f) {
@@ -88,6 +89,18 @@ void Zone::setEnd(bool end) {
     this->end = end;
 }
 
-void Zone::addNeighbor(int * coord) {
-    this->neighbors->add(coord);
+void Zone::addNeighbor(Zone* zone) {
+    this->neighbors->add(zone);
+}
+
+GenericLinkedList<Zone*>* Zone::getNeighbors() {
+    return this->neighbors;
+}
+
+Zone *Zone::getParent() {
+    return this->previous;
+}
+
+void Zone::setParent(Zone* zone) {
+    this->previous = zone;
 }
