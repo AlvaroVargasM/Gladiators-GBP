@@ -3,9 +3,63 @@
 //
 
 #include "Gladiator.h"
+#include <iostream>
 
-Gladiator::Gladiator() {
 
+Gladiator::Gladiator() {}
+
+Gladiator::Gladiator(int type) {
+    RNG rng;
+
+    // Weak Glad.
+    if (type <= 20) {
+        int r1 = rng.getRandomNumber(1,4);
+        int r2 = rng.getRandomNumber(1,4);
+        int r3 = rng.getRandomNumber(1,4);
+        int r4 = rng.getRandomNumber(1,4);
+
+        this->emotional_Intelligence = r1;
+        this->physical_Condition = r2;
+        this->upper_Body_Strength = r3;
+        this->lower_Body_Strength = r4;
+
+        this->resistance = calculateResistance();
+
+        this->age = 20;
+    }
+    // Normal Glad.
+    if (20 < type && type < 80) {
+        int r1 = rng.getRandomNumber(1,7);
+        int r2 = rng.getRandomNumber(1,7);
+        int r3 = rng.getRandomNumber(1,7);
+        int r4 = rng.getRandomNumber(1,7);
+
+        this->emotional_Intelligence = r1;
+        this->physical_Condition = r2;
+        this->upper_Body_Strength = r4;
+        this->lower_Body_Strength = r3;
+
+        this->resistance = calculateResistance();
+
+        this->age = 21;
+    }
+    // Strong Glad.
+    if (type >= 80) {
+        int r1 = rng.getRandomNumber(1,10);
+        int r2 = rng.getRandomNumber(1,10);
+        int r3 = rng.getRandomNumber(1,10);
+        int r4 = rng.getRandomNumber(1,10);
+
+        this->emotional_Intelligence = r1;
+        this->physical_Condition = r2;
+        this->upper_Body_Strength = r4;
+        this->lower_Body_Strength = r3;
+
+        this->resistance = calculateResistance();
+
+        this->age = 22;
+    }
+    this->fitness = 0;
 }
 
 const std::string &Gladiator::getId() {
@@ -60,6 +114,8 @@ int Gladiator::getResistance() {
     return this->resistance;
 }
 
+
+
 void Gladiator::setResistance(int resistance) {
     this->resistance = resistance;
 }
@@ -70,4 +126,9 @@ int Gladiator::getFitness() {
 
 void Gladiator::setFitness(int fitness) {
     this->fitness = fitness;
+}
+
+int Gladiator::calculateResistance() {
+    int res = getEmotionalIntelligence() + getPhysicalCondition() + getUpperBodyStrength() + getLowerBodyStrength();
+    return res;
 }
