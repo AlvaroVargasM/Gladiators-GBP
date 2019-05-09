@@ -9,6 +9,8 @@
 
 #include "genericlinkedlist.h"
 #include "tower.h"
+#include "statistics.h"
+#include "connector.h"
 
 namespace Ui {
 class Display;
@@ -59,13 +61,13 @@ public:
      * @brief runCommands Displays all the commands in a given list.
      * @param commands List holding the commands.
      */
-    void runCommands(QList<std::string> *commands);
+    void runCommands(GenericLinkedList<std::string> *commands);
 
     /**
      * @brief setInfo Set's all the gladiators info in the panels.
      * @param infoList List that contains the gladiator's info.
      */
-    void setInfo(QList<std::string> *infoList);
+    void setInfo(GenericLinkedList<std::string> *infoList);
 
     /**
      * @brief shootArrow Animates an arrow being shoot from a tower to a gladiator.
@@ -81,22 +83,42 @@ public:
      */
     void hitGladiator(std::string gladiatorId, std::string arrowType);
 
+    /**
+     * @brief clear Clear the gladiators positions and the labels text.
+     * @param restart Indicates if the clearing is partial o total. Total means that the session is finished.
+     */
+    void clear(bool total);
+
+    /**
+     * @brief gameLoop Handles the main game loop.
+     */
+    void gameLoop();
+
     QGraphicsScene *scene; /**< Window QGraphicsScene. All the visual elements are added inside this scene for display. */
+
+protected:
+    /**
+     * @brief showEvent Restarts the window every time is shown.
+     * @param ev Event signal.
+     */
+    void showEvent(QShowEvent *ev);
 
 private:
     Ui::Display *ui; /**< Qt form of Display class. Used to arrange the visual objects. */
     QGraphicsView *view; /**< Class QGraphicsView widget. The scene is added to it for display  purposes. */
-
+    bool active; /**< Used to decide when the game is finished*/
+    Connector connector; /**< Object used for server communication. */
     QLabel *starGldtr; /**< QLabel that holds the sprite of the A Star Gladiator. */
     QLabel *backGldtr; /**< QLabel that holds the sprite of the Backtracking Gladiator. */
-    //GenericLinkedList<Tower*> *towers; /**< Lists that contains all the towers created. */
-    QList<Tower*> *towers;
-
-    QList<QLabel*> *infoLabels;/**< Lists that contains all the information labels from the panel. */
+    QList<Tower*> *towers; /**< Lists that contains all the towers created. */
+    QList<QLabel*> *infoLabels; /**< Lists that contains all the information labels from the panel. */
+    Statistics *statisticsWin; /**< Reference to the statistic window displayed at the end of the game. */
 
 
     //button test
-    public slots: void test();
+    public slots:
+        void test();
+        void restart();
 };
 
 #endif // DISPLAY_H

@@ -2,18 +2,16 @@
 #include <QtDebug>
 #include <QString>
 
-//#include "genericlinkedlist.h"
-//#include "menu.h"
-//#include "display.h"
-//#include "statistics.h"
-//#include "tower.h"
-
-#include "connector.h"
+#include "genericlinkedlist.h"
+#include "menu.h"
+#include "display.h"
+#include "statistics.h"
+#include "tower.h"
 
 
 int main(int argc, char *argv[])
 {
-    /*QApplication a(argc, argv);
+    QApplication a(argc, argv);
     Menu menu;
     Display display;
     Statistics statistics;
@@ -21,10 +19,7 @@ int main(int argc, char *argv[])
 
 
     display.show();
-    return a.exec();*/
-
-    Connector::sendTest(1);
-
+    return a.exec();
 }
 
 /* Example of linked list usage and iteration.
