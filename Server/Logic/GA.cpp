@@ -4,10 +4,15 @@
 
 #include "GA.h"
 
+/**
+ * Constructs the GA and its first generation
+ */
 GA::GA() {
     this->generation = 1;
+    this->generateInitPop();
+    this->calculateFitness();
+    this->quickSort(0,POP_SIZE);
 }
-
 
 /**
  * Fill the pop array with new gladiators created randomly by setting probabilities to create different types of
@@ -28,12 +33,23 @@ void GA::calculateFitness() {
         this->population[i].setFitness(this->population[i].getResistance());
 }
 
+/**
+ * Takes two gladiator pointers and swaps them, this method is used for the sorting of the population
+ * @param a gladiator to swap for b
+ * @param b gladiator to swap for a
+ */
 void GA::swap(Gladiator* a,Gladiator* b) {
     Gladiator t = *a;
     *a = *b;
     *b = t;
 }
 
+/**
+ * Method for partitioning the population, used in the sorting of the population
+ * @param low first element of the pop
+ * @param high last element of the pop
+ * @return index for the partition
+ */
 int GA::partition(int low, int high) {
     Gladiator pivot = this->population[high];    // pivot
     int i = (low - 1);  // Index of smaller element
@@ -51,6 +67,11 @@ int GA::partition(int low, int high) {
     return (i + 1);
 }
 
+/**
+ * Quick sort algorithm for sorting the pop by smallest to biggest fitness
+ * @param low first element of the pop
+ * @param high last element of the pop
+ */
 void GA::quickSort(int low, int high) {
     if (low < high) {
         /* pi is partitioning index, arr[p] is now
@@ -79,6 +100,9 @@ void GA::selection() {
 /**
  * Takes a pair of gladiators to create a new unique gladiator from their genes, applies mutation and inversion to
  * the new gladiator
+ * @param parent_1 first gladiator to cross
+ * @param parent_2 second gladiator to cross
+ * @return a new gladiator based on the cross of the attributes of the gladiators passed
  */
 Gladiator GA::crossover(Gladiator parent_1,Gladiator parent_2) {
     Gladiator child;
@@ -116,8 +140,12 @@ Gladiator GA::crossover(Gladiator parent_1,Gladiator parent_2) {
 
     child.setResistance(child.calculateResistance());
 
-    child.setFitness(child.getResistance());
+    std::bitset<BIT_SET_SIZE> res (parent_1.getResistance());
 
+    res = bitMutation(res);
+    res = bitInversion(res);
+
+    child.setFitness((int)res.to_ulong());
 
     return child;
 }
@@ -172,27 +200,40 @@ void GA::printPopFitness() {
     std::cout << std::endl;
 }
 
+/**
+ * Prints the each individual of the fitness list to console
+ */
 void GA::printFittest() {
     for(int i = 0; i < FITTEST_SIZE;i++)
         std::cout << this->fittest[i].getFitness() << " / ";
     std::cout << std::endl;
 }
 
+/**
+ * Gives the number of generation the GA is currently in
+ * @return generation number
+ */
 int GA::getGeneration() {
     return this->generation;
 }
 
-void GA::setGeneration(int generation) {
-    this->generation = generation;
-}
-
+/**
+ * Return the strongest gladiator from the population
+ * @return strongest gladiator
+ */
 Gladiator GA::getStrongest() {
     return this->population[POP_SIZE - 1];
 }
 
+/**
+ * Takes two bit sets and combines them to create a new one
+ * @param parent_1 first bit set
+ * @param parent_2 second bit set
+ * @return the combination of both bit sets
+ */
 std::bitset<BIT_SET_SIZE> GA::bitCrossover(std::bitset<BIT_SET_SIZE> parent_1, std::bitset<BIT_SET_SIZE> parent_2) {
     std::bitset<BIT_SET_SIZE> child;
-    int gene_Probability = 70;
+    int gene_Probability = BEST_GENE_SURVIVABILITY;
 
     for (int i = 0;i < BIT_SET_SIZE;i++){
         int x = this->rng.getRandomNumber(1,100);
@@ -215,11 +256,14 @@ std::bitset<BIT_SET_SIZE> GA::bitCrossover(std::bitset<BIT_SET_SIZE> parent_1, s
             child[i] = p1;
     }
 
-    //std::cout << "NEW VALUE: " << (int)child.to_ulong() << std::endl;
-
     return child;
 }
 
+/**
+ * Takes a bit set an changes one of its bit to true
+ * @param child bit set to modify
+ * @return new modified bit
+ */
 std::bitset<BIT_SET_SIZE> GA::bitMutation(std::bitset<BIT_SET_SIZE> child) {
     int i = this->rng.getRandomNumber(0,7);
 
@@ -231,6 +275,11 @@ std::bitset<BIT_SET_SIZE> GA::bitMutation(std::bitset<BIT_SET_SIZE> child) {
     return child;
 }
 
+/**
+ * Takes a bit set and inverts all of its bits
+ * @param child bit set to invert
+ * @return inverted bit set
+ */
 std::bitset<BIT_SET_SIZE> GA::bitInversion(std::bitset<BIT_SET_SIZE> child) {
     int i = 0;
 
@@ -243,4 +292,64 @@ std::bitset<BIT_SET_SIZE> GA::bitInversion(std::bitset<BIT_SET_SIZE> child) {
     }
 
     return child;
+}
+
+/**
+ * Creates a new generation of the population by selecting the best individuals, applies reproduction at them, their
+ * children replace te worst individuals of the pop, the pop is then sorted by their fitness
+ */
+void GA::newGen() {
+    selection();
+    reproduction();
+    generationChange();
+    calculateFitness();
+    quickSort(0,POP_SIZE);
+}
+
+/**
+ * Gives back the average emotional intelligence of the current pop
+ * @return average emotional intelligence
+ */
+int GA::averageEmotionalIntelligence() {
+    int aei = 0;
+    for (int i = 0;i < POP_SIZE;i++) {
+        aei += this->population[i].getEmotionalIntelligence();
+    }
+    return aei / POP_SIZE;
+}
+
+/**
+ * Gives back the average physical condition of the current pop
+ * @return average physical condition
+ */
+int GA::averagePhysicalCondition() {
+    int apc = 0;
+    for (int i = 0;i < POP_SIZE;i++) {
+        apc += this->population[i].getPhysicalCondition();
+    }
+    return apc / POP_SIZE;
+}
+
+/**
+ * Gives back the average upper body strength of the current pop
+ * @return average upper body strength
+ */
+int GA::averageUpperBodyStrength() {
+    int aubs = 0;
+    for (int i = 0;i < POP_SIZE;i++) {
+        aubs += this->population[i].getUpperBodyStrength();
+    }
+    return aubs / POP_SIZE;
+}
+
+/**
+ * Gives back the average lower body strength of the current pop
+ * @return average lower body strength
+ */
+int GA::averageLowerBodyStrength() {
+    int albs = 0;
+    for (int i = 0;i < POP_SIZE;i++) {
+        albs += this->population[i].getLowerBodyStrength();
+    }
+    return albs / POP_SIZE;
 }
