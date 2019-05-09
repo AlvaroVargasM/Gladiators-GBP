@@ -11,6 +11,7 @@ Menu::Menu(QWidget *parent) :
     ui(new Ui::Menu)
 {
     ui->setupUi(this);
+    setAttribute(Qt::WA_DeleteOnClose);
 
     QPixmap bkgnd(":/menu_bg.jpg");
     bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
@@ -33,10 +34,9 @@ Menu::~Menu()
  */
 void Menu::on_startButton_clicked()
 {
-    this->hide();
     Display *display = new Display();
     display->show();
-
+    this->hide();
 }
 
 /**
