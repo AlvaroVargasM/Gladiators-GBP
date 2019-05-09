@@ -4,10 +4,6 @@
 
 #include "GA.h"
 
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
-
 GA::GA() {
     this->generation = 1;
 }
@@ -85,68 +81,43 @@ void GA::selection() {
  * the new gladiator
  */
 Gladiator GA::crossover(Gladiator parent_1,Gladiator parent_2) {
-    int p1_EI = parent_1.getEmotionalIntelligence();
-    int p2_EI = parent_2.getEmotionalIntelligence();
-
-    int p1_PC = parent_1.getPhysicalCondition();
-    int p2_PC = parent_2.getPhysicalCondition();
-
-    int p1_UBS = parent_1.getUpperBodyStrength();
-    int p2_UBS = parent_2.getUpperBodyStrength();
-
-    int p1_LBS = parent_1.getLowerBodyStrength();
-    int p2_LBS = parent_2.getLowerBodyStrength();
-
     Gladiator child;
-    child.setAge((parent_1.getAge() + parent_2.getAge())/2 + this->rng.getRandomNumber(1,5));
 
-    // Setting the child EI based on its parents
-    if (p1_EI > p2_EI)
-        child.setEmotionalIntelligence(this->rng.getRandomNumber(p2_EI,p1_EI) - p2_EI/2);
-    if (p1_EI == p2_EI)
-        child.setEmotionalIntelligence(p1_EI);
-    if (p1_EI < p2_EI)
-        child.setEmotionalIntelligence(this->rng.getRandomNumber(p1_EI,p2_EI) - p1_EI/2);
+    if (parent_1.getAge() > parent_2.getAge())
+        child.setAge(parent_1.getAge() + 1);
+    if (parent_1.getAge() == parent_2.getAge())
+        child.setAge(parent_1.getAge() + 1);
+    if (parent_1.getAge() < parent_2.getAge())
+        child.setAge(parent_2.getAge() + 1);
 
-    // Setting the child PC based on its parents
-    if (p1_PC > p2_PC)
-        child.setPhysicalCondition(this->rng.getRandomNumber(p2_PC,p1_PC) - p2_PC/2);
-    if (p1_PC == p2_PC)
-        child.setPhysicalCondition(p1_PC);
-    if (p1_PC < p2_PC)
-        child.setPhysicalCondition(this->rng.getRandomNumber(p1_PC,p2_PC) - p1_PC/2);
+    std::bitset<BIT_SET_SIZE> p1_EI (parent_1.getEmotionalIntelligence());
+    std::bitset<BIT_SET_SIZE> p2_EI (parent_2.getEmotionalIntelligence());
 
-    // Setting the child UBS based on its parents
-    if (p1_UBS > p2_UBS)
-        child.setUpperBodyStrength(this->rng.getRandomNumber(p2_UBS,p1_UBS) - p2_UBS/2);
-    if (p1_UBS == p2_UBS)
-        child.setUpperBodyStrength(p1_UBS);
-    if (p1_UBS < p2_UBS)
-        child.setUpperBodyStrength(this->rng.getRandomNumber(p1_UBS,p2_UBS) - p1_UBS/2);
+    std::bitset<BIT_SET_SIZE> p1_PC = (parent_1.getPhysicalCondition());
+    std::bitset<BIT_SET_SIZE> p2_PC = (parent_2.getPhysicalCondition());
 
-    // Setting the child LBS based on its parents
-    if (p1_LBS > p2_LBS)
-        child.setLowerBodyStrength(this->rng.getRandomNumber(p2_LBS,p1_LBS) - p2_LBS/2);
-    if (p1_LBS == p2_LBS)
-        child.setLowerBodyStrength(p1_LBS);
-    if (p1_LBS < p2_LBS)
-        child.setLowerBodyStrength(this->rng.getRandomNumber(p1_LBS,p2_LBS) - p1_LBS/2);
+    std::bitset<BIT_SET_SIZE> p1_UBS = (parent_1.getUpperBodyStrength());
+    std::bitset<BIT_SET_SIZE> p2_UBS = (parent_2.getUpperBodyStrength());
+
+    std::bitset<BIT_SET_SIZE> p1_LBS = (parent_1.getLowerBodyStrength());
+    std::bitset<BIT_SET_SIZE> p2_LBS = (parent_2.getLowerBodyStrength());
+
+    int ei = (int)bitCrossover(p1_EI,p2_EI).to_ulong();
+    child.setEmotionalIntelligence(ei);
+
+    int pc = (int)bitCrossover(p1_PC,p2_PC).to_ulong();
+    child.setPhysicalCondition(pc);
+
+    int ubs = (int)bitCrossover(p1_UBS,p2_UBS).to_ulong();
+    child.setUpperBodyStrength(ubs);
+
+    int lbs = (int)bitCrossover(p1_LBS,p2_LBS).to_ulong();
+    child.setLowerBodyStrength(lbs);
 
     child.setResistance(child.calculateResistance());
 
     child.setFitness(child.getResistance());
 
-    int mut = this->rng.getRandomNumber(1,100);
-
-    if (mut <= 5) {
-        int z = this->rng.getRandomNumber(1,2);
-        if (z == 1)
-            child.setResistance(child.getResistance() * 2);
-        else
-            child.setResistance(child.getResistance() / 2);
-    }
-
-    //std::cout << "CHILD: " << child.getFitness() << std::endl;
 
     return child;
 }
@@ -217,4 +188,59 @@ void GA::setGeneration(int generation) {
 
 Gladiator GA::getStrongest() {
     return this->population[POP_SIZE - 1];
+}
+
+std::bitset<BIT_SET_SIZE> GA::bitCrossover(std::bitset<BIT_SET_SIZE> parent_1, std::bitset<BIT_SET_SIZE> parent_2) {
+    std::bitset<BIT_SET_SIZE> child;
+    int gene_Probability = 70;
+
+    for (int i = 0;i < BIT_SET_SIZE;i++){
+        int x = this->rng.getRandomNumber(1,100);
+
+        bool p1 = parent_1[i];
+        bool p2 = parent_2[i];
+
+        if (p1 == p2)
+            child[i] = p1;
+
+        if (p1)
+            if (x < gene_Probability)
+                child[i] = p1;
+            else
+                child[i] = p2;
+        else
+        if (x < gene_Probability)
+            child[i] = p2;
+        else
+            child[i] = p1;
+    }
+
+    //std::cout << "NEW VALUE: " << (int)child.to_ulong() << std::endl;
+
+    return child;
+}
+
+std::bitset<BIT_SET_SIZE> GA::bitMutation(std::bitset<BIT_SET_SIZE> child) {
+    int i = this->rng.getRandomNumber(0,7);
+
+    while (child[i] == false)
+        i++;
+
+    child[i] = true;
+
+    return child;
+}
+
+std::bitset<BIT_SET_SIZE> GA::bitInversion(std::bitset<BIT_SET_SIZE> child) {
+    int i = 0;
+
+    while (i < 6) {
+        if (child[i] == true)
+            child[i] = false;
+        else
+            child[i] = true;
+        i++;
+    }
+
+    return child;
 }
