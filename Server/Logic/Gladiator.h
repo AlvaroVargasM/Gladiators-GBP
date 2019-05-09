@@ -7,6 +7,8 @@
 
 #include <string>
 
+#include "RNG.h"
+
 class Gladiator {
 private:
     std::string ID;
@@ -21,6 +23,7 @@ private:
 
 public:
     Gladiator();
+    Gladiator(int type);
 
     const std::string &getId();
 
@@ -49,6 +52,8 @@ public:
     int getResistance();
 
     void setResistance(int resistance);
+
+    int calculateResistance();
 
     int getFitness();
 
