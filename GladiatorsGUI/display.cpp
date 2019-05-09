@@ -1,5 +1,6 @@
 #include "display.h"
 #include "ui_display.h"
+#include "statistics.h"
 
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
@@ -9,13 +10,20 @@
 #include <QPropertyAnimation>
 #include <QtDebug>
 #include <iostream>
+#include <QTimer>
 
 
 Display::Display(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Display)
 {
+
     ui->setupUi(this);
+
+    this->setAttribute(Qt::WA_DeleteOnClose);
+    active = true;
+
+    //connector = Connector();
 
     view = new QGraphicsView(this);
     scene = new QGraphicsScene(0,0,700,550,this);
@@ -60,9 +68,9 @@ Display::Display(QWidget *parent) :
     infogap->setStyleSheet("QLabel { background-color:#1F4546;}");
     scene->addWidget(infogap);
 
-    for(int n=0;n<12;n++){
+    for(int n=0;n<11;n++){
         QLabel *infoHeader = new QLabel();
-        infoHeader->setGeometry(560,-24+(24+1)*2*n,189,25);
+        infoHeader->setGeometry(560,-24+(24+3)*2*n,189,25);
         infoHeader->setAlignment(Qt::AlignCenter);
         infoHeader->setStyleSheet("QLabel { background-color:#1F4546; color:white; font:10pt; font-weight: bold;}");
         QString str = "";
@@ -71,7 +79,7 @@ Display::Display(QWidget *parent) :
                 str = "Gladiator";
                 break;
             case 1:
-                str = "Health";
+                str = "Resistance";
                 break;
             case 2:
                 str = "Id";
@@ -98,23 +106,19 @@ Display::Display(QWidget *parent) :
                 str = "Lower Body Strenght";
                 break;
             case 10:
-                str = "Resistance";
-                break;
-            case 11:
                 str = "Pathfinding Time";
                 break;
-
         }
         infoHeader->setText(str);
 
         scene->addWidget(infoHeader);
     }
 
-    for(int n=0;n<12;n++){
+    for(int n=0;n<11;n++){
         QLabel *infoA = new QLabel();
         QLabel *infoB = new QLabel();
-        infoA->setGeometry(560,3+(50*n),90,25);
-        infoB->setGeometry(560+100,3+(50*n),90,25);
+        infoA->setGeometry(560,3+(54*n),90,25);
+        infoB->setGeometry(560+100,3+(54*n),90,25);
         infoA->setAlignment(Qt::AlignCenter);
         infoB->setAlignment(Qt::AlignCenter);
         infoA->setAttribute(Qt::WA_NoSystemBackground);
@@ -135,7 +139,7 @@ Display::Display(QWidget *parent) :
     }
 
     starGldtr = new QLabel();
-    starGldtr->setGeometry(0,0,32,32);
+    starGldtr->setGeometry(-50,-60,32,32);
     starGldtr->setAttribute(Qt::WA_NoSystemBackground);
     QMovie *agif = new QMovie(":/astand.gif");
     agif->start();
@@ -143,22 +147,12 @@ Display::Display(QWidget *parent) :
     scene->addWidget(starGldtr);
 
     backGldtr = new QLabel();
-    backGldtr->setGeometry(0,0,32,60);
+    backGldtr->setGeometry(-75,0,32,60);
     backGldtr->setAttribute(Qt::WA_NoSystemBackground);
     QMovie *bgif = new QMovie(":/bstand.gif");
     bgif->start();
     backGldtr->setMovie(bgif);
     scene->addWidget(backGldtr);
-
-
-    //Button for test/////////////
-    QPushButton *bt= new QPushButton;
-    bt->setGeometry(QRect(0,530,120,40));
-    bt->setText("Test");
-    QObject::connect(bt, SIGNAL(clicked()), this, SLOT(test()));
-    bt->setStyleSheet("QPushButton {background-color: #42c2f4; color: white;}");
-    scene->addWidget(bt);
-    ///////////////////////////
 
     view->setScene(scene);
     this->setCentralWidget(view);
@@ -181,13 +175,11 @@ void Display::move(std::string id, std::string direction)
     }else if(id=="b"){
         sprite = backGldtr;
     }else{
-        //temp
         foreach(Tower* tower, *towers){
             if(id==tower->getId()){
                 sprite = tower;
             }
         }
-        //search in the towers linkedlist
     }
 
     int finalx = sprite->x();
@@ -199,11 +191,10 @@ void Display::move(std::string id, std::string direction)
 
 
     QPropertyAnimation *animation = new QPropertyAnimation(sprite, "pos");
-    animation->setDuration(200);
+    animation->setDuration(300);
     animation->setStartValue(sprite->pos());
     animation->setEndValue(QPoint(finalx,finaly));
     animation->start();
-
     while (animation->state() != QAbstractAnimation::Stopped) QCoreApplication::processEvents();
 
     if(id=="a" || id=="b") setAnimation(id,"stand");
@@ -238,6 +229,9 @@ void Display::runCommands(GenericLinkedList<std::string> *commands)
 
     for(int i=0;i<commands->getLength();i++){
         std::string command = commands->get(i)->getData();
+
+        if(command=="finish") active=false;
+
 
         std::string action = splitCommand(&command);
 
@@ -291,17 +285,29 @@ void Display::shootArrow(std::string towerId, std::string gladiatorId)
 
     QLabel *arrow = new QLabel();
     arrow->setAttribute(Qt::WA_NoSystemBackground);
-    arrow->setGeometry(tower->x(),tower->y(),160,160);
+    arrow->setGeometry(tower->x()+5,tower->y()+27,160,160);
 
     QPixmap pix(QString::fromStdString(imageurl));
 
     QMatrix rm;
 
-    int rotation;
+    int rotation=0;
     if(gladiator->x()<tower->x()){
         rotation=-90;
     }else{
         rotation=90;
+    }
+
+    if(abs(gladiator->x()-tower->x())<35 && gladiator->y()<(tower->y()+88)){
+        rotation=0;
+    }else if(abs(gladiator->x()-tower->x())<35 && gladiator->y()>(tower->y()+88)){
+        rotation=180;
+    }else if(abs(gladiator->y()-tower->y()-88)<35){
+        if(gladiator->x()<tower->x()){
+            rotation=-90;
+        }else{
+            rotation=90;
+        }
     }
 
     rm.rotate(rotation);
@@ -347,11 +353,11 @@ void Display::hitGladiator(std::string gladiatorId, std::string arrowType)
 {
     int index=0;
     if(gladiatorId=="b")index=1;
-    int damage=1;
+    int damage=10;
     if(arrowType=="fire"){
-        damage=2;
+        damage=20;
     }else if(arrowType=="explosive"){
-        damage=4;
+        damage=40;
     }
 
     int health = infoLabels->at(index)->text().toInt();
@@ -367,17 +373,94 @@ void Display::hitGladiator(std::string gladiatorId, std::string arrowType)
     infoLabels->at(index)->setText(QString::number(health));
 }
 
-void Display::showEvent(QShowEvent *ev)
+void Display::clear(bool total)
 {
-    //initialize();
+    foreach(QLabel *label,*infoLabels){
+        label->setText("");
+    }
+    starGldtr->setGeometry(-50,-60,32,32);
+    backGldtr->setGeometry(-75,0,32,60);
+
+    if(total){
+        foreach(Tower *listTower,*towers){
+            delete listTower;
+        }
+        towers = new QList<Tower*>;
+    }else{
+        setAnimation("a","walk");
+        setAnimation("b","walk");
+
+        QPropertyAnimation *animation1 = new QPropertyAnimation(starGldtr, "pos");
+        animation1->setDuration(400);
+        animation1->setStartValue(QPoint(-50,-50));
+        animation1->setEndValue(QPoint(0,0));
+        animation1->start();
+        while (animation1->state() != QAbstractAnimation::Stopped) QCoreApplication::processEvents();
+
+        QPropertyAnimation *animation2 = new QPropertyAnimation(backGldtr, "pos");
+        animation2->setDuration(400);
+        animation2->setStartValue(QPoint(-70,0));
+        animation2->setEndValue(QPoint(0,0));
+        animation2->start();
+        while (animation2->state() != QAbstractAnimation::Stopped) QCoreApplication::processEvents();
+
+        setAnimation("a","stand");
+        setAnimation("b","stand");
+    }
+}
+
+void Display::gameLoop()
+{
+
+    //
+    int n=0;
+    while(active){
+        QEventLoop loop;
+        QTimer::singleShot(1300,&loop,SLOT(quit()));
+        loop.exec();
+        clear(false);
+
+        //GenericLinkedList<std::string> *infoList = connector->getInfo();
+        //setInfo(infoList);
+
+        //GenericLinkedList<std::string> *commands = connector->getCommands();
+        //runCommands(commands);
+        if(n<199){
+            test();
+        }else{
+            GenericLinkedList<std::string> *list = new GenericLinkedList<std::string>;
+            for(int n=0;n<9;n++)list->add("move.a.down");
+            for(int n=0;n<9;n++)list->add("move.a.right");
+            list->add("finish");
+            runCommands(list);
+        }
+        //
+        n++;
+    }
+
+    clear(true);
+
+    statisticsWin = new Statistics();
+    statisticsWin->setParent(this);
+    //GenericLinkedList<GenericLinkedList*> *chartsInfo;
+    statisticsWin->generateCharts();
+    this->hide();
+    statisticsWin->show();
+}
+
+void Display::showEvent(QShowEvent *event)
+{
+    QMainWindow::showEvent(event);
+    QTimer::singleShot(500, this, SLOT(restart()));
+    return;
 }
 
 //button for testing
 void Display::test()
 {
     GenericLinkedList<std::string> *infoList = new GenericLinkedList<std::string>;
-    infoList->add("1");
-    infoList->add("1");
+    infoList->add("30");
+    infoList->add("30");
     infoList->add("Startacus");
     infoList->add("Backtracking");
     infoList->add("26");
@@ -394,24 +477,28 @@ void Display::test()
     infoList->add("7");
     infoList->add("6");
     infoList->add("9");
-    infoList->add("80");
-    infoList->add("65");
     infoList->add("2.25");
     infoList->add("5.33");
     setInfo(infoList);
 
     GenericLinkedList<std::string> *list = new GenericLinkedList<std::string>;
-    /*for(int i =0;i<8;i++){
-        list->append("move.a.right");
-        list->append("move.b.down");
-    }*/
     list->add("move.a.right");
-    list->add("move.b.down");list->add("move.b.down");list->add("move.b.down");
-    list->add("create.1.normal.6.2");
-    list->add("shoot.1.a");
-    list->add("shoot.1.b");
-    runCommands(list);
+    list->add("move.a.right");
 
+    list->add("move.b.down");
+    list->add("move.b.down");
+
+
+    list->add("create.1.explosive.2.2");
+    list->add("shoot.1.b");
+    list->add("shoot.1.a");
+    runCommands(list);
+}
+
+void Display::restart()
+{
+    active = true;
+    gameLoop();
 }
 
 

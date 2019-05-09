@@ -53,6 +53,7 @@ void Statistics::setParent(QMainWindow *display)
 
 void Statistics::generateCharts()
 {
+
     //Test lists
     GenericLinkedList<int> *list1 = new GenericLinkedList<int>;
     list1->add(1);list1->add(7);list1->add(4);list1->add(10);
@@ -181,9 +182,8 @@ Statistics::~Statistics()
 
 void Statistics::newGame()
 {
-    //display->show();
-    //this->hide();
-    this->close();
+    this->hide();
+    display->show();
 }
 
 void Statistics::exit()

@@ -22,6 +22,7 @@ public:
     GenericNode<T>* get(int);
     GenericNode<T>* getHead();
     int* getLength();
+    bool includes(T);
 private:
     GenericNode<T>* header;
     GenericNode<T>* last;
@@ -114,6 +115,15 @@ GenericNode<T> *GenericLinkedList<T>::getHead() {
 template <class T>
 int* GenericLinkedList<T>::getLength() {
     return &this->length;
+}
+
+template<class T>
+bool GenericLinkedList<T>::includes(T data) {
+    for(int i = 0; i < this->length; i++){
+        if(data == get(i)->getData()){
+            return true;
+        }
+    }return false;
 }
 
 
