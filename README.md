@@ -1,2 +1,2 @@
 # Gladiators-GBP
-A simple game about gladiatos using the genetic, backtracking and pathfinding algorithms.
+A simple game about gladiators using the genetic, backtracking and pathfinding algorithms.
