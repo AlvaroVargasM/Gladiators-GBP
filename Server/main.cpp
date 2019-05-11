@@ -5,7 +5,13 @@
 #include "Logic/IntimidationZone.h"
 #include "Logic/PathSolver.h"
 #include "Networking/Server.h"
+#include "Logic/Gladiator.h"
 
 int main () {
-    Server::start();
+ //   Server::start();
+
+
+
+
+
 }

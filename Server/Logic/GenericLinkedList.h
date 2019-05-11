@@ -23,6 +23,7 @@ public:
     GenericNode<T>* getHead();
     int* getLength();
     bool includes(T);
+    void deleteEndNode();
 private:
     GenericNode<T>* header;
     GenericNode<T>* last;
@@ -124,6 +125,25 @@ bool GenericLinkedList<T>::includes(T data) {
             return true;
         }
     }return false;
+}
+
+
+template<class T>
+void GenericLinkedList<T>::deleteEndNode(){
+    GenericNode<T>*ptr;
+    GenericNode<T>*prev;
+
+    if ( header== nullptr)
+        std::cout << "The list is empty, cant delete nack node.\n";
+    else {
+        ptr = header;
+        while (ptr->getNext() != nullptr) {
+            prev = ptr;
+            ptr = ptr->getNext();
+        }
+        prev->setNext(nullptr);
+        delete(ptr);
+    }
 }
 
 
