@@ -10,10 +10,8 @@
 
 
 
-
 IntimidationZone* grid= new IntimidationZone(10,10);
 GenericLinkedList<Zone>*path= new GenericLinkedList<Zone>;
-
 
 bool BackTracking::visited(Zone *zone, GenericLinkedList<Zone> *p) {
     if (zone->getId()== path->get(*path->getLength())->getData().getId()){
@@ -26,7 +24,6 @@ bool BackTracking::visited(Zone *zone, GenericLinkedList<Zone> *p) {
 
     Zone*zone=new Zone;
     zone->setTower(00);
-
 
     for(int i = 0; i < grid->getN(); i++){
         for(int j = 0; j < grid->getM(); j++){

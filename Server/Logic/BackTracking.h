@@ -9,7 +9,6 @@
 class BackTracking {
 
 
-
 public:
 
     GenericLinkedList<Zone >* BackTrack(IntimidationZone *grid,int a,int b );
