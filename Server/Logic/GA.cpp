@@ -4,14 +4,15 @@
 
 #include "GA.h"
 
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
-
+/**
+ * Constructs the GA and its first generation
+ */
 GA::GA() {
     this->generation = 1;
+    this->generateInitPop();
+    this->calculateFitness();
+    this->quickSort(0,POP_SIZE);
 }
-
 
 /**
  * Fill the pop array with new gladiators created randomly by setting probabilities to create different types of
@@ -32,12 +33,23 @@ void GA::calculateFitness() {
         this->population[i].setFitness(this->population[i].getResistance());
 }
 
+/**
+ * Takes two gladiator pointers and swaps them, this method is used for the sorting of the population
+ * @param a gladiator to swap for b
+ * @param b gladiator to swap for a
+ */
 void GA::swap(Gladiator* a,Gladiator* b) {
     Gladiator t = *a;
     *a = *b;
     *b = t;
 }
 
+/**
+ * Method for partitioning the population, used in the sorting of the population
+ * @param low first element of the pop
+ * @param high last element of the pop
+ * @return index for the partition
+ */
 int GA::partition(int low, int high) {
     Gladiator pivot = this->population[high];    // pivot
     int i = (low - 1);  // Index of smaller element
@@ -55,6 +67,11 @@ int GA::partition(int low, int high) {
     return (i + 1);
 }
 
+/**
+ * Quick sort algorithm for sorting the pop by smallest to biggest fitness
+ * @param low first element of the pop
+ * @param high last element of the pop
+ */
 void GA::quickSort(int low, int high) {
     if (low < high) {
         /* pi is partitioning index, arr[p] is now
@@ -83,70 +100,52 @@ void GA::selection() {
 /**
  * Takes a pair of gladiators to create a new unique gladiator from their genes, applies mutation and inversion to
  * the new gladiator
+ * @param parent_1 first gladiator to cross
+ * @param parent_2 second gladiator to cross
+ * @return a new gladiator based on the cross of the attributes of the gladiators passed
  */
 Gladiator GA::crossover(Gladiator parent_1,Gladiator parent_2) {
-    int p1_EI = parent_1.getEmotionalIntelligence();
-    int p2_EI = parent_2.getEmotionalIntelligence();
-
-    int p1_PC = parent_1.getPhysicalCondition();
-    int p2_PC = parent_2.getPhysicalCondition();
-
-    int p1_UBS = parent_1.getUpperBodyStrength();
-    int p2_UBS = parent_2.getUpperBodyStrength();
-
-    int p1_LBS = parent_1.getLowerBodyStrength();
-    int p2_LBS = parent_2.getLowerBodyStrength();
-
     Gladiator child;
-    child.setAge((parent_1.getAge() + parent_2.getAge())/2 + this->rng.getRandomNumber(1,5));
 
-    // Setting the child EI based on its parents
-    if (p1_EI > p2_EI)
-        child.setEmotionalIntelligence(this->rng.getRandomNumber(p2_EI,p1_EI) - p2_EI/2);
-    if (p1_EI == p2_EI)
-        child.setEmotionalIntelligence(p1_EI);
-    if (p1_EI < p2_EI)
-        child.setEmotionalIntelligence(this->rng.getRandomNumber(p1_EI,p2_EI) - p1_EI/2);
+    if (parent_1.getAge() > parent_2.getAge())
+        child.setAge(parent_1.getAge() + 1);
+    if (parent_1.getAge() == parent_2.getAge())
+        child.setAge(parent_1.getAge() + 1);
+    if (parent_1.getAge() < parent_2.getAge())
+        child.setAge(parent_2.getAge() + 1);
 
-    // Setting the child PC based on its parents
-    if (p1_PC > p2_PC)
-        child.setPhysicalCondition(this->rng.getRandomNumber(p2_PC,p1_PC) - p2_PC/2);
-    if (p1_PC == p2_PC)
-        child.setPhysicalCondition(p1_PC);
-    if (p1_PC < p2_PC)
-        child.setPhysicalCondition(this->rng.getRandomNumber(p1_PC,p2_PC) - p1_PC/2);
+    std::bitset<BIT_SET_SIZE> p1_EI (parent_1.getEmotionalIntelligence());
+    std::bitset<BIT_SET_SIZE> p2_EI (parent_2.getEmotionalIntelligence());
 
-    // Setting the child UBS based on its parents
-    if (p1_UBS > p2_UBS)
-        child.setUpperBodyStrength(this->rng.getRandomNumber(p2_UBS,p1_UBS) - p2_UBS/2);
-    if (p1_UBS == p2_UBS)
-        child.setUpperBodyStrength(p1_UBS);
-    if (p1_UBS < p2_UBS)
-        child.setUpperBodyStrength(this->rng.getRandomNumber(p1_UBS,p2_UBS) - p1_UBS/2);
+    std::bitset<BIT_SET_SIZE> p1_PC = (parent_1.getPhysicalCondition());
+    std::bitset<BIT_SET_SIZE> p2_PC = (parent_2.getPhysicalCondition());
 
-    // Setting the child LBS based on its parents
-    if (p1_LBS > p2_LBS)
-        child.setLowerBodyStrength(this->rng.getRandomNumber(p2_LBS,p1_LBS) - p2_LBS/2);
-    if (p1_LBS == p2_LBS)
-        child.setLowerBodyStrength(p1_LBS);
-    if (p1_LBS < p2_LBS)
-        child.setLowerBodyStrength(this->rng.getRandomNumber(p1_LBS,p2_LBS) - p1_LBS/2);
+    std::bitset<BIT_SET_SIZE> p1_UBS = (parent_1.getUpperBodyStrength());
+    std::bitset<BIT_SET_SIZE> p2_UBS = (parent_2.getUpperBodyStrength());
+
+    std::bitset<BIT_SET_SIZE> p1_LBS = (parent_1.getLowerBodyStrength());
+    std::bitset<BIT_SET_SIZE> p2_LBS = (parent_2.getLowerBodyStrength());
+
+    int ei = (int)bitCrossover(p1_EI,p2_EI).to_ulong();
+    child.setEmotionalIntelligence(ei);
+
+    int pc = (int)bitCrossover(p1_PC,p2_PC).to_ulong();
+    child.setPhysicalCondition(pc);
+
+    int ubs = (int)bitCrossover(p1_UBS,p2_UBS).to_ulong();
+    child.setUpperBodyStrength(ubs);
+
+    int lbs = (int)bitCrossover(p1_LBS,p2_LBS).to_ulong();
+    child.setLowerBodyStrength(lbs);
 
     child.setResistance(child.calculateResistance());
 
-    child.setFitness(child.getResistance());
+    std::bitset<BIT_SET_SIZE> res (parent_1.getResistance());
 
-    int mut = this->rng.getRandomNumber(1,100);
+    res = bitMutation(res);
+    res = bitInversion(res);
 
-    if (mut <= 5) {
-        int z = this->rng.getRandomNumber(1,2);
-        if (z == 1)
-            child.setResistance(child.getResistance() * 2);
-        else
-            child.setResistance(child.getResistance() / 2);
-    }
-
-    //std::cout << "CHILD: " << child.getFitness() << std::endl;
+    child.setFitness((int)res.to_ulong());
 
     return child;
 }
@@ -201,20 +200,156 @@ void GA::printPopFitness() {
     std::cout << std::endl;
 }
 
+/**
+ * Prints the each individual of the fitness list to console
+ */
 void GA::printFittest() {
     for(int i = 0; i < FITTEST_SIZE;i++)
         std::cout << this->fittest[i].getFitness() << " / ";
     std::cout << std::endl;
 }
 
+/**
+ * Gives the number of generation the GA is currently in
+ * @return generation number
+ */
 int GA::getGeneration() {
     return this->generation;
 }
 
-void GA::setGeneration(int generation) {
-    this->generation = generation;
-}
-
+/**
+ * Return the strongest gladiator from the population
+ * @return strongest gladiator
+ */
 Gladiator GA::getStrongest() {
     return this->population[POP_SIZE - 1];
+}
+
+/**
+ * Takes two bit sets and combines them to create a new one
+ * @param parent_1 first bit set
+ * @param parent_2 second bit set
+ * @return the combination of both bit sets
+ */
+std::bitset<BIT_SET_SIZE> GA::bitCrossover(std::bitset<BIT_SET_SIZE> parent_1, std::bitset<BIT_SET_SIZE> parent_2) {
+    std::bitset<BIT_SET_SIZE> child;
+    int gene_Probability = BEST_GENE_SURVIVABILITY;
+
+    for (int i = 0;i < BIT_SET_SIZE;i++){
+        int x = this->rng.getRandomNumber(1,100);
+
+        bool p1 = parent_1[i];
+        bool p2 = parent_2[i];
+
+        if (p1 == p2)
+            child[i] = p1;
+
+        if (p1)
+            if (x < gene_Probability)
+                child[i] = p1;
+            else
+                child[i] = p2;
+        else
+        if (x < gene_Probability)
+            child[i] = p2;
+        else
+            child[i] = p1;
+    }
+
+    return child;
+}
+
+/**
+ * Takes a bit set an changes one of its bit to true
+ * @param child bit set to modify
+ * @return new modified bit
+ */
+std::bitset<BIT_SET_SIZE> GA::bitMutation(std::bitset<BIT_SET_SIZE> child) {
+    int i = this->rng.getRandomNumber(0,7);
+
+    while (child[i] == false)
+        i++;
+
+    child[i] = true;
+
+    return child;
+}
+
+/**
+ * Takes a bit set and inverts all of its bits
+ * @param child bit set to invert
+ * @return inverted bit set
+ */
+std::bitset<BIT_SET_SIZE> GA::bitInversion(std::bitset<BIT_SET_SIZE> child) {
+    int i = 0;
+
+    while (i < 6) {
+        if (child[i] == true)
+            child[i] = false;
+        else
+            child[i] = true;
+        i++;
+    }
+
+    return child;
+}
+
+/**
+ * Creates a new generation of the population by selecting the best individuals, applies reproduction at them, their
+ * children replace te worst individuals of the pop, the pop is then sorted by their fitness
+ */
+void GA::newGen() {
+    selection();
+    reproduction();
+    generationChange();
+    calculateFitness();
+    quickSort(0,POP_SIZE);
+}
+
+/**
+ * Gives back the average emotional intelligence of the current pop
+ * @return average emotional intelligence
+ */
+int GA::averageEmotionalIntelligence() {
+    int aei = 0;
+    for (int i = 0;i < POP_SIZE;i++) {
+        aei += this->population[i].getEmotionalIntelligence();
+    }
+    return aei / POP_SIZE;
+}
+
+/**
+ * Gives back the average physical condition of the current pop
+ * @return average physical condition
+ */
+int GA::averagePhysicalCondition() {
+    int apc = 0;
+    for (int i = 0;i < POP_SIZE;i++) {
+        apc += this->population[i].getPhysicalCondition();
+    }
+    return apc / POP_SIZE;
+}
+
+/**
+ * Gives back the average upper body strength of the current pop
+ * @return average upper body strength
+ */
+int GA::averageUpperBodyStrength() {
+    int aubs = 0;
+    for (int i = 0;i < POP_SIZE;i++) {
+        aubs += this->population[i].getUpperBodyStrength();
+    }
+    return aubs / POP_SIZE;
+}
+
+/**
+ * Gives back the average lower body strength of the current pop
+ * @return average lower body strength
+ */
+int GA::averageLowerBodyStrength() {
+    int albs = 0;
+    for (int i = 0;i < POP_SIZE;i++) {
+        albs += this->population[i].getLowerBodyStrength();
+    }
+    return albs / POP_SIZE;
 }

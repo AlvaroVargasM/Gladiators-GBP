@@ -16,7 +16,7 @@ void Connector::sendTest(int request){
 
         //	Create a hint structure for the server we're connecting with
         int port = 8888;
-        std::string ipAddress = "127.0.0.1";
+        std::string ipAddress = "192.168.0.102";
 
         sockaddr_in hint;
         hint.sin_family = AF_INET;

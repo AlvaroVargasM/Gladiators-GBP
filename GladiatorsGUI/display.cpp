@@ -411,21 +411,22 @@ void Display::clear(bool total)
 
 void Display::gameLoop()
 {
-
-    //
-    int n=0;
+    //int n=0;
     while(active){
         QEventLoop loop;
         QTimer::singleShot(1300,&loop,SLOT(quit()));
         loop.exec();
         clear(false);
 
+        test();
+
         //GenericLinkedList<std::string> *infoList = connector->getInfo();
         //setInfo(infoList);
 
         //GenericLinkedList<std::string> *commands = connector->getCommands();
         //runCommands(commands);
-        if(n<199){
+
+        /*if(n<199){
             test();
         }else{
             GenericLinkedList<std::string> *list = new GenericLinkedList<std::string>;
@@ -433,9 +434,8 @@ void Display::gameLoop()
             for(int n=0;n<9;n++)list->add("move.a.right");
             list->add("finish");
             runCommands(list);
-        }
-        //
-        n++;
+        }*/
+        // n++;
     }
 
     clear(true);
@@ -481,18 +481,22 @@ void Display::test()
     infoList->add("5.33");
     setInfo(infoList);
 
-    GenericLinkedList<std::string> *list = new GenericLinkedList<std::string>;
+    /*GenericLinkedList<std::string> *list = new GenericLinkedList<std::string>;
     list->add("move.a.right");
     list->add("move.a.right");
+    list->add("move.a.right");
+    list->add("move.a.down");
 
     list->add("move.b.down");
     list->add("move.b.down");
-
+    list->add("move.b.down");
+    list->add("move.b.down");
 
     list->add("create.1.explosive.2.2");
     list->add("shoot.1.b");
     list->add("shoot.1.a");
-    runCommands(list);
+    list->add("finish")
+    runCommands(list);*/
 }
 
 void Display::restart()
