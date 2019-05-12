@@ -5,7 +5,15 @@
 #include "Logic/IntimidationZone.h"
 #include "Logic/PathSolver.h"
 #include "Networking/Server.h"
+#include "Logic/Game.h"
 
 int main () {
-    Server::start();
+    srand(time(nullptr));
+    //Server::start();
+
+    Game myGame;
+
+
+    myGame.generateTowers();
+    myGame.getGameZone()->printGrid();
 }

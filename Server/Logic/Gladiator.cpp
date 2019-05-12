@@ -25,7 +25,7 @@ Gladiator::Gladiator(int type) {
 
         this->resistance = calculateResistance();
 
-        this->age = 20;
+        this->age = 21;
     }
     // Normal Glad.
     if (20 < type && type < 80) {
@@ -41,7 +41,7 @@ Gladiator::Gladiator(int type) {
 
         this->resistance = calculateResistance();
 
-        this->age = 21;
+        this->age = 22;
     }
     // Strong Glad.
     if (type >= 80) {
@@ -57,7 +57,7 @@ Gladiator::Gladiator(int type) {
 
         this->resistance = calculateResistance();
 
-        this->age = 22;
+        this->age = 23;
     }
     this->fitness = 0;
 }
@@ -113,8 +113,6 @@ void Gladiator::setLowerBodyStrength(int lowerBodyStrength) {
 int Gladiator::getResistance() {
     return this->resistance;
 }
-
-
 
 void Gladiator::setResistance(int resistance) {
     this->resistance = resistance;

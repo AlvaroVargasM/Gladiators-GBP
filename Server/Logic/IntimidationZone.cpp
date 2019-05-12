@@ -26,7 +26,7 @@ IntimidationZone::IntimidationZone(int n, int m) {
  * This method makes possible to retrieve a pointer to a specific Zone in the matrix
  * @param i which row you will be accessing
  * @param j which column wu will be accessing
- * @return the pointer to the zone yuo specified
+ * @return the pointer to the zone you specified
  */
 Zone *IntimidationZone::getZone(int i, int j) {
     GenericNode<GenericLinkedList<Zone*>*>* row = this->zoneMatrix->get(i);
@@ -41,8 +41,9 @@ void IntimidationZone::printGrid() {
         GenericLinkedList<Zone*>* row = this->zoneMatrix->get(i)->getData();
         for(int j = 0; j < *this->zoneMatrix->getLength(); j++){
             Zone* current = row->get(j)->getData();
-            std::cout << current->getId() << std::endl;
+            std::cout << std::setw(4) << current->getDamage() << " . ";
         }
+        std::cout << std::endl;
     }
 }
 

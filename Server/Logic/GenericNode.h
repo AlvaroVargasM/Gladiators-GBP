@@ -17,6 +17,7 @@ public:
     GenericNode<T>* getNext();
     void setNext(GenericNode<T>*);
 
+
 private:
     GenericNode* next;
     T data;

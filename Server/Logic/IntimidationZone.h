@@ -5,7 +5,7 @@
 #ifndef GLADIATORS_GBP_INTIMIDATIONZONE_H
 #define GLADIATORS_GBP_INTIMIDATIONZONE_H
 
-
+#include <iomanip>
 #include "GenericLinkedList.h"
 #include "GenericNode.h"
 #include "Zone.h"
@@ -18,6 +18,7 @@ private:
     GenericLinkedList<GenericLinkedList<Zone*>*>* zoneMatrix = new GenericLinkedList<GenericLinkedList<Zone*>*>;
     int n;
     int m;
+
 public:
     IntimidationZone(int n, int m);
     Zone* getZone(int i, int j);

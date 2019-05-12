@@ -2,8 +2,7 @@
 // Created by valva on 5/2/2019.
 //
 
-#ifndef GLADIATORS_GBP_GLADIATOR_H
-#define GLADIATORS_GBP_GLADIATOR_H
+#pragma once
 
 #include <string>
 
@@ -23,6 +22,7 @@ private:
 
 public:
     Gladiator();
+
     Gladiator(int type);
 
     const std::string &getId();
@@ -59,6 +59,3 @@ public:
 
     void setFitness(int fitness);
 };
-
-
-#endif //GLADIATORS_GBP_GLADIATOR_H
