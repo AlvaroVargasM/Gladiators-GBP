@@ -90,3 +90,71 @@ GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, 
     }
 
 }
+/**
+ * This function takes a node and verifies in the path list.
+ * @param zone
+ * @tparam Linkedlist of nodes  type zone
+ *
+ * @return bool
+ */
+bool PathSolver::visited(Zone *zone, GenericLinkedList<Zone*> *node) {
+if (zone->getId()==node->get(*node->getLength())->getData()->getId()){
+return true;}
+}
+
+/**
+ * his function takes an intimidation zone and looks for the route to
+ * reach the lower right diagonal in an efficient way using the recursive logic of
+ * BackTraking
+
+ * @param IntimidationZone
+ * @param  a,b index
+ *
+ * @return GenericLinkedList<Zone *>
+ */
+
+GenericLinkedList<Zone*>*PathSolver::BackTrack(IntimidationZone *grid, int a, int b) {
+    GenericLinkedList<Zone *> *path = new GenericLinkedList<Zone *>;
+
+
+    Zone *zone = new Zone;
+    zone->setTower(00);
+
+    // condicion de parada.
+    if (a== grid->getN()&& b==grid->getM()){
+        return path;
+
+    }
+
+    if (grid->getZone(a, b + 1)->getTower() != zone->getTower() && (visited(grid->getZone(a, b), path) != true)) {
+        path->add(grid->getZone(a, b + 1));
+        return BackTrack(grid, a, b + 1);
+
+    }
+    else
+
+        if (grid->getZone(a + 1, b)->getTower() != zone->getTower()){
+        path->add(grid->getZone(a + 1, b));
+        return BackTrack(grid, a + 1, b);
+
+    }
+        else
+        path->deleteEndNode();
+        return BackTrack(grid, a, b - 1);
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
