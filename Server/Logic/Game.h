@@ -4,7 +4,8 @@
 
 #pragma once
 
-#define N_ROWS 10
+# define BASE_DAMAGE 5
+# define N_ROWS 10
 # define N_COLUMNS 10
 
 #include "GA.h"

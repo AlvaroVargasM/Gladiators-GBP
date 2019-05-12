@@ -5,7 +5,7 @@
 #ifndef GLADIATORS_GBP_INTIMIDATIONZONE_H
 #define GLADIATORS_GBP_INTIMIDATIONZONE_H
 
-
+#include <iomanip>
 #include "GenericLinkedList.h"
 #include "GenericNode.h"
 #include "Zone.h"

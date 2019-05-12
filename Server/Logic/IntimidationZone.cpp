@@ -41,8 +41,9 @@ void IntimidationZone::printGrid() {
         GenericLinkedList<Zone*>* row = this->zoneMatrix->get(i)->getData();
         for(int j = 0; j < *this->zoneMatrix->getLength(); j++){
             Zone* current = row->get(j)->getData();
-            std::cout << current->getDamage() << std::endl;
+            std::cout << std::setw(4) << current->getDamage() << " . ";
         }
+        std::cout << std::endl;
     }
 }
 

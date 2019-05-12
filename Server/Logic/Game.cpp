@@ -23,13 +23,13 @@ void Game::putTower(int i, int j, int type) {
     int damage;
     switch (type) {
         case 1:
-            damage = 10;
+            damage = BASE_DAMAGE;
             break;
         case 2:
-            damage = 20;
+            damage = BASE_DAMAGE * 2;
             break;
         case 3:
-            damage = 40;
+            damage = BASE_DAMAGE * 4;
             break;
         default:
             damage = 0;
@@ -42,25 +42,25 @@ void Game::putTower(int i, int j, int type) {
         if (!this->game_Zone->getZone(i - x,j)->isBlocked() && i - x >= 0)
             this->game_Zone->getZone(i - x,j)->setDamage(damage);
 
-        if (!this->game_Zone->getZone(i + x,j)->isBlocked() && i + x < N_ROWS)
+        if (i + x < N_ROWS && !this->game_Zone->getZone(i + x,j)->isBlocked())
             this->game_Zone->getZone(i + x,j)->setDamage(damage);
 
-        if (!this->game_Zone->getZone(i,j - x)->isBlocked() && j - x >= 0)
+        if (j - x >= 0 && !this->game_Zone->getZone(i,j - x)->isBlocked())
             this->game_Zone->getZone(i,j - x)->setDamage(damage);
 
-        if (!this->game_Zone->getZone(i,j + x)->isBlocked() && j + x < N_COLUMNS)
+        if (j + x < N_COLUMNS && !this->game_Zone->getZone(i,j + x)->isBlocked())
             this->game_Zone->getZone(i,j + x)->setDamage(damage);
 
-        if (!this->game_Zone->getZone(i - x,j - x)->isBlocked() && i - x >= 0 && j - x >= 0)
+        if (i - x >= 0 && j - x >= 0 && !this->game_Zone->getZone(i - x,j - x)->isBlocked())
             this->game_Zone->getZone(i - x,j - x)->setDamage(damage);
 
-        if (!this->game_Zone->getZone(i - x,j + x)->isBlocked() && i - x >= 0 && j + x < N_COLUMNS)
+        if (i - x >= 0 && j + x < N_COLUMNS && !this->game_Zone->getZone(i - x,j + x)->isBlocked())
             this->game_Zone->getZone(i - x,j + x)->setDamage(damage);
 
-        if (!this->game_Zone->getZone(i + x,j - x)->isBlocked() && i + x < N_ROWS && j - x >= 0)
+        if (i + x < N_ROWS && j - x >= 0 && !this->game_Zone->getZone(i + x,j - x)->isBlocked())
             this->game_Zone->getZone(i + x,j - x)->setDamage(damage);
 
-        if (!this->game_Zone->getZone(i + x,j + x)->isBlocked() && i + x < N_ROWS && j + x < N_COLUMNS)
+        if (i + x < N_ROWS && j + x < N_COLUMNS && !this->game_Zone->getZone(i + x,j + x)->isBlocked())
             this->game_Zone->getZone(i + x,j + x)->setDamage(damage);
     }
 }
