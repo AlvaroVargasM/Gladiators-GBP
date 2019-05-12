@@ -7,7 +7,6 @@
 Zone::Zone() {
     this->blocked = false;
     this->tower = 0;
-    this->damage = 0;
     this->g = 0;
     this->h = 0;
     this->f = 0;
@@ -41,12 +40,8 @@ void Zone::setTower(int tower) {
     this->tower = tower;
 }
 
-int Zone::getDamage() const {
+GenericLinkedList<GenericLinkedList<int>*>* Zone::getDamage() {
     return this->damage;
-}
-
-void Zone::setDamage(int damage) {
-    this->damage = damage;
 }
 
 int Zone::getG() const {

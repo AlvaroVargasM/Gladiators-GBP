@@ -140,12 +140,88 @@ Gladiator GA::crossover(Gladiator parent_1,Gladiator parent_2) {
 
     child.setResistance(child.calculateResistance());
 
-    std::bitset<BIT_SET_SIZE> res (parent_1.getResistance());
+    std::bitset<BIT_SET_SIZE> res (child.getResistance());
 
-    res = bitMutation(res);
-    res = bitInversion(res);
+    int mut = rng.getRandomNumber(1,100);
 
+    //if (mut < INVERSION_PORCENTAGE)
+    //    res = bitInversion(res);
+
+    child.setResistance((int)res.to_ulong());
     child.setFitness((int)res.to_ulong());
+
+    return child;
+}
+
+/**
+ * Takes two bit sets and combines them to create a new one
+ * @param parent_1 first bit set
+ * @param parent_2 second bit set
+ * @return the combination of both bit sets
+ */
+std::bitset<BIT_SET_SIZE> GA::bitCrossover(std::bitset<BIT_SET_SIZE> parent_1, std::bitset<BIT_SET_SIZE> parent_2) {
+    std::bitset<BIT_SET_SIZE> child;
+    int gene_Probability = BEST_GENE_SURVIVABILITY;
+
+    for (int i = 0;i < BIT_SET_SIZE;i++){
+        int x = this->rng.getRandomNumber(1,100);
+
+        bool p1 = parent_1[i];
+        bool p2 = parent_2[i];
+
+        if (p1 == p2)
+            child[i] = p1;
+
+        if (p1)
+            if (x < gene_Probability)
+                child[i] = p1;
+            else
+                child[i] = p2;
+        else
+        if (x < gene_Probability)
+            child[i] = p2;
+        else
+            child[i] = p1;
+    }
+    std::bitset<BIT_SET_SIZE> m_Child = bitMutation(child);
+
+    return m_Child;
+}
+
+/**
+ * Takes a bit set an changes one of its bit to true
+ * @param child bit set to modify
+ * @return new modified bit
+ */
+std::bitset<BIT_SET_SIZE> GA::bitMutation(std::bitset<BIT_SET_SIZE> child) {
+    int x = this->rng.getRandomNumber(1,100);
+
+    if (x < MUTATION_PORCENTAGE) {
+        int i = 0;
+        while (child[i] == true) {
+            child[i] = false;
+            ++i;
+        }
+        child[i] = true;
+    }
+    return child;
+}
+
+/**
+ * Takes a bit set and inverts all of its bits
+ * @param child bit set to invert
+ * @return inverted bit set
+ */
+std::bitset<BIT_SET_SIZE> GA::bitInversion(std::bitset<BIT_SET_SIZE> child) {
+    int i = 0;
+
+    while (i < 8) {
+        if (child[i] == true)
+            child[i] = false;
+        else
+            child[i] = true;
+        i++;
+    }
 
     return child;
 }
@@ -183,6 +259,34 @@ void GA::generationChange() {
 }
 
 /**
+ * Return the strongest gladiator from the population
+ * @return strongest gladiator
+ */
+Gladiator GA::getStrongest() {
+    return this->population[POP_SIZE - 1];
+}
+
+/**
+ * Creates a new generation of the population by selecting the best individuals, applies reproduction at them, their
+ * children replace te worst individuals of the pop, the pop is then sorted by their fitness
+ */
+void GA::newGen() {
+    selection();
+    reproduction();
+    generationChange();
+    calculateFitness();
+    quickSort(0,POP_SIZE);
+}
+
+/**
+ * Gives the number of generation the GA is currently in
+ * @return generation number
+ */
+int GA::getGeneration() {
+    return this->generation;
+}
+
+/**
  * Prints the each individual of the pop resistance to console
  */
 void GA::printPopResistance() {
@@ -207,103 +311,6 @@ void GA::printFittest() {
     for(int i = 0; i < FITTEST_SIZE;i++)
         std::cout << this->fittest[i].getFitness() << " / ";
     std::cout << std::endl;
-}
-
-/**
- * Gives the number of generation the GA is currently in
- * @return generation number
- */
-int GA::getGeneration() {
-    return this->generation;
-}
-
-/**
- * Return the strongest gladiator from the population
- * @return strongest gladiator
- */
-Gladiator GA::getStrongest() {
-    return this->population[POP_SIZE - 1];
-}
-
-/**
- * Takes two bit sets and combines them to create a new one
- * @param parent_1 first bit set
- * @param parent_2 second bit set
- * @return the combination of both bit sets
- */
-std::bitset<BIT_SET_SIZE> GA::bitCrossover(std::bitset<BIT_SET_SIZE> parent_1, std::bitset<BIT_SET_SIZE> parent_2) {
-    std::bitset<BIT_SET_SIZE> child;
-    int gene_Probability = BEST_GENE_SURVIVABILITY;
-
-    for (int i = 0;i < BIT_SET_SIZE;i++){
-        int x = this->rng.getRandomNumber(1,100);
-
-        bool p1 = parent_1[i];
-        bool p2 = parent_2[i];
-
-        if (p1 == p2)
-            child[i] = p1;
-
-        if (p1)
-            if (x < gene_Probability)
-                child[i] = p1;
-            else
-                child[i] = p2;
-        else
-        if (x < gene_Probability)
-            child[i] = p2;
-        else
-            child[i] = p1;
-    }
-
-    return child;
-}
-
-/**
- * Takes a bit set an changes one of its bit to true
- * @param child bit set to modify
- * @return new modified bit
- */
-std::bitset<BIT_SET_SIZE> GA::bitMutation(std::bitset<BIT_SET_SIZE> child) {
-    int i = this->rng.getRandomNumber(0,7);
-
-    while (child[i] == false)
-        i++;
-
-    child[i] = true;
-
-    return child;
-}
-
-/**
- * Takes a bit set and inverts all of its bits
- * @param child bit set to invert
- * @return inverted bit set
- */
-std::bitset<BIT_SET_SIZE> GA::bitInversion(std::bitset<BIT_SET_SIZE> child) {
-    int i = 0;
-
-    while (i < 6) {
-        if (child[i] == true)
-            child[i] = false;
-        else
-            child[i] = true;
-        i++;
-    }
-
-    return child;
-}
-
-/**
- * Creates a new generation of the population by selecting the best individuals, applies reproduction at them, their
- * children replace te worst individuals of the pop, the pop is then sorted by their fitness
- */
-void GA::newGen() {
-    selection();
-    reproduction();
-    generationChange();
-    calculateFitness();
-    quickSort(0,POP_SIZE);
 }
 
 /**

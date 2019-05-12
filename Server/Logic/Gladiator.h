@@ -5,8 +5,10 @@
 #pragma once
 
 #include <string>
-
 #include "RNG.h"
+#define WEAK_RANGE 4
+#define NORMAL_RANGE 7
+#define STRONG_RANGE 10
 
 class Gladiator {
 private:
