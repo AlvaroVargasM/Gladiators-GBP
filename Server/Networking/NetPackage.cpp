@@ -90,3 +90,10 @@ void NetPackage::setCommand(std::string command) {
     this->command = command;
 }
 
+rapidjson::Document NetPackage::convertToRJ_Document(std::string json){
+    rapidjson::Document doc;
+    doc.Parse(json);
+    return doc;
+}
+
+

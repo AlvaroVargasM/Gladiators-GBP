@@ -1,6 +1,8 @@
 #include "genericnode.h"
 #include <iostream>
 #include "tower.h"
+#include "genericlinkedlist.h"
+#include "graphpac.h"
 
 /**
  * Generic Node constructor
@@ -47,4 +49,5 @@ void GenericNode<T>::setNext(GenericNode<T> *next) {
 template class GenericNode<std::string>;
 template class GenericNode<int>;
 template class GenericNode<Tower*>;
+template class GenericNode<GraphPac*>;
 

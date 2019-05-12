@@ -7,6 +7,7 @@
 
 
 #include <string>
+#include "../libraries/rapidjson/document.h"
 
 class NetPackage {
 private:
@@ -22,7 +23,7 @@ public:
     void setFrom(std::string);
     void setData(std::string);
     void setCommand(std::string);
-
+    static rapidjson::Document convertToRJ_Document(std::string);
 };
 
 

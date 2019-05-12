@@ -68,6 +68,10 @@ public:
     Zone* getParent();
 
     void setParent(Zone*);
+
+    int getX(int n);
+
+    int getY(int n, int m);
 };
 
 

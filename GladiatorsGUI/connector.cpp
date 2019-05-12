@@ -1,12 +1,13 @@
 #include "connector.h"
 #include "string"
+#include <sstream>
 //prototypes
 
 Connector::Connector()
 {
 }
 
-void Connector::sendTest(int request){
+GenericLinkedList<std::string>* Connector::getCommands(){
     //	Create a socket
         int sock = socket(AF_INET, SOCK_STREAM, 0);
         if (sock == -1)
@@ -16,7 +17,7 @@ void Connector::sendTest(int request){
 
         //	Create a hint structure for the server we're connecting with
         int port = 8888;
-        std::string ipAddress = "192.168.0.102";
+        std::string ipAddress = "127.0.0.1";
 
         sockaddr_in hint;
         hint.sin_family = AF_INET;
@@ -34,13 +35,39 @@ void Connector::sendTest(int request){
         char buf[4096];
         NetPackage netpack = NetPackage();
         netpack.setFrom("Server");
+        int request = 1;
         switch(request){
         case 1:
-        {netpack.setCommand("Message");
+        {netpack.setCommand("gladiatorInfo");
             std::string test = "HOla mundo";
             netpack.setData(test);
             std::string finalMessage = netpack.getData();
-            send(sock, finalMessage.c_str(), finalMessage.size(), 0);}
+            send(sock, finalMessage.c_str(), finalMessage.size(), 0);
+            memset(buf, 0, 4096);
+            int bytesReceived = recv(sock, buf, 4096, 0);
+            std::string preResponse =  std::string(buf, bytesReceived);
+
+            std::cout << "Llego " << preResponse << std::endl;
+
+            rapidjson::Document doc = NetPackage::convertToRJ_Document(preResponse);
+
+            std::string response = doc["NetPackage"]["data"].GetString();
+
+            std::cout << "Llego " << response << std::endl;
+
+            std::stringstream ss(response);
+            GenericLinkedList<std::string>* list = new GenericLinkedList<std::string>;
+
+            while( ss.good() )
+            {
+                std::string substr;
+                getline( ss, substr, ',' );
+                list->add(substr);
+            }
+
+            return list;
+
+        }
             break;
         case 2:
             //Do something

@@ -11,12 +11,13 @@
 #include <string>
 
 #include "netpackage.h"
+#include "genericlinkedlist.h"
 
 class Connector
 {
 public:
     Connector();
-    static void sendTest(int);
+    static GenericLinkedList<std::string>* getCommands();
 };
 
 #endif // CONNECTOR_H

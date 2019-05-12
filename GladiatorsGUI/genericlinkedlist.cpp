@@ -1,5 +1,6 @@
 #include "genericlinkedlist.h"
 #include "tower.h"
+#include "graphpac.h"
 
 /**
  * This constructor doesn't take any parameters
@@ -109,3 +110,4 @@ void GenericLinkedList<T>::printList() {
 template class GenericLinkedList<std::string>;
 template class GenericLinkedList<int>;
 template class GenericLinkedList<Tower*>;
+template class GenericLinkedList<GraphPac*>;

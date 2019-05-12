@@ -3,13 +3,32 @@
 //
 
 #include "Server.h"
+#include "../Logic/GenericLinkedList.h"
+
+
+int convertCommandToInt(std::string data) {
+    enum commands {
+        getStats = 0,
+        getChampions,
+        getSteps,
+    };
+    if (data == "getStats") {
+        return getStats;
+    }
+    if (data == "getChampions") {
+        return getChampions;
+    }
+    if (data == "getSteps") {
+        return getSteps;
+    }
+    return -1;
+}
 
 
 int Server::start()
 {
     int opt = TRUE;
-    int master_socket , addrlen , new_socket , client_socket[30],
-            max_clients = 30 , activity, i , valread , sd;
+    int master_socket , addrlen , new_socket , activity, i , valread , sd;
     int max_sd;
     struct sockaddr_in address;
 
@@ -21,11 +40,11 @@ int Server::start()
     //a message
     char *message = "ECHO Daemon v1.0 \r\n";
 
-    //initialise all client_socket[] to 0 so not checked
+    /*//initialise all client_socket[] to 0 so not checked
     for (i = 0; i < max_clients; i++)
     {
         client_socket[i] = 0;
-    }
+    }*/
 
     //create a master socket
     if( (master_socket = socket(AF_INET , SOCK_STREAM , 0)) == 0)
@@ -76,7 +95,7 @@ int Server::start()
         FD_SET(master_socket, &readfds);
         max_sd = master_socket;
 
-        //add child sockets to set
+        /*//add child sockets to set
         for ( i = 0 ; i < max_clients ; i++)
         {
             //socket descriptor
@@ -89,7 +108,7 @@ int Server::start()
             //highest file descriptor number, need it for the select function
             if(sd > max_sd)
                 max_sd = sd;
-        }
+        }*/
 
         //wait for an activity on one of the sockets , timeout is NULL ,
         //so wait indefinitely
@@ -116,16 +135,71 @@ int Server::start()
                    new_socket , inet_ntoa(address.sin_addr) , ntohs
                            (address.sin_port));
 
+            valread = read(master_socket, buffer, 1024);
+
+            std::string json = std::string(buffer, valread);
+
+            rapidjson::Document doc = NetPackage::convertToRJ_Document(json);
+
+            std::string command = doc["NetPackage"]["command"].GetString();
+
+            int commandInt = convertCommandToInt(command);
+
+            switch(commandInt){
+                case 0:
+                    //Call GA for stats
+                    break;
+                case 1:
+                {GenericLinkedList<std::string> champions ;
+                    NetPackage* netpack = new NetPackage();
+                    netpack->setFrom("Server");
+                    netpack->setCommand("steps");
+                    std::string finalData = "";
+                    finalData += champions.get(0)->getData();
+                    for(int i = 1; i < *champions.getLength(); i++){
+                        finalData += ',' + champions.get(i)->getData();
+                    }
+                    netpack->setData(finalData);
+                    send(master_socket, finalData.c_str(), strlen(finalData.c_str()), 0);}
+                    break;
+                case 3:
+                {
+                    NetPackage* netpack = new NetPackage;
+                    GenericLinkedList<std::string> *list = new     GenericLinkedList<std::string>;
+                    list->add("move.a.right");
+                    list->add("move.a.right");
+                    list->add("move.a.right");
+                    list->add("move.a.down");
+                    list->add("move.b.down");
+                    list->add("move.b.down");
+                    list->add("move.b.down");
+                    list->add("move.b.down");
+                    list->add("create.1.explosive.2.2");
+                    list->add("shoot.1.b");
+                    list->add("shoot.1.a");
+                    list->add("finish");
+                    std::string test = "";
+                    test += list->get(i)->getData();
+                    for(int i = 1; i < *list->getLength()-1; i++){
+                        test += ',' + list->get(i)->getData();
+                    }test += list->get(*list->getLength()-1)->getData();
+                    netpack->setData(test);
+                    std::string final = netpack->getJSONPackage();
+                    send(sd , final.c_str() , strlen(final.c_str()), 0 );}
+
+            }
+
             //send new connection greeting message
-            if( send(new_socket, message, strlen(message), 0) != strlen(message) )
+
+            /*if( send(new_socket, final.c_str(), strlen(final.c_str()), 0) != strlen(message) )
             {
                 perror("send");
-            }
+            }*/
 
             puts("Welcome message sent successfully");
 
             //add new socket to array of sockets
-            for (i = 0; i < max_clients; i++)
+            /*for (i = 0; i < max_clients; i++)
             {
                 //if position is empty
                 if( client_socket[i] == 0 )
@@ -135,11 +209,11 @@ int Server::start()
 
                     break;
                 }
-            }
+            }*/
         }
 
         //else its some IO operation on some other socket
-        for (i = 0; i < max_clients; i++)
+        /*for (i = 0; i < max_clients; i++)
         {
             sd = client_socket[i];
 
@@ -168,14 +242,33 @@ int Server::start()
                     std::cout << buffer << std::endl;
                     NetPackage* netpack = new NetPackage();
                     netpack->setFrom("Server");
-                    netpack->setCommand("Message");
+                    netpack->setCommand("getCommands");
                     //buffer[valread] = '\0';
                     netpack->setData(buffer);
-                    send(sd , netpack->getJSONPackage().c_str() , strlen(netpack->getJSONPackage().c_str()) + '\0' , 0 );
+                    GenericLinkedList<std::string> *list = new     GenericLinkedList<std::string>;
+                    list->add("move.a.right");
+                    list->add("move.a.right");
+                    list->add("move.a.right");
+                    list->add("move.a.down");
+                    list->add("move.b.down");
+                    list->add("move.b.down");
+                    list->add("move.b.down");
+                    list->add("move.b.down");
+                    list->add("create.1.explosive.2.2");
+                    list->add("shoot.1.b");
+                    list->add("shoot.1.a");
+                    list->add("finish");
+                    std::string test = "";
+                    test += list->get(i)->getData();
+                    for(int i = 1; i < *list->getLength()-1; i++){
+                        test += ',' + list->get(i)->getData();
+                    }test += list->get(*list->getLength()-1)->getData();
+                    netpack->setData(test);
+                    std::string final = netpack->getJSONPackage();
+                    send(sd , final.c_str() , strlen(final.c_str()), 0 );
                 }
             }
-        }
+        }*/
     }
-
     return 0;
 }
