@@ -4,6 +4,9 @@
 
 #include "Game.h"
 
+/**
+ * Constructs the game class and initializes some of the members
+ */
 Game::Game() {
     this->n_Towers = 0;
     this->iteration = 1;
@@ -92,10 +95,16 @@ GenericLinkedList<std::string> Game::calculateSteps() {
  * Gets the best Gladiator from each pool and puts them in a linked list
  * @return linked list with the best gladiators from each pool
  */
-GenericLinkedList<Gladiator> Game::getChampions() {
-    GenericLinkedList<Gladiator> champs;
-    champs.add(pool_A.getStrongest());
-    champs.add(pool_B.getStrongest());
+std::string Game::getChampions() {
+    Gladiator champ_1 = this->pool_A.getStrongest();
+    Gladiator champ_2 = this->pool_B.getStrongest();
+
+    std::string champs = std::to_string(champ_1.getResistance()) + "," + std::to_string(champ_2.getResistance()) + "," +
+            std::to_string(champ_1.getEmotionalIntelligence()) + "," + std::to_string(champ_2.getEmotionalIntelligence()) + "," +
+            std::to_string(champ_1.getPhysicalCondition()) + "," + std::to_string(champ_2.getPhysicalCondition()) + "," +
+            std::to_string(champ_1.getUpperBodyStrength()) + "," + std::to_string(champ_1.getLowerBodyStrength()) + "," +
+            std::to_string(champ_2.getUpperBodyStrength()) + "," + std::to_string(champ_2.getLowerBodyStrength());
+
     return champs;
 }
 
@@ -104,12 +113,12 @@ IntimidationZone *Game::getGameZone() const {
 }
 
 /**
- * Adds a new string to the linked list of new towers for the GUI ussing the info passed
+ * Adds a new string to the linked list of new towers for the GUI using the info passed
  * @param type of tower
  * @param i row
  * @param j column
  */
-void Game::generateNewGUITower(int type, int i, int j) {
+void Game::generateNewGUITower(int i,int j,int type) {
     std::string stype;
     switch (type) {
         case 1:
@@ -124,10 +133,13 @@ void Game::generateNewGUITower(int type, int i, int j) {
         default:
             stype = "!117GAME";
     }
-
     this->new_GUI_Towers.add("create." + std::to_string(this->n_Towers) + "." + stype +"." + std::to_string(i) + "." + std::to_string(j));
 }
 
+/**
+ * Returns the string command for creating towers in the GUI
+ * @return GUI towers recently added
+ */
 GenericLinkedList<std::string> Game::getTowers() {
     return new_GUI_Towers;
 }

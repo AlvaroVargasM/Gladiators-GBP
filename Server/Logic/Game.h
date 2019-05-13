@@ -30,7 +30,7 @@ private:
 public:
     Game();
 
-    GenericLinkedList<Gladiator> getChampions();
+    std::string getChampions();
 
     void putTower(int i,int j,int type);
 
