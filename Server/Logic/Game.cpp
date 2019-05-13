@@ -146,7 +146,7 @@ GenericLinkedList<std::string> Game::getTowers() {
 }
 
 std::string Game::getStats() {
-    std::string stats = this->averageGensRes + ",new" + this->averageGensEI + ",new" + this->averageGensPC + ",new" + this->averageGensStr;
+    std::string stats = this->averageGensRes + "/" + this->averageGensEI + "/" + this->averageGensPC + "/" + this->averageGensStr;
 
     return stats;
 }
