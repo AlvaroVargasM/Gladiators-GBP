@@ -7,7 +7,25 @@ Connector::Connector()
 {
 }
 
-GenericLinkedList<std::string>* Connector::getCommands(){
+int convertCommandToInt(std::string data) {
+    enum commands {
+        setStats = 0,
+        setChampions,
+        setSteps,
+    };
+    if (data == "setStats") {
+        return setStats;
+    }
+    if (data == "setChampions") {
+        return setChampions;
+    }
+    if (data == "setSteps") {
+        return setSteps;
+    }
+    return -1;
+}
+
+GenericLinkedList<std::string>* Connector::get(std::string request){
     //	Create a socket
         int sock = socket(AF_INET, SOCK_STREAM, 0);
         if (sock == -1)
@@ -26,22 +44,29 @@ GenericLinkedList<std::string>* Connector::getCommands(){
 
         //	Connect to the server on the socket
         int connectRes = connect(sock, (sockaddr*)&hint, sizeof(hint));
-        if (connectRes == -1)
+        /*if (connectRes == -1)
         {
-            //return nullptr;
-        }
+            std::cout <<
+            return nullptr;
+        }*/
 
         //	While loop:
         char buf[4096];
         NetPackage netpack = NetPackage();
-        netpack.setFrom("Server");
-        int request = 1;
-        switch(request){
+        netpack.setFrom("Client");
+        int requestStr = convertCommandToInt(request);
+        std::cout << requestStr << std::endl;
+        switch(requestStr){
+        case 0:
+            break;
         case 1:
-        {netpack.setCommand("gladiatorInfo");
-            std::string test = "HOla mundo";
+            //Do something
+            break;
+        case 2:
+        {netpack.setCommand("getSteps");
+            std::string test = "None";
             netpack.setData(test);
-            std::string finalMessage = netpack.getData();
+            std::string finalMessage = netpack.getJSONPackage();
             send(sock, finalMessage.c_str(), finalMessage.size(), 0);
             memset(buf, 0, 4096);
             int bytesReceived = recv(sock, buf, 4096, 0);
@@ -65,15 +90,11 @@ GenericLinkedList<std::string>* Connector::getCommands(){
                 list->add(substr);
             }
 
+            close(sock);
+
             return list;
 
         }
-            break;
-        case 2:
-            //Do something
-            break;
-        case 3:
-            //Do something
             break;
         default:
             //Default state

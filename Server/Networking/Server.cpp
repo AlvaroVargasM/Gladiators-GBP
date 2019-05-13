@@ -28,7 +28,8 @@ int convertCommandToInt(std::string data) {
 int Server::start()
 {
     int opt = TRUE;
-    int master_socket , addrlen , new_socket , activity, i , valread , sd;
+    int master_socket , addrlen , new_socket , client_socket[30] ,
+            max_clients = 1 , activity, i , valread , sd;
     int max_sd;
     struct sockaddr_in address;
 
@@ -40,11 +41,11 @@ int Server::start()
     //a message
     char *message = "ECHO Daemon v1.0 \r\n";
 
-    /*//initialise all client_socket[] to 0 so not checked
+    //initialise all client_socket[] to 0 so not checked
     for (i = 0; i < max_clients; i++)
     {
         client_socket[i] = 0;
-    }*/
+    }
 
     //create a master socket
     if( (master_socket = socket(AF_INET , SOCK_STREAM , 0)) == 0)
@@ -95,7 +96,7 @@ int Server::start()
         FD_SET(master_socket, &readfds);
         max_sd = master_socket;
 
-        /*//add child sockets to set
+        //add child sockets to set
         for ( i = 0 ; i < max_clients ; i++)
         {
             //socket descriptor
@@ -108,7 +109,7 @@ int Server::start()
             //highest file descriptor number, need it for the select function
             if(sd > max_sd)
                 max_sd = sd;
-        }*/
+        }
 
         //wait for an activity on one of the sockets , timeout is NULL ,
         //so wait indefinitely
@@ -131,75 +132,19 @@ int Server::start()
             }
 
             //inform user of socket number - used in send and receive commands
-            printf("New connection , socket fd is %d , ip is : %s , port : %d \n" ,
-                   new_socket , inet_ntoa(address.sin_addr) , ntohs
-                           (address.sin_port));
-
-            valread = read(master_socket, buffer, 1024);
-
-            std::string json = std::string(buffer, valread);
-
-            rapidjson::Document doc = NetPackage::convertToRJ_Document(json);
-
-            std::string command = doc["NetPackage"]["command"].GetString();
-
-            int commandInt = convertCommandToInt(command);
-
-            switch(commandInt){
-                case 0:
-                    //Call GA for stats
-                    break;
-                case 1:
-                {GenericLinkedList<std::string> champions ;
-                    NetPackage* netpack = new NetPackage();
-                    netpack->setFrom("Server");
-                    netpack->setCommand("steps");
-                    std::string finalData = "";
-                    finalData += champions.get(0)->getData();
-                    for(int i = 1; i < *champions.getLength(); i++){
-                        finalData += ',' + champions.get(i)->getData();
-                    }
-                    netpack->setData(finalData);
-                    send(master_socket, finalData.c_str(), strlen(finalData.c_str()), 0);}
-                    break;
-                case 3:
-                {
-                    NetPackage* netpack = new NetPackage;
-                    GenericLinkedList<std::string> *list = new     GenericLinkedList<std::string>;
-                    list->add("move.a.right");
-                    list->add("move.a.right");
-                    list->add("move.a.right");
-                    list->add("move.a.down");
-                    list->add("move.b.down");
-                    list->add("move.b.down");
-                    list->add("move.b.down");
-                    list->add("move.b.down");
-                    list->add("create.1.explosive.2.2");
-                    list->add("shoot.1.b");
-                    list->add("shoot.1.a");
-                    list->add("finish");
-                    std::string test = "";
-                    test += list->get(i)->getData();
-                    for(int i = 1; i < *list->getLength()-1; i++){
-                        test += ',' + list->get(i)->getData();
-                    }test += list->get(*list->getLength()-1)->getData();
-                    netpack->setData(test);
-                    std::string final = netpack->getJSONPackage();
-                    send(sd , final.c_str() , strlen(final.c_str()), 0 );}
-
-            }
+            printf("New connection , socket fd is %d , ip is : %s , port : %d\n" , new_socket , inet_ntoa(address.sin_addr) , ntohs
+                    (address.sin_port));
 
             //send new connection greeting message
-
-            /*if( send(new_socket, final.c_str(), strlen(final.c_str()), 0) != strlen(message) )
+            /*if( send(new_socket, message, strlen(message), 0) != strlen(message) )
             {
                 perror("send");
             }*/
 
-            puts("Welcome message sent successfully");
+            //puts("Welcome message sent successfully");
 
             //add new socket to array of sockets
-            /*for (i = 0; i < max_clients; i++)
+            for (i = 0; i < max_clients; i++)
             {
                 //if position is empty
                 if( client_socket[i] == 0 )
@@ -209,11 +154,11 @@ int Server::start()
 
                     break;
                 }
-            }*/
+            }
         }
 
         //else its some IO operation on some other socket
-        /*for (i = 0; i < max_clients; i++)
+        for (i = 0; i < max_clients; i++)
         {
             sd = client_socket[i];
 
@@ -224,8 +169,8 @@ int Server::start()
                 if ((valread = read( sd , buffer, 1024)) == 0)
                 {
                     //Somebody disconnected , get his details and print
-                    getpeername(sd , (struct sockaddr*)&address ,
-                                (socklen_t*)&addrlen);
+                    getpeername(sd , (struct sockaddr*)&address , \
+                        (socklen_t*)&addrlen);
                     printf("Host disconnected , ip %s , port %d \n" ,
                            inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
 
@@ -237,38 +182,64 @@ int Server::start()
                     //Echo back the message that came in
                 else
                 {
-                    //set the string terminating NULL byte on the end
-                    //of the data read
-                    std::cout << buffer << std::endl;
-                    NetPackage* netpack = new NetPackage();
-                    netpack->setFrom("Server");
-                    netpack->setCommand("getCommands");
-                    //buffer[valread] = '\0';
-                    netpack->setData(buffer);
-                    GenericLinkedList<std::string> *list = new     GenericLinkedList<std::string>;
-                    list->add("move.a.right");
-                    list->add("move.a.right");
-                    list->add("move.a.right");
-                    list->add("move.a.down");
-                    list->add("move.b.down");
-                    list->add("move.b.down");
-                    list->add("move.b.down");
-                    list->add("move.b.down");
-                    list->add("create.1.explosive.2.2");
-                    list->add("shoot.1.b");
-                    list->add("shoot.1.a");
-                    list->add("finish");
-                    std::string test = "";
-                    test += list->get(i)->getData();
-                    for(int i = 1; i < *list->getLength()-1; i++){
-                        test += ',' + list->get(i)->getData();
-                    }test += list->get(*list->getLength()-1)->getData();
-                    netpack->setData(test);
-                    std::string final = netpack->getJSONPackage();
-                    send(sd , final.c_str() , strlen(final.c_str()), 0 );
+                    std::string json = std::string(buffer, valread);
+
+                    std::cout << "Me llego " << json << std::endl;
+
+                    rapidjson::Document doc = NetPackage::convertToRJ_Document(json);
+
+                    std::string command = doc["NetPackage"]["command"].GetString();
+
+                    int commandInt = convertCommandToInt(command);
+                    std::cout << commandInt << std::endl;
+                    switch(commandInt){
+                        case 0:
+                            //Call GA for stats
+                            break;
+                        case 1:
+                        {GenericLinkedList<std::string> champions ;
+                            NetPackage* netpack = new NetPackage();
+                            netpack->setFrom("Server");
+                            netpack->setCommand("steps");
+                            std::string finalData = "";
+                            finalData += champions.get(0)->getData();
+                            for(int i = 1; i < *champions.getLength(); i++){
+                                finalData += ',' + champions.get(i)->getData();
+                            }
+                            netpack->setData(finalData);
+                            send(master_socket, finalData.c_str(), strlen(finalData.c_str()), 0);}
+                            break;
+                        case 2:
+                        {
+                            NetPackage* netpack = new NetPackage;
+                            GenericLinkedList<std::string> *list = new     GenericLinkedList<std::string>;
+                            list->add("move.a.right");
+                            list->add("move.a.right");
+                            list->add("move.a.right");
+                            list->add("move.a.down");
+                            list->add("move.b.down");
+                            list->add("move.b.down");
+                            list->add("move.b.down");
+                            list->add("move.b.down");
+                            list->add("create.1.explosive.2.2");
+                            list->add("shoot.1.b");
+                            list->add("shoot.1.a");
+                            list->add("finish");
+                            std::string test = "";
+                            test += list->get(i)->getData();
+                            for(int i = 1; i < *list->getLength()-1; i++){
+                                test += ',' + list->get(i)->getData();
+                            }test += list->get(*list->getLength()-1)->getData();
+                            netpack->setData(test);
+                            std::string final = netpack->getJSONPackage();
+                            std::cout << "Voy a enviar " << test << std::endl;
+                            send(sd , final.c_str() , strlen(final.c_str()), 0 );}
+                            break;
+                    }
                 }
             }
-        }*/
+        }
     }
+
     return 0;
 }
