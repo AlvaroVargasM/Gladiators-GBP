@@ -23,7 +23,7 @@ public:
     void setFrom(std::string);
     void setData(std::string);
     void setCommand(std::string);
-
+    static rapidjson::Document convertToRJ_Document(std::string);
 };
 
 #endif // NETPACKAGE_H
