@@ -17,7 +17,7 @@ class Connector
 {
 public:
     Connector();
-    static GenericLinkedList<std::string>* getCommands();
+    static GenericLinkedList<std::string>* get(std::string);
 };
 
 #endif // CONNECTOR_H

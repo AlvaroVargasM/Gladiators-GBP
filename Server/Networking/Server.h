@@ -18,6 +18,7 @@
 #include <sys/time.h> //FD_SET, FD_ISSET, FD_ZERO macros
 #include <iostream>
 #include "NetPackage.h"
+#include "../Logic/Game.h"
 
 #define TRUE   1
 #define FALSE  0

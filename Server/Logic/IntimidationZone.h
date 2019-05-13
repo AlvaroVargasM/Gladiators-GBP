@@ -24,6 +24,7 @@ public:
     Zone* getZone(int i, int j);
     Zone* getZoneByID(int id);
     void printGrid();
+    void printGridProgress(int idi, int idf);
     int getN();
     int getM();
 };

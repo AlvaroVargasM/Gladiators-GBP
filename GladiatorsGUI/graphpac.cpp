@@ -5,42 +5,42 @@ GraphPac::GraphPac()
 
 }
 
-void GraphPac::add(int num, std::string data){
+void GraphPac::add(int num, int data){
     switch(num){
     case 1:
-        this->gen1->add(data);
+        this->gen1.add(data);
         break;
     case 2:
-        this->gen2->add(data);
+        this->gen2.add(data);
         break;
     case 3:
-        this->gen3->add(data);
+        this->gen3.add(data);
         break;
     case 4:
-        this->gen4->add(data);
+        this->gen4.add(data);
         break;
     case 5:
-        this->gen5->add(data);
+        this->gen5.add(data);
         break;
     case 6:
-        this->gen6->add(data);
+        this->gen6.add(data);
         break;
     case 7:
-        this->gen7->add(data);
+        this->gen7.add(data);
         break;
     case 8:
-        this->gen8->add(data);
+        this->gen8.add(data);
         break;
     case 9:
-        this->gen9->add(data);
+        this->gen9.add(data);
         break;
     case 10:
-        this->gen10->add(data);
+        this->gen10.add(data);
         break;
     }
 }
 
-GenericLinkedList<std::string>* GraphPac::get(int index){
+GenericLinkedList<int> GraphPac::get(int index){
     switch(index){
     case 1:
         return this->gen1;
