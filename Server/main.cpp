@@ -7,5 +7,6 @@
 #include "Networking/Server.h"
 
 int main () {
-    Server::start();
+   Server::start();
+
 }

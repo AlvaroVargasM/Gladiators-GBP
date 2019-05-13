@@ -155,6 +155,7 @@ void GenericLinkedList<T>::deleteEndNode(){
         prev->setNext(nullptr);
         delete(ptr);
     }
+    this->length--;
 }
 
 
