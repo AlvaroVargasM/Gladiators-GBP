@@ -41,9 +41,6 @@ Statistics::Statistics(QWidget *parent) :
     auto central = new QWidget;
     central->setLayout(layout);
     setCentralWidget(central);
-
-    //
-    generateCharts();
 }
 
 void Statistics::setParent(QMainWindow *display)
@@ -51,43 +48,33 @@ void Statistics::setParent(QMainWindow *display)
     this->display=display;
 }
 
-void Statistics::generateCharts()
+void Statistics::generateCharts(GraphPac pack)
 {
+    int n = pack.get(0).getLength();
 
-    //Test lists
-    GenericLinkedList<int> *list1 = new GenericLinkedList<int>;
-    list1->add(1);list1->add(7);list1->add(4);list1->add(10);
-    GenericLinkedList<int> *list2 = new GenericLinkedList<int>;
-    list2->add(3);list2->add(6);list2->add(5);list2->add(7);
-    GenericLinkedList<int> *list3 = new GenericLinkedList<int>;
-    list3->add(0);list3->add(3);list3->add(6);list3->add(8);
-    GenericLinkedList<int> *list4 = new GenericLinkedList<int>;
-    list4->add(7);list4->add(4);list4->add(1);list4->add(5);
-    //
-
-    QChart *resChart = createChart("Fitness",list1->getLength(),
-                                getSeries(list1,"AStar",QColor(138, 40, 40)),
-                                getSeries(list2,"Backtracking",QColor(31,69,70)));
+    QChart *resChart = createChart("Resistance",n,
+                                getSeries(pack.get(0),"AStar",QColor(138, 40, 40)),
+                                getSeries(pack.get(1),"Backtracking",QColor(31,69,70)));
     QChartView *resistanceView = new QChartView(resChart);
     resistanceView->setRenderHint(QPainter::Antialiasing);
 
-    QChart *intelChart = createChart("Intelligence",list1->getLength(),
-                                     getSeries(list3,"AStar",QColor(138, 40, 40)),
-                                     getSeries(list4,"Backtracking",QColor(31,69,70)));
+    QChart *intelChart = createChart("Intelligence",n,
+                                     getSeries(pack.get(2),"AStar",QColor(138, 40, 40)),
+                                     getSeries(pack.get(3),"Backtracking",QColor(31,69,70)));
     QChartView *intelView = new QChartView(intelChart);
     intelView->setRenderHint(QPainter::Antialiasing);
 
-    QChart *condChart = createChart("Physical Condition",list1->getLength(),
-                                    getSeries(list1,"AStar",QColor(138, 40, 40)),
-                                    getSeries(list4,"Backtracking",QColor(31,69,70)));
+    QChart *condChart = createChart("Physical Condition",n,
+                                    getSeries(pack.get(4),"AStar",QColor(138, 40, 40)),
+                                    getSeries(pack.get(5),"Backtracking",QColor(31,69,70)));
     QChartView *conditionView = new QChartView(condChart);
     conditionView->setRenderHint(QPainter::Antialiasing);
 
-    QChart *bodystrgChart = createChart("Strenght",list1->getLength(),
-                                        getSeries(list1,"AStar Upper Body",QColor(203, 77, 77)),
-                                        getSeries(list2,"AStar Lower Body",QColor(138, 40, 40)),
-                                        getSeries(list3,"Backtracking Upper Body",QColor(70, 157, 160)),
-                                        getSeries(list4,"Backtracking Lower Body",QColor(31,69,70)));
+    QChart *bodystrgChart = createChart("Strenght",n,
+                                        getSeries(pack.get(6),"AStar Upper Body",QColor(203, 77, 77)),
+                                        getSeries(pack.get(7),"AStar Lower Body",QColor(138, 40, 40)),
+                                        getSeries(pack.get(8),"Backtracking Upper Body",QColor(70, 157, 160)),
+                                        getSeries(pack.get(9),"Backtracking Lower Body",QColor(31,69,70)));
     QChartView *bodystrgView = new QChartView(bodystrgChart);
     bodystrgView->setRenderHint(QPainter::Antialiasing);
 
@@ -97,15 +84,15 @@ void Statistics::generateCharts()
     layout->addWidget(bodystrgView,1,1,1,1);
 }
 
-QLineSeries *Statistics::getSeries(GenericLinkedList<int> *list, QString name, QColor color)
+QLineSeries *Statistics::getSeries(GenericLinkedList<int> list, QString name, QColor color)
 {
     QLineSeries *series = new QLineSeries();
     series->setName(name);
     QPen pen(color);
     pen.setWidth(3);
     series->setPen(pen);
-    for(int i=0;i<list->getLength();i++){
-        int value = list->get(i)->getData();
+    for(int i=0;i<list.getLength();i++){
+        int value = list.get(i)->getData();
         series->append(QPoint(i,value));
     }
     return series;

@@ -241,7 +241,7 @@ int Server::start()
                             test += list->get(i)->getData();
                             for(int i = 1; i < *list->getLength()-1; i++){
                                 test += ',' + list->get(i)->getData();
-                            }test += list->get(*list->getLength()-1)->getData();
+                            }test += ',' +  list->get(*list->getLength()-1)->getData();
                             netpack->setData(test);
                             std::string final = netpack->getJSONPackage();
                             std::cout << "Voy a enviar " << test << std::endl;

@@ -56,7 +56,30 @@ int IntimidationZone::getN() {
 }
 
 Zone *IntimidationZone::getZoneByID(int id) {
-    int i = id % this->n;
+    int i = id / this->n;
     int j = id - (i*this->m);
     return this->getZone(i, j);
+}
+
+void IntimidationZone::printGridProgress(int idi, int idf) {
+    for(int i = 0; i < *this->zoneMatrix->getLength(); i++){
+        GenericLinkedList<Zone*>* row = this->zoneMatrix->get(i)->getData();
+        for(int j = 0; j < *this->zoneMatrix->getLength(); j++){
+            Zone* current = row->get(j)->getData();
+            if(current->getId() == idi){
+                std::cout << std::setw(4) << "x" << " . ";
+            }else {
+                if (current->getId() == idf) {
+                    std::cout << std::setw(4) << "y" << " . ";
+                } else {
+                    if(current->isBlocked()){
+                        std::cout << std::setw(4) << "b" << " . ";
+                    }else{
+                        std::cout << std::setw(4) << current->getId() << " . ";
+                    }
+                }
+            }
+        }
+        std::cout << std::endl;
+    }
 }

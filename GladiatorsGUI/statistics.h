@@ -5,6 +5,7 @@
 #include <QtCharts/QLineSeries>
 #include <QGridLayout>
 #include "genericlinkedlist.h"
+#include "graphpac.h"
 QT_CHARTS_USE_NAMESPACE
 
 namespace Ui {
@@ -38,7 +39,7 @@ public:
      * @brief Generate all the window charts.
      *
      */
-    void generateCharts();
+    void generateCharts(GraphPac pack);
 
     /**
      * @brief Creates and returns a QLineSeries from the given info.
@@ -48,7 +49,7 @@ public:
      * @param color Series line color.
      * @return QLineSeries A customized QLineSeries instance.
      */
-    QLineSeries* getSeries(GenericLinkedList<int> *list,QString name,QColor color);
+    QLineSeries* getSeries(GenericLinkedList<int> list,QString name,QColor color);
 
     /**
      * @brief Creates a chart from the given info.

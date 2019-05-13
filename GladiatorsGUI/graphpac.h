@@ -7,19 +7,19 @@ class GraphPac
 {
 public:
     GraphPac();
-     void add(int num, std::string);
-     GenericLinkedList<std::string>* get(int index);
+     void add(int num, int data);
+     GenericLinkedList<int> get(int index);
 private:
-    GenericLinkedList<std::string>* gen1 = new GenericLinkedList<std::string>;
-    GenericLinkedList<std::string>* gen2 = new GenericLinkedList<std::string>;
-    GenericLinkedList<std::string>* gen3 = new GenericLinkedList<std::string>;
-    GenericLinkedList<std::string>* gen4 = new GenericLinkedList<std::string>;
-    GenericLinkedList<std::string>* gen5 = new GenericLinkedList<std::string>;
-    GenericLinkedList<std::string>* gen6 = new GenericLinkedList<std::string>;
-    GenericLinkedList<std::string>* gen7 = new GenericLinkedList<std::string>;
-    GenericLinkedList<std::string>* gen8 = new GenericLinkedList<std::string>;
-    GenericLinkedList<std::string>* gen9 = new GenericLinkedList<std::string>;
-    GenericLinkedList<std::string>* gen10 = new GenericLinkedList<std::string>;
+    GenericLinkedList<int> gen1 = GenericLinkedList<int>();
+    GenericLinkedList<int> gen2 = GenericLinkedList<int>();
+    GenericLinkedList<int> gen3 = GenericLinkedList<int>();
+    GenericLinkedList<int> gen4 = GenericLinkedList<int>();
+    GenericLinkedList<int> gen5 = GenericLinkedList<int>();
+    GenericLinkedList<int> gen6 = GenericLinkedList<int>();
+    GenericLinkedList<int> gen7 = GenericLinkedList<int>();
+    GenericLinkedList<int> gen8 = GenericLinkedList<int>();
+    GenericLinkedList<int> gen9 =  GenericLinkedList<int>();
+    GenericLinkedList<int> gen10 = GenericLinkedList<int>();
 };
 
 #endif // GRAPHPAC_H
