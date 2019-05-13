@@ -170,7 +170,7 @@ GenericLinkedList<Zone*>*PathSolver::BackTrack(IntimidationZone *grid, int xo, i
     Zone *zone = new Zone;
     //zone->setTower(00);
 
-    // condicion de parada.
+    // condicion de parada.-
     if (xo==xf && yo==yf){
         return path;
 
