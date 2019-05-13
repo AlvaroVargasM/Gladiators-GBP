@@ -263,12 +263,12 @@ void Display::setInfo(GenericLinkedList<std::string> *infoList)
     for(int i=0;i<infoList->getLength();i++){
         std::string str = infoList->get(i)->getData();
 
-        /*if(i==2){
-            str = ""+toRoman();
+        if(i==2){
+            str = "A Staridas "+toRoman(stoi(str));
         }
         if(i==3){
-            str =
-        }*/
+            str = "Backtracus "+toRoman(stoi(str));
+        }
 
         infoLabels->at(i)->setText(QString::fromStdString(str));
     }
@@ -445,9 +445,9 @@ void Display::gameLoop()
 
         clear(false);
 
-        test();
-        //setInfo(Connector::get("setStats"));
-        //runCommands(Connector::get("setSteps"));
+        //test();
+        setInfo(Connector::get("setStats"));
+        runCommands(Connector::get("setSteps"));
     }
 
     clear(true);
@@ -493,14 +493,13 @@ void Display::test()
     //setInfo(infoList);
 
     //GenericLinkedList<std::string>* list = Connector::get("setSteps");
-    GenericLinkedList<std::string> *list = new GenericLinkedList<std::string>;
+    /*GenericLinkedList<std::string> *list = new GenericLinkedList<std::string>;
     list->add("create.1.explosive.2.2");
     list->add("create.2.normal.3.2");
     list->add("create.3.explosive.4.2");
     list->add("move.1.up");
     list->add("shoot.4.a");
-
-    runCommands(list);
+    runCommands(list);*/
 }
 
 void Display::restart()
