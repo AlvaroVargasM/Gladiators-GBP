@@ -12,8 +12,8 @@ int main () {
     //Server::start();
 
     Game myGame;
-
     myGame.generateTowers();
+
     //myGame.getGameZone()->printGrid();
     std::cout << myGame.getTowers().get(0)->getData() << std::endl;
     std::cout << myGame.getTowers().get(1)->getData() << std::endl;

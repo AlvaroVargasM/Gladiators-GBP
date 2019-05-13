@@ -100,6 +100,10 @@ std::string Game::getChampions() {
     Gladiator champ_2 = this->pool_B.getStrongest();
 
     std::string champs = std::to_string(champ_1.getResistance()) + "," + std::to_string(champ_2.getResistance()) + "," +
+            "Yeet" + "," +"DoubleYeet" + "," +
+            std::to_string(champ_1.getAge()) + "," + std::to_string(champ_2.getAge()) + "," +
+            "0" + "," + "0" + "," +
+            "0" + "," + "0" + "," +
             std::to_string(champ_1.getEmotionalIntelligence()) + "," + std::to_string(champ_2.getEmotionalIntelligence()) + "," +
             std::to_string(champ_1.getPhysicalCondition()) + "," + std::to_string(champ_2.getPhysicalCondition()) + "," +
             std::to_string(champ_1.getUpperBodyStrength()) + "," + std::to_string(champ_1.getLowerBodyStrength()) + "," +
