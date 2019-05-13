@@ -70,6 +70,12 @@ public:
     void setInfo(GenericLinkedList<std::string> *infoList);
 
     /**
+     * @brief toRoman Converts an integer to roman number.
+     * @param n Given number.
+     * @return Roman number.
+     */
+    std::string toRoman(int value);
+    /**
      * @brief shootArrow Animates an arrow being shoot from a tower to a gladiator.
      * @param towerId Tower shooting.
      * @param gladiator Gladiator that will be hit.
@@ -107,17 +113,17 @@ private:
     Ui::Display *ui; /**< Qt form of Display class. Used to arrange the visual objects. */
     QGraphicsView *view; /**< Class QGraphicsView widget. The scene is added to it for display  purposes. */
     bool active; /**< Used to decide when the game is finished*/
-    Connector connector; /**< Object used for server communication. */
     QLabel *starGldtr; /**< QLabel that holds the sprite of the A Star Gladiator. */
     QLabel *backGldtr; /**< QLabel that holds the sprite of the Backtracking Gladiator. */
     QList<Tower*> *towers; /**< Lists that contains all the towers created. */
     QList<QLabel*> *infoLabels; /**< Lists that contains all the information labels from the panel. */
     Statistics *statisticsWin; /**< Reference to the statistic window displayed at the end of the game. */
 
-
-    //button test
     public slots:
         void test();
+        /**
+         * @brief restart Slots function called when the window is shown. Restarts the game flow.
+         */
         void restart();
 };
 

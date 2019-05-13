@@ -236,11 +236,9 @@ void Display::runCommands(GenericLinkedList<std::string> *commands)
         std::string action = splitCommand(&command);
 
         if(action=="move"){
-            //move.a.right
             std::string id = splitCommand(&command);
             move(id,command);
         }else if(action=="create"){
-            //create.1.normal.5.2
             std::string id = splitCommand(&command);
             std::string type = splitCommand(&command);
             int xpos  = std::stoi(splitCommand(&command));
@@ -254,7 +252,6 @@ void Display::runCommands(GenericLinkedList<std::string> *commands)
             towers->append(tower);
             scene->addWidget(tower);
         }else if(action=="shoot"){
-            //shoot.1.a
             std::string shooter = splitCommand(&command);
             shootArrow(shooter,command);
         }
@@ -265,8 +262,38 @@ void Display::setInfo(GenericLinkedList<std::string> *infoList)
 {
     for(int i=0;i<infoList->getLength();i++){
         std::string str = infoList->get(i)->getData();
+
+        /*if(i==2){
+            str = ""+toRoman();
+        }
+        if(i==3){
+            str =
+        }*/
+
         infoLabels->at(i)->setText(QString::fromStdString(str));
     }
+}
+
+std::string Display::toRoman(int value)
+{
+    struct romandata_t { unsigned int value; char const* numeral; };
+        const struct romandata_t romandata[] =
+        {
+            {1000, "M"}, {900, "CM"},{500, "D"}, {400, "CD"},
+            {100, "C"}, { 90, "XC"},{ 50, "L"}, { 40, "XL"},
+            { 10, "X"}, { 9, "IX"},{ 5, "V"}, { 4, "IV"},
+            { 1, "I"},{ 0, NULL}
+        };
+        std::string result;
+        for (const romandata_t* current = romandata; current->value > 0; ++current)
+        {
+            while (value >= current->value)
+            {
+                result += current->numeral;
+                value -= current->value;
+            }
+        }
+        return result;
 }
 
 void Display::shootArrow(std::string towerId, std::string gladiatorId)
@@ -285,7 +312,7 @@ void Display::shootArrow(std::string towerId, std::string gladiatorId)
 
     QLabel *arrow = new QLabel();
     arrow->setAttribute(Qt::WA_NoSystemBackground);
-    arrow->setGeometry(tower->x()+5,tower->y()+27,160,160);
+    arrow->setGeometry(tower->x()+10,tower->y(),160,160);
 
     QPixmap pix(QString::fromStdString(imageurl));
 
@@ -353,11 +380,11 @@ void Display::hitGladiator(std::string gladiatorId, std::string arrowType)
 {
     int index=0;
     if(gladiatorId=="b")index=1;
-    int damage=10;
+    int damage=4;
     if(arrowType=="fire"){
-        damage=20;
+        damage=8;
     }else if(arrowType=="explosive"){
-        damage=40;
+        damage=16;
     }
 
     int health = infoLabels->at(index)->text().toInt();
@@ -411,39 +438,23 @@ void Display::clear(bool total)
 
 void Display::gameLoop()
 {
-    //int n=0;
     while(active){
         QEventLoop loop;
         QTimer::singleShot(1300,&loop,SLOT(quit()));
         loop.exec();
+
         clear(false);
 
         test();
-
-        //GenericLinkedList<std::string> *infoList = connector->getInfo();
-        //setInfo(infoList);
-
-        //GenericLinkedList<std::string> *commands = Connector::get("getCommands");
-        //runCommands(commands);
-
-        /*if(n<199){
-            test();
-        }else{
-            GenericLinkedList<std::string> *list = new GenericLinkedList<std::string>;
-            for(int n=0;n<9;n++)list->add("move.a.down");
-            for(int n=0;n<9;n++)list->add("move.a.right");
-            list->add("finish");
-            runCommands(list);
-        }*/
-        // n++;
+        //setInfo(Connector::get("setStats"));
+        //runCommands(Connector::get("setSteps"));
     }
 
     clear(true);
 
     statisticsWin = new Statistics();
     statisticsWin->setParent(this);
-    //GenericLinkedList<GenericLinkedList*> *chartsInfo;
-    statisticsWin->generateCharts();
+    //statisticsWin->generateCharts(Connector::get("setGraphs"));
     this->hide();
     statisticsWin->show();
 }
@@ -455,10 +466,9 @@ void Display::showEvent(QShowEvent *event)
     return;
 }
 
-//button for testing
 void Display::test()
 {
-    GenericLinkedList<std::string> *infoList = Connector::get("setStats");
+    //GenericLinkedList<std::string> *infoList = Connector::get("setStats");
     /*GenericLinkedList<std::string> *infoList = new GenericLinkedList<std::string>;
     infoList->add("30");
     infoList->add("30");
@@ -480,23 +490,16 @@ void Display::test()
     infoList->add("9");
     infoList->add("2.25");
     infoList->add("5.33");*/
-    setInfo(infoList);
+    //setInfo(infoList);
 
-    GenericLinkedList<std::string>* list = Connector::get("setSteps");
-    /*GenericLinkedList<std::string> *list = new GenericLinkedList<std::string>;
+    //GenericLinkedList<std::string>* list = Connector::get("setSteps");
+    GenericLinkedList<std::string> *list = new GenericLinkedList<std::string>;
     list->add("create.1.explosive.2.2");
-    list->add("move.a.right");
-    list->add("move.a.right");
-    list->add("move.a.right");
-    list->add("move.a.down");
+    list->add("create.2.normal.3.2");
+    list->add("create.3.explosive.4.2");
+    list->add("move.1.up");
+    list->add("shoot.4.a");
 
-    list->add("move.b.down");
-    list->add("move.b.down");
-    list->add("move.b.down");
-    list->add("move.b.down");
-    list->add("shoot.1.b");
-    list->add("shoot.1.a");
-    list->add("finish");*/
     runCommands(list);
 }
 
