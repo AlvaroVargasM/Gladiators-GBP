@@ -14,6 +14,7 @@ Game::Game() {
     this->averageGensEI = " ";
     this->averageGensPC = " ";
     this->averageGensStr = " ";
+    saveGenStats();
 }
 
 /**
@@ -145,7 +146,7 @@ GenericLinkedList<std::string> Game::getTowers() {
 }
 
 std::string Game::getStats() {
-    std::string stats = this->averageGensRes + ",new," + this->averageGensEI + ",new," + this->averageGensPC + ",new," + this->averageGensStr;
+    std::string stats = this->averageGensRes + ",new" + this->averageGensEI + ",new" + this->averageGensPC + ",new" + this->averageGensStr;
 
     return stats;
 }
