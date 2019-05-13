@@ -7,7 +7,9 @@
 #define POP_SIZE 40
 #define FITTEST_SIZE 20
 #define BIT_SET_SIZE 8
-#define BEST_GENE_SURVIVABILITY 50
+#define BEST_GENE_SURVIVABILITY 70
+#define MUTATION_PORCENTAGE 25
+#define INVERSION_PORCENTAGE 5
 
 #include <iostream>
 #include <string>

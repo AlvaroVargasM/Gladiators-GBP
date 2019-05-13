@@ -13,7 +13,7 @@ private:
     int id;
     bool blocked;
     int tower;
-    int damage;
+    GenericLinkedList<GenericLinkedList<int>*>* damage = new GenericLinkedList<GenericLinkedList<int>*>;
     int g;
     int h;
     int f;
@@ -37,9 +37,7 @@ public:
 
     void setTower(int tower);
 
-    int getDamage() const;
-
-    void setDamage(int damage);
+    GenericLinkedList<GenericLinkedList<int>*>* getDamage();
 
     int getG() const;
 

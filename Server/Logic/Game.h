@@ -16,16 +16,19 @@ private:
     RNG rng;
 
     GA pool_A;
+
     GA pool_B;
 
     IntimidationZone* game_Zone = new IntimidationZone(N_ROWS,N_COLUMNS);
 
     int iteration;
 
-    GenericLinkedList<std::string> calculateSteps();
+    GenericLinkedList<std::string> new_GUI_Towers;
+
+    int n_Towers;
 
 public:
-    Game() = default;
+    Game();
 
     GenericLinkedList<Gladiator> getChampions();
 
@@ -33,5 +36,11 @@ public:
 
     void generateTowers();
 
+    void generateNewGUITower(int i,int j,int type);
+
+    GenericLinkedList<std::string> getTowers();
+
     IntimidationZone *getGameZone() const;
+
+    GenericLinkedList<std::string> calculateSteps();
 };

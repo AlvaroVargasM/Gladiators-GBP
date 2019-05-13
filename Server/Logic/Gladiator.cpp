@@ -13,10 +13,10 @@ Gladiator::Gladiator(int type) {
 
     // Weak Glad.
     if (type <= 20) {
-        int r1 = rng.getRandomNumber(1,4);
-        int r2 = rng.getRandomNumber(1,4);
-        int r3 = rng.getRandomNumber(1,4);
-        int r4 = rng.getRandomNumber(1,4);
+        int r1 = rng.getRandomNumber(1,WEAK_RANGE);
+        int r2 = rng.getRandomNumber(1,WEAK_RANGE);
+        int r3 = rng.getRandomNumber(1,WEAK_RANGE);
+        int r4 = rng.getRandomNumber(1,WEAK_RANGE);
 
         this->emotional_Intelligence = r1;
         this->physical_Condition = r2;
@@ -29,10 +29,10 @@ Gladiator::Gladiator(int type) {
     }
     // Normal Glad.
     if (20 < type && type < 80) {
-        int r1 = rng.getRandomNumber(1,7);
-        int r2 = rng.getRandomNumber(1,7);
-        int r3 = rng.getRandomNumber(1,7);
-        int r4 = rng.getRandomNumber(1,7);
+        int r1 = rng.getRandomNumber(1,NORMAL_RANGE);
+        int r2 = rng.getRandomNumber(1,NORMAL_RANGE);
+        int r3 = rng.getRandomNumber(1,NORMAL_RANGE);
+        int r4 = rng.getRandomNumber(1,NORMAL_RANGE);
 
         this->emotional_Intelligence = r1;
         this->physical_Condition = r2;
@@ -45,10 +45,10 @@ Gladiator::Gladiator(int type) {
     }
     // Strong Glad.
     if (type >= 80) {
-        int r1 = rng.getRandomNumber(1,10);
-        int r2 = rng.getRandomNumber(1,10);
-        int r3 = rng.getRandomNumber(1,10);
-        int r4 = rng.getRandomNumber(1,10);
+        int r1 = rng.getRandomNumber(1,STRONG_RANGE);
+        int r2 = rng.getRandomNumber(1,STRONG_RANGE);
+        int r3 = rng.getRandomNumber(1,STRONG_RANGE);
+        int r4 = rng.getRandomNumber(1,STRONG_RANGE);
 
         this->emotional_Intelligence = r1;
         this->physical_Condition = r2;
