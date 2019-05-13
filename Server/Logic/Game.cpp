@@ -10,6 +10,11 @@
 Game::Game() {
     this->n_Towers = 0;
     this->iteration = 1;
+    this->averageGensRes = " ";
+    this->averageGensEI = " ";
+    this->averageGensPC = " ";
+    this->averageGensStr = " ";
+    saveGenStats();
 }
 
 /**
@@ -17,8 +22,8 @@ Game::Game() {
  */
 void Game::generateTowers() {
     for (int x = 0;x < 3;x++) {
-        int i = rng.getRandomNumber(0,N_ROWS - 1);
-        int j = rng.getRandomNumber(0,N_COLUMNS - 1);
+        int i = rng.getRandomNumber(0,N_ROWS);
+        int j = rng.getRandomNumber(0,N_COLUMNS);
         int type = this->rng.getRandomNumber(1,3);
 
         if (!this->game_Zone->getZone(i, j)->isBlocked()) {
@@ -87,10 +92,6 @@ void Game::putTower(int i, int j, int type) {
     }
 }
 
-GenericLinkedList<std::string> Game::calculateSteps() {
-    return GenericLinkedList<std::string>();
-}
-
 /**
  * Gets the best Gladiator from each pool and puts them in a linked list
  * @return linked list with the best gladiators from each pool
@@ -110,10 +111,6 @@ std::string Game::getChampions() {
             std::to_string(champ_2.getUpperBodyStrength()) + "," + std::to_string(champ_2.getLowerBodyStrength());
 
     return champs;
-}
-
-IntimidationZone *Game::getGameZone() const {
-    return game_Zone;
 }
 
 /**
@@ -146,6 +143,49 @@ void Game::generateNewGUITower(int i,int j,int type) {
  */
 GenericLinkedList<std::string> Game::getTowers() {
     return new_GUI_Towers;
+}
+
+std::string Game::getStats() {
+    std::string stats = this->averageGensRes + "/" + this->averageGensEI + "/" + this->averageGensPC + "/" + this->averageGensStr;
+
+    return stats;
+}
+
+void Game::saveGenStats() {
+    if (this->averageGensRes == " ")
+        this->averageGensRes = std::to_string(this->pool_A.averageResistance()) + "," + std::to_string(this->pool_B.averageResistance());
+    else
+        this->averageGensRes += "," + std::to_string(this->pool_A.averageResistance()) + "," + std::to_string(this->pool_B.averageResistance());
+
+    if (this->averageGensEI == " ")
+        this->averageGensEI = std::to_string(this->pool_A.averageEmotionalIntelligence()) + "," + std::to_string(this->pool_B.averageEmotionalIntelligence());
+    else
+        this->averageGensEI += "," + std::to_string(this->pool_A.averageEmotionalIntelligence()) + "," + std::to_string(this->pool_B.averageEmotionalIntelligence());
+
+    if (this->averageGensPC == " ")
+        this->averageGensPC = std::to_string(this->pool_A.averagePhysicalCondition()) + "," + std::to_string(this->pool_B.averagePhysicalCondition());
+    else
+        this->averageGensPC += "," + std::to_string(this->pool_A.averagePhysicalCondition()) + "," + std::to_string(this->pool_B.averagePhysicalCondition());
+
+    if (this->averageGensStr == " ") {
+        this->averageGensStr = std::to_string(this->pool_A.averageUpperBodyStrength()) + "," +
+                               std::to_string(this->pool_A.averageLowerBodyStrength()) + "," +
+                               std::to_string(this->pool_B.averageUpperBodyStrength()) + "," +
+                               std::to_string(this->pool_B.averageLowerBodyStrength());
+    }
+    else
+        this->averageGensStr += "," + std::to_string(this->pool_A.averageUpperBodyStrength()) + "," +
+                               std::to_string(this->pool_A.averageLowerBodyStrength()) + "," +
+                               std::to_string(this->pool_B.averageUpperBodyStrength()) + "," +
+                               std::to_string(this->pool_B.averageLowerBodyStrength());
+}
+
+GA &Game::getPoolA() {
+    return pool_A;
+}
+
+GA &Game::getPoolB() {
+    return pool_B;
 }
 
 

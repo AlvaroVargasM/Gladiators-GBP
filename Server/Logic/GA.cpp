@@ -20,7 +20,8 @@ GA::GA() {
  * are in the gladiator constructor.
  */
 void GA::generateInitPop() {
-    for (int i = 0; i < POP_SIZE; i++)
+    this->population[0] = Gladiator(this->rng.getRandomNumber(1, 100));
+    for (int i = 1; i < POP_SIZE + 1; i++)
         this->population[i] = Gladiator(this->rng.getRandomNumber(1, 100));
 }
 
@@ -144,8 +145,8 @@ Gladiator GA::crossover(Gladiator parent_1,Gladiator parent_2) {
 
     int mut = rng.getRandomNumber(1,100);
 
-    //if (mut < INVERSION_PORCENTAGE)
-    //    res = bitInversion(res);
+    if (mut < INVERSION_PORCENTAGE)
+        res = bitInversion(res);
 
     child.setResistance((int)res.to_ulong());
     child.setFitness((int)res.to_ulong());
@@ -255,6 +256,7 @@ void GA::reproduction() {
 void GA::generationChange() {
     for (int i = 0;i < FITTEST_SIZE;i++)
         this->population[i] = this->newborns[i];
+
     this->generation++;
 }
 
@@ -314,6 +316,18 @@ void GA::printFittest() {
 }
 
 /**
+ * Gives back the average resistance of the current pop
+ * @return average resistance
+ */
+int GA::averageResistance() {
+    int res = 0;
+    for (int i = 0;i < POP_SIZE;i++) {
+        res += this->population[i].getResistance();
+    }
+    return res / POP_SIZE;
+}
+
+/**
  * Gives back the average emotional intelligence of the current pop
  * @return average emotional intelligence
  */
@@ -332,6 +346,7 @@ int GA::averageEmotionalIntelligence() {
 int GA::averagePhysicalCondition() {
     int apc = 0;
     for (int i = 0;i < POP_SIZE;i++) {
+        int y = this->population[i].getPhysicalCondition();
         apc += this->population[i].getPhysicalCondition();
     }
     return apc / POP_SIZE;
@@ -344,6 +359,7 @@ int GA::averagePhysicalCondition() {
 int GA::averageUpperBodyStrength() {
     int aubs = 0;
     for (int i = 0;i < POP_SIZE;i++) {
+        int y = this->population[i].getUpperBodyStrength();
         aubs += this->population[i].getUpperBodyStrength();
     }
     return aubs / POP_SIZE;
@@ -360,3 +376,23 @@ int GA::averageLowerBodyStrength() {
     }
     return albs / POP_SIZE;
 }
+
+void GA::printGenerations(int n_gens) {
+    for (int i = 0;i < n_gens;i++) {
+        std::cout << "\n\n GEN " << this->getGeneration() << " RESISTANCE: " << std::endl;
+        this->printPopResistance();
+        std::cout << std::setw(4) << "CHAMPION: " << this->getStrongest().getResistance() << std::endl;
+        std::cout << std::setw(4) << "Average res: " << this->averageResistance() << std::endl;
+        std::cout << std::setw(4) << "Average ei: " << this->averageEmotionalIntelligence() << std::endl;
+        std::cout << std::setw(4) << "Average pc: " << this->averagePhysicalCondition() << std::endl; // ERROR on pool B
+        std::cout << std::setw(4) << "Average ubs: " << this->averageUpperBodyStrength() << std::endl; // ERROR on pool B
+        std::cout << std::setw(4) << "Average lbs: " << this->averageLowerBodyStrength() << std::endl;
+        this->newGen();
+    }
+}
+
+Gladiator *GA::getPopulation() {
+    return population;
+}
+
+
