@@ -27,6 +27,7 @@ int convertCommandToInt(std::string data) {
 
 int Server::start()
 {
+    Game* game = new Game();
     int opt = TRUE;
     int master_socket , addrlen , new_socket , client_socket[30] ,
             max_clients = 1 , activity, i , valread , sd;
@@ -192,14 +193,19 @@ int Server::start()
 
                     int commandInt = convertCommandToInt(command);
                     std::cout << commandInt << std::endl;
-                    switch(commandInt){
+                    NetPackage* netpack = new NetPackage();
+                    netpack->setFrom("Server");
+                    switch(commandInt) {
                         case 0:
-                            //Call GA for stats
+                        {std::string data = game->getChampions();
+                            netpack->setCommand("setStats");
+                            netpack->setData(data);
+                            std::string final = netpack->getJSONPackage();
+                            std::cout << "Voy a enviar " << final << std::endl;
+                            send(sd , final.c_str() , strlen(final.c_str()), 0 );}
                             break;
                         case 1:
                         {GenericLinkedList<std::string> champions ;
-                            NetPackage* netpack = new NetPackage();
-                            netpack->setFrom("Server");
                             netpack->setCommand("steps");
                             std::string finalData = "";
                             finalData += champions.get(0)->getData();
@@ -212,7 +218,13 @@ int Server::start()
                         case 2:
                         {
                             NetPackage* netpack = new NetPackage;
-                            GenericLinkedList<std::string> *list = new     GenericLinkedList<std::string>;
+                            game->generateTowers();
+                            GenericLinkedList<std::string> towers = game->getTowers();
+                            GenericLinkedList<std::string> *list = new GenericLinkedList<std::string>;
+                            for(int i = 0; i < *towers.getLength(); i++){
+                                std::string temp = towers.get(i)->getData();
+                                list->add(temp);
+                            }
                             list->add("move.a.right");
                             list->add("move.a.right");
                             list->add("move.a.right");

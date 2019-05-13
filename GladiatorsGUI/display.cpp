@@ -1,4 +1,4 @@
-#include "display.h"
+﻿    #include "display.h"
 #include "ui_display.h"
 #include "statistics.h"
 
@@ -423,7 +423,7 @@ void Display::gameLoop()
         //GenericLinkedList<std::string> *infoList = connector->getInfo();
         //setInfo(infoList);
 
-        //GenericLinkedList<std::string> *commands = connector->getCommands();
+        //GenericLinkedList<std::string> *commands = Connector::get("getCommands");
         //runCommands(commands);
 
         /*if(n<199){
@@ -458,7 +458,8 @@ void Display::showEvent(QShowEvent *event)
 //button for testing
 void Display::test()
 {
-    GenericLinkedList<std::string> *infoList = new GenericLinkedList<std::string>;
+    GenericLinkedList<std::string> *infoList = Connector::get("setStats");
+    /*GenericLinkedList<std::string> *infoList = new GenericLinkedList<std::string>;
     infoList->add("30");
     infoList->add("30");
     infoList->add("Startacus");
@@ -478,10 +479,12 @@ void Display::test()
     infoList->add("6");
     infoList->add("9");
     infoList->add("2.25");
-    infoList->add("5.33");
+    infoList->add("5.33");*/
     setInfo(infoList);
 
+    GenericLinkedList<std::string>* list = Connector::get("setSteps");
     /*GenericLinkedList<std::string> *list = new GenericLinkedList<std::string>;
+    list->add("create.1.explosive.2.2");
     list->add("move.a.right");
     list->add("move.a.right");
     list->add("move.a.right");
@@ -491,12 +494,10 @@ void Display::test()
     list->add("move.b.down");
     list->add("move.b.down");
     list->add("move.b.down");
-
-    list->add("create.1.explosive.2.2");
     list->add("shoot.1.b");
     list->add("shoot.1.a");
-    list->add("finish")
-    runCommands(list);*/
+    list->add("finish");*/
+    runCommands(list);
 }
 
 void Display::restart()
