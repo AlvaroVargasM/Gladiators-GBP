@@ -10,11 +10,17 @@
 int main () {
     srand(time(nullptr));
     //Server::start();
+    RNG rng;
+
+    //std::cout << rng.getRandomNumber(0,5);
 
     Game myGame;
     myGame.generateTowers();
+    myGame.saveGenStats();
 
-    //myGame.getGameZone()->printGrid();
+
+    std::cout << "\n\n--------------------------------------------------------------------------------------------\n\n";
+
     std::cout << myGame.getTowers().get(0)->getData() << std::endl;
     std::cout << myGame.getTowers().get(1)->getData() << std::endl;
     std::cout << myGame.getTowers().get(2)->getData() << std::endl;
@@ -23,22 +29,17 @@ int main () {
 
     std::cout << myGame.getChampions();
 
-    /*
-    GA genetic;
+    std::cout << "\n\n--------------------------------------------------------------------------------------------\n\n";
 
-    std::cout << "\n\n GEN: " << genetic.getGeneration() << " Initial POP:\n";
-    genetic.printPopResistance();
-    std::cout << "CHAMPION: " << genetic.getStrongest().getResistance();
+    myGame.getPoolA().printGenerations(2);
 
-    for (int i = 0;i < 14;i++) {
-        genetic.newGen();
-        std::cout << "\n\n GEN " << genetic.getGeneration() << " RESISTANCE: " << std::endl;
-        genetic.printPopResistance();
-        std::cout << "CHAMPION: " << genetic.getStrongest().getResistance() << std::endl;
-        std::cout << "Average ei: " << genetic.averageEmotionalIntelligence() << std::endl;
-        std::cout << "Average pc: " << genetic.averagePhysicalCondition() << std::endl;
-        std::cout << "Average ubs: " << genetic.averageUpperBodyStrength() << std::endl;
-        std::cout << "Average lbs: " << genetic.averageLowerBodyStrength() << std::endl;
-    }
-     */
+    std::cout << "\n\n--------------------------------------------------------------------------------------------\n\n";
+
+    myGame.getPoolB().printGenerations(2);
+
+    std::cout << "\n\n--------------------------------------------------------------------------------------------\n\n";
+
+    myGame.saveGenStats();
+    std::cout << myGame.getStats() << std::endl;
+
 }

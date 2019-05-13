@@ -4,7 +4,7 @@
 
 #pragma once
 
-#define POP_SIZE 40
+#define POP_SIZE 20
 #define FITTEST_SIZE 20
 #define BIT_SET_SIZE 8
 #define BEST_GENE_SURVIVABILITY 70
@@ -14,6 +14,7 @@
 #include <iostream>
 #include <string>
 #include <bitset>
+#include <iomanip>
 #include "Gladiator.h"
 
 /**
@@ -158,6 +159,12 @@ public:
     int getGeneration();
 
     /**
+     * Gives back the average resistance of the current pop
+     * @return average resistance
+     */
+    int averageResistance();
+
+    /**
      * Gives back the average emotional intelligence of the current pop
      * @return average emotional intelligence
      */
@@ -195,4 +202,8 @@ public:
      * Prints the each individual of the fitness list to console
      */
     void printFittest();
+
+    void printGenerations(int n_gens);
+
+    Gladiator *getPopulation();
 };
