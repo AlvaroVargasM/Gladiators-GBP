@@ -162,35 +162,53 @@ bool PathSolver::visited(Zone *zone, GenericLinkedList<Zone*> *node) {
  *
  * @return GenericLinkedList<Zone *>
  */
+
+
 GenericLinkedList<Zone *> *path = new GenericLinkedList<Zone *>;
 
 GenericLinkedList<Zone*>*PathSolver::BackTrack(IntimidationZone *grid, int xo, int yo,int  xf,int yf) {
 
+/**
+ * Stop condition of the recursive method, in this case the list of
+ * pointers to area is returned with the free path that is in the zone of intimidation
+ *
+ * */
 
-    Zone *zone = new Zone;
-    //zone->setTower(00);
-
-    // condicion de parada.-
     if (xo==xf && yo==yf){
         return path;
 
     }
-
+/**
+ *They validate movements to the right and verify that the area has not been previously verified.
+ * If the conditions are met, the zones are added to a list with zones free of blockages
+ *
+ *
+ * */
     if ((grid->getZone(xo,yo + 1)->isBlocked()==false)  && (visited(grid->getZone(xo, yo), path))) {
         path->add(grid->getZone(xo,yo ));
         return BackTrack(grid, xo,yo+1,grid->getN(),grid->getM());
 
     }
     else
+        /**
+         * If there is no possibility of movements to the right, this condition verifies that movements
+         * can be made downwards in the zone of intimidation, or also when it is a zone already visited
+         * where the method is being returned.
+         */
 
         if (grid->getZone(xo + 1, yo)->isBlocked() ==false){
             path->add(grid->getZone(xo + 1, yo));
             return BackTrack(grid, xo + 1, yo,grid->getN(),grid->getM());
 
     }
+        /**
+         * In this part of the algorithm, when it is validated that the nodes have already been verified
+         * and meet with towers and must be returned, the list patterns will be removed, only to leave
+         * those who have a clean path
+         */
         else
-        path->deleteEndNode();
-        return BackTrack(grid, xo, yo - 1,grid->getN(),grid->getM());
+            path->deleteEndNode();
+            return BackTrack(grid, xo, yo - 1,grid->getN(),grid->getM());
 
 
 
