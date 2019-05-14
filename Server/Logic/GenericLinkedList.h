@@ -24,6 +24,7 @@ public:
     int* getLength();
     bool includes(T);
     void deleteEndNode();
+    GenericNode<T>* getLast();
 private:
     GenericNode<T>* header;
     GenericNode<T>* last;
@@ -155,6 +156,11 @@ void GenericLinkedList<T>::deleteEndNode(){
         delete(ptr);
     }
     this->length--;
+}
+
+template<class T>
+GenericNode<T> *GenericLinkedList<T>::getLast() {
+    return this->last;
 }
 
 

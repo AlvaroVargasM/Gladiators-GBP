@@ -50,31 +50,31 @@ void Statistics::setParent(QMainWindow *display)
 
 void Statistics::generateCharts(GraphPac pack)
 {
-    int n = pack.get(0).getLength();
-
+    int n = pack.get(1).getLength();
+    qDebug() <<"Largo: "<<n;
     QChart *resChart = createChart("Resistance",n,
-                                getSeries(pack.get(0),"AStar",QColor(138, 40, 40)),
-                                getSeries(pack.get(1),"Backtracking",QColor(31,69,70)));
+                                getSeries(pack.get(1),"AStar",QColor(138, 40, 40)),
+                                getSeries(pack.get(2),"Backtracking",QColor(31,69,70)));
     QChartView *resistanceView = new QChartView(resChart);
     resistanceView->setRenderHint(QPainter::Antialiasing);
 
     QChart *intelChart = createChart("Intelligence",n,
-                                     getSeries(pack.get(2),"AStar",QColor(138, 40, 40)),
-                                     getSeries(pack.get(3),"Backtracking",QColor(31,69,70)));
+                                     getSeries(pack.get(3),"AStar",QColor(138, 40, 40)),
+                                     getSeries(pack.get(4),"Backtracking",QColor(31,69,70)));
     QChartView *intelView = new QChartView(intelChart);
     intelView->setRenderHint(QPainter::Antialiasing);
 
     QChart *condChart = createChart("Physical Condition",n,
-                                    getSeries(pack.get(4),"AStar",QColor(138, 40, 40)),
-                                    getSeries(pack.get(5),"Backtracking",QColor(31,69,70)));
+                                    getSeries(pack.get(5),"AStar",QColor(138, 40, 40)),
+                                    getSeries(pack.get(6),"Backtracking",QColor(31,69,70)));
     QChartView *conditionView = new QChartView(condChart);
     conditionView->setRenderHint(QPainter::Antialiasing);
 
     QChart *bodystrgChart = createChart("Strenght",n,
-                                        getSeries(pack.get(6),"AStar Upper Body",QColor(203, 77, 77)),
-                                        getSeries(pack.get(7),"AStar Lower Body",QColor(138, 40, 40)),
-                                        getSeries(pack.get(8),"Backtracking Upper Body",QColor(70, 157, 160)),
-                                        getSeries(pack.get(9),"Backtracking Lower Body",QColor(31,69,70)));
+                                        getSeries(pack.get(7),"AStar Upper Body",QColor(203, 77, 77)),
+                                        getSeries(pack.get(8),"AStar Lower Body",QColor(138, 40, 40)),
+                                        getSeries(pack.get(9),"Backtracking Upper Body",QColor(70, 157, 160)),
+                                        getSeries(pack.get(10),"Backtracking Lower Body",QColor(31,69,70)));
     QChartView *bodystrgView = new QChartView(bodystrgChart);
     bodystrgView->setRenderHint(QPainter::Antialiasing);
 
