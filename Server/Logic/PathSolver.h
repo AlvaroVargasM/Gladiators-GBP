@@ -9,13 +9,19 @@
 #include "GenericLinkedList.h"
 #include "Zone.h"
 #include "IntimidationZone.h"
+#include "timer.h"
 
 class PathSolver {
 public:
-    static GenericLinkedList<Zone*>* findPathByA_Star(IntimidationZone* grid, int x_i, int y_i, int x_f, int y_f);
+    GenericLinkedList<Zone*>* findPathByA_Star(IntimidationZone* grid, int x_i, int y_i, int x_f, int y_f);
 
-    GenericLinkedList<Zone*>* BackTrack(IntimidationZone *grid, int xo, int yo,int  xf,int yf);
-     bool visited(Zone *zone,GenericLinkedList<Zone*> *p);
+    GenericLinkedList<Zone*>* BackTrack(IntimidationZone *grid,int xo, int yo,int  xf,int yf);
+    bool visited(Zone *zone,GenericLinkedList<Zone*> *p);
+
+    float getA_starTime();
+private:
+    timer* timerA = new timer;
+    timer* timerB = new timer;
 };
 
 
