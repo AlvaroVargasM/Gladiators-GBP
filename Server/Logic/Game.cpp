@@ -97,7 +97,6 @@ void Game::putTower(int i, int j, int type) {
  * @return linked list with the best gladiators from each pool
  */
 std::string Game::getChampions() {
-    this->path_A = *this->pths.findPathByA_Star(this->game_Zone,INI_I,INI_J,FIN_I,FIN_J);
     Gladiator champ_1 = this->pool_A.getStrongest();
     Gladiator champ_2 = this->pool_B.getStrongest();
 
@@ -144,6 +143,7 @@ void Game::generateNewGUITower(int i,int j,int type) {
  */
 GenericLinkedList<std::string> Game::getTowers() {
     generateTowers();
+    this->path_A = *this->pths.findPathByA_Star(this->game_Zone,INI_I,INI_J,FIN_I,FIN_J);
     return new_GUI_Towers;
 }
 
@@ -152,8 +152,7 @@ GenericLinkedList<std::string> Game::getTowers() {
  * @return final stats
  */
 std::string Game::getStats() {
-    std::string stats = this->averageGensRes + ",/" + this->averageGensEI + ",/" + this->averageGensPC + ",/" + this->averageGensStr;
-
+    std::string stats = this->averageGensRes + "/" + this->averageGensEI + "/" + this->averageGensPC + "/" + this->averageGensStr;
     return stats;
 }
 
