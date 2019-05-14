@@ -26,7 +26,7 @@ void Game::generateTowers() {
         int j = rng.getRandomNumber(0,N_COLUMNS);
         int type = this->rng.getRandomNumber(1,3);
 
-        if (!this->game_Zone->getZone(i, j)->isBlocked()) {
+        if ((i != INI_I && j != INI_J) && (i != FIN_I && j != FIN_J) && !this->game_Zone->getZone(i, j)->isBlocked()) {
             putTower(i,j,type);
             n_Towers++;
             generateNewGUITower(i,j,type);
@@ -211,15 +211,37 @@ std::string Game::calculateSteps() {
     return "!202GAME";
 }
 
-GenericLinkedList<Zone *> Game::resizePath(int type) {
-    if (type == 1) {//RESIZE A*
+GenericLinkedList<Zone*> Game::resizePath(int type) {
+    GenericLinkedList<Zone*> cutPath;
+
+    if (type == 1) { // RESIZE A*
+        int glife = this->pool_A.getStrongest().getResistance();
+
+        for (int i = 0;i < *this->path_A.getLength();i++) {
+            for (int x = 0; x < *this->path_A.get(i)->getData()->getDamage()->getLength();i++) {
+                glife -= this->path_A.get(i)->getData()->getDamage()->get(x)->getData()->get(1)->getData();
+                x++;
+            }
+            if (glife > 0) {
+                cutPath.add(this->path_A.get(i)->getData());
+            }
         }
+    }
+
     if (type == 2) {//RESIZE Bt
         }
     else
         std::cout << "!219GAME";
 
-    return GenericLinkedList<Zone *>();
+    return cutPath;
+}
+
+bool Game::isCompletedA() {
+    return this->completed_A;
+}
+
+bool Game::isCompletedB() {
+    return this->completed_B;
 }
 
 

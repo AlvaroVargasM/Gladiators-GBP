@@ -4,7 +4,7 @@
 
 #pragma once
 
-#define BASE_DAMAGE 5
+#define BASE_DAMAGE 4
 #define N_ROWS 10
 #define N_COLUMNS 10
 #define INI_I 0
@@ -29,6 +29,9 @@ private:
 
     GA pool_B;
 
+    bool completed_A;
+    bool completed_B;
+
     std::string averageGensRes;
 
     std::string averageGensEI;
@@ -51,7 +54,7 @@ private:
 
     void generateNewGUITower(int i,int j,int type);
 
-    void saveGenStats();
+
 
 public:
     Game();
@@ -69,4 +72,10 @@ public:
     GA &getPoolA();
 
     GA &getPoolB();
+
+    void saveGenStats();
+
+    bool isCompletedA();
+
+    bool isCompletedB();
 };
