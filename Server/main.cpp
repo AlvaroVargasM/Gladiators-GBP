@@ -37,6 +37,26 @@ int main () {
 
     std::cout << "\n\n--------------------------------------------------------------------------------------------\n\n";
 
+    myGame.getPoolA().newGen();
+    myGame.getPoolB().newGen();
+    myGame.saveGenStats();
+    myGame.getPoolA().newGen();
+    myGame.getPoolB().newGen();
+    myGame.saveGenStats();
+    myGame.getPoolA().newGen();
+    myGame.getPoolB().newGen();
+    myGame.saveGenStats();
+    myGame.getPoolA().newGen();
+    myGame.getPoolB().newGen();
+    myGame.saveGenStats();
+    myGame.getPoolA().newGen();
+    myGame.getPoolB().newGen();
+    myGame.saveGenStats();
+    myGame.getPoolA().newGen();
+    myGame.getPoolB().newGen();
+    myGame.saveGenStats();
+
+
     std::cout << myGame.getStats() << std::endl;
 
 }
