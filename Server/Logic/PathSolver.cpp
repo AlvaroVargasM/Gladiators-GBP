@@ -182,7 +182,7 @@ if (xo == xf && yo == yf) {
 }
 /**
  *They validate movements to the right and verify that the area has not been previously verified.
- * If the conditions are met, the zones are added to a list with zones free of blockages
+ * If the conditions are met, the zones are added to a list with zones free of blockages.
  *
  *
  * */
