@@ -16,8 +16,6 @@ int main () {
 
     Game myGame;
     myGame.getTowers();
-    myGame.saveGenStats();
-
 
     std::cout << "\n\n--------------------------------------------------------------------------------------------\n\n";
 
@@ -39,7 +37,6 @@ int main () {
 
     std::cout << "\n\n--------------------------------------------------------------------------------------------\n\n";
 
-    myGame.saveGenStats();
     std::cout << myGame.getStats() << std::endl;
 
 }

@@ -97,19 +97,20 @@ void Game::putTower(int i, int j, int type) {
  * @return linked list with the best gladiators from each pool
  */
 std::string Game::getChampions() {
+    this->path_A = *this->pths.findPathByA_Star(this->game_Zone,INI_I,INI_J,FIN_I,FIN_J);
     Gladiator champ_1 = this->pool_A.getStrongest();
     Gladiator champ_2 = this->pool_B.getStrongest();
 
     std::string champs = std::to_string(champ_1.getResistance()) + "," + std::to_string(champ_2.getResistance()) + "," +
-            "Yeet" + "," +"DoubleYeet" + "," +
+            std::to_string(this->pool_A.getGeneration()) + "," + std::to_string(this->pool_B.getGeneration()) + "," +
             std::to_string(champ_1.getAge()) + "," + std::to_string(champ_2.getAge()) + "," +
             "0" + "," + "0" + "," +
             "0" + "," + "0" + "," +
             std::to_string(champ_1.getEmotionalIntelligence()) + "," + std::to_string(champ_2.getEmotionalIntelligence()) + "," +
             std::to_string(champ_1.getPhysicalCondition()) + "," + std::to_string(champ_2.getPhysicalCondition()) + "," +
             std::to_string(champ_1.getUpperBodyStrength()) + "," + std::to_string(champ_1.getLowerBodyStrength()) + "," +
-            std::to_string(champ_2.getUpperBodyStrength()) + "," + std::to_string(champ_2.getLowerBodyStrength());
-
+            std::to_string(champ_2.getUpperBodyStrength()) + "," + std::to_string(champ_2.getLowerBodyStrength()) + "," +
+            std::to_string(this->pths.getA_starTime());
     return champs;
 }
 
@@ -198,9 +199,28 @@ GA &Game::getPoolB() {
 }
 
 std::string Game::calculateSteps() {
+    // RECORRO LA LISTA PARA CREAR UNA NUEVA DE HASTA DONDE LLEGA EL CHAMP
 
 
+    // TRADUZCO A NUEVA LISTA A UN STRING
+
+
+    this->pool_A.newGen(); // GENERATION
+    this->pool_B.newGen(); // CHANGE
+    this->saveGenStats();  // Save the data of the new gen
+    this->new_GUI_Towers = GenericLinkedList<std::string>(); // Clears the list for the GUI towers
     return "!202GAME";
+}
+
+GenericLinkedList<Zone *> Game::resizePath(int type) {
+    if (type == 1) {//RESIZE A*
+        }
+    if (type == 2) {//RESIZE Bt
+        }
+    else
+        std::cout << "!219GAME";
+
+    return GenericLinkedList<Zone *>();
 }
 
 

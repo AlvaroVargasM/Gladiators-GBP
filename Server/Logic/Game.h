@@ -4,9 +4,14 @@
 
 #pragma once
 
-# define BASE_DAMAGE 5
-# define N_ROWS 10
-# define N_COLUMNS 10
+#define BASE_DAMAGE 5
+#define N_ROWS 10
+#define N_COLUMNS 10
+#define INI_I 0
+#define INI_J 0
+#define FIN_I 9
+#define FIN_J 9
+
 
 #include "GA.h"
 #include "IntimidationZone.h"
@@ -17,6 +22,8 @@ private:
     RNG rng;
 
     PathSolver pths;
+
+    GenericLinkedList<Zone*> path_A;
 
     GA pool_A;
 
@@ -44,9 +51,9 @@ private:
 
     void generateNewGUITower(int i,int j,int type);
 
-public:
     void saveGenStats();
 
+public:
     Game();
 
     std::string getChampions();
@@ -54,6 +61,8 @@ public:
     GenericLinkedList<std::string> getTowers();
 
     std::string calculateSteps();
+
+    GenericLinkedList<Zone*> resizePath(int type);
 
     std::string getStats();
 
