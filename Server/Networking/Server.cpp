@@ -6,6 +6,19 @@
 #include "../Logic/GenericLinkedList.h"
 
 
+GenericLinkedList<std::string>* convertStringToLL(std::string data, char limit){
+    std::stringstream ss(data);
+    GenericLinkedList<std::string>* list = new GenericLinkedList<std::string>;
+
+    while( ss.good() )
+    {
+        std::string substr;
+        getline( ss, substr, limit );
+        list->add(substr);
+    }
+    return list;
+}
+
 std::string  convertStringToSubstr(std::string data, char limit){
     std::stringstream ss(data);
     std::string list = "";
@@ -215,16 +228,43 @@ int Server::start()
                             send(sd , final.c_str() , strlen(final.c_str()), 0 );}
                             break;
                         case 1:
-                        {std::string stats = game->getStats();
-                            std::string statsNew = convertStringToSubstr(stats, '/');
-                            netpack->setCommand("setCharts");
-                            std::string finalData = "";
-                            /*finalData += champions.get(0)->getData();
-                            for(int i = 1; i < *champions.getLength(); i++){
-                                finalData += ',' + champions.get(i)->getData();
+                        {netpack->setCommand("setCharts");
+                            std::string stats = "14,14,28,37,33,35,40,41,46,48,51,57,60,69/3,3,4,6,6,7,8,7,9,8,10,11,14,12/4,3,8,7,9,9,10,10,11,12,13,13,15,15/3,3,3,3,7,8,8,5,8,9,12,7,9,12,15,8,10,14,18,8,11,15,23,10,12,18,28,12";
+                            netpack->setData(stats);
+                            std::string final = netpack->getJSONPackage();
+                            send(sd, final.c_str(), strlen(final.c_str()), 0);
+                            /*std::string statsNew = stats.substr(0, stats.find('/'));
+                            int index = stats.find('/');
+                            stats = stats.substr(index+1);
+                            std::cout << "This is the new String" << stats << std::endl;
+                            std::string statsNew1 = stats.substr(0, stats.find('/'));
+                            index = stats.find('/');
+                            stats = stats.substr(index+1);
+                            std::cout << "This is the new String" << stats << std::endl;
+                            std::string statsNew2 = stats.substr(0, stats.find('/'));
+                            index = stats.find('/');
+                            stats = stats.substr(index+1);
+                            std::cout << "This is the new String" << stats << std::endl;
+                            netpack->setCommand("firstList");
+                            netpack->setData(statsNew);
+                            std::string final = netpack->getJSONPackage();
+                            send(sd, final.c_str(), strlen(final.c_str()), 0);
+                            int dummie = recv(sd, buffer, 4096, 0);
+                            netpack->setCommand("secondList");
+                            netpack->setData(statsNew1);
+                            final = netpack->getJSONPackage();
+                            send(sd, final.c_str(), strlen(final.c_str()), 0);
+                            dummie = recv(sd, buffer, 4096, 0);
+                            netpack->setCommand("thirdList");
+                            netpack->setData(statsNew2);
+                            final = netpack->getJSONPackage();
+                            send(sd, final.c_str(), strlen(final.c_str()), 0);
+                            dummie = recv(sd, buffer, 4096, 0);
+                            netpack->setCommand("fourthList");
+                            netpack->setData(stats);
+                            final = netpack->getJSONPackage();
+                            send(sd, final.c_str(), strlen(final.c_str()), 0);*/
                             }
-                            netpack->setData(finalData);
-                            send(master_socket, finalData.c_str(), strlen(finalData.c_str()), 0);*/}
                             break;
                         case 2:
                         {

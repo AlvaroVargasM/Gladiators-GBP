@@ -12,12 +12,14 @@
 
 #include "netpackage.h"
 #include "genericlinkedlist.h"
+#include "graphpac.h""
 
 class Connector
 {
 public:
     Connector();
     static GenericLinkedList<std::string>* get(std::string);
+    static GraphPac getCharts();
 };
 
 #endif // CONNECTOR_H

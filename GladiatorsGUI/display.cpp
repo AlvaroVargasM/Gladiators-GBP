@@ -454,7 +454,7 @@ void Display::gameLoop()
 
     statisticsWin = new Statistics();
     statisticsWin->setParent(this);
-    //statisticsWin->generateCharts(Connector::get("setGraphs"));
+    statisticsWin->generateCharts(Connector::getCharts());
     this->hide();
     statisticsWin->show();
 }
