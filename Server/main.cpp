@@ -8,7 +8,8 @@
 
 int main () {
     Game g;
+
     g.getTowers();
+
     std::cout << g.calculateSteps();
-    // Server::start();
 }

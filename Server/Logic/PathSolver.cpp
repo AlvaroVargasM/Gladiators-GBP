@@ -15,6 +15,8 @@ int heuristic(int x0, int y0, int x1, int y1){
     return result;
 }
 
+//Changes :P
+
 
 GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, int x_i, int y_i, int x_f, int y_f) {
     for(int i = 0; i < grid->getN(); i++){
