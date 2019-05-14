@@ -17,6 +17,8 @@ int heuristic(int x0, int y0, int x1, int y1){
 
 
 GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, int x_i, int y_i, int x_f, int y_f) {
+    this->timerA->reset();
+    this->timerA->start();
     for(int i = 0; i < grid->getN(); i++){
         for(int j = 0; j < grid->getM(); j++){
             Zone* z = grid->getZone(i, j);
@@ -76,6 +78,7 @@ GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, 
         grid->printGridProgress(current->getId(), finish);
 
         if(current->getId() == finish){
+            this->timerA->stop();
             GenericLinkedList<Zone*>* path = new GenericLinkedList<Zone*>;
             Zone* temp = current;
             while(temp->getParent() != nullptr){
@@ -132,6 +135,8 @@ GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, 
     }
 
 }
+
+
 /**
  * This function takes a node and verifies in the path list.
  * @param zone
@@ -140,12 +145,18 @@ GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, 
  * @return bool
  */
 bool PathSolver::visited(Zone *zone, GenericLinkedList<Zone*> *node) {
-if (zone->getId()==node->get(*node->getLength())->getData()->getId()){
-return true;}
+    if(*node->getLength()==0){
+        return false;
+    }
+
+    if (node->includes(zone)){
+    return true;
+}
+
 }
 
 /**
- * his function takes an intimidation zone and looks for the route to
+ * This function takes an intimidation zone and looks for the route to
  * reach the lower right diagonal in an efficient way using the recursive logic of
  * BackTraking
 
@@ -154,37 +165,42 @@ return true;}
  *
  * @return GenericLinkedList<Zone *>
  */
+GenericLinkedList<Zone *> *path = new GenericLinkedList<Zone *>;
 
-GenericLinkedList<Zone*>*PathSolver::BackTrack(IntimidationZone *grid, int a, int b) {
-    GenericLinkedList<Zone *> *path = new GenericLinkedList<Zone *>;
+GenericLinkedList<Zone*>*PathSolver::BackTrack(IntimidationZone *grid, int xo, int yo,int  xf,int yf) {
 
 
     Zone *zone = new Zone;
-    zone->setTower(00);
+    //zone->setTower(00);
 
-    // condicion de parada.
-    if (a== grid->getN()&& b==grid->getM()){
+    // condicion de parada.-
+    if (xo==xf && yo==yf){
         return path;
 
     }
 
-    if (grid->getZone(a, b + 1)->getTower() != zone->getTower() && (visited(grid->getZone(a, b), path) != true)) {
-        path->add(grid->getZone(a, b + 1));
-        return BackTrack(grid, a, b + 1);
+    if ((grid->getZone(xo,yo + 1)->isBlocked()==false)  && (visited(grid->getZone(xo, yo), path))) {
+        path->add(grid->getZone(xo,yo ));
+        return BackTrack(grid, xo,yo+1,grid->getN(),grid->getM());
 
     }
     else
 
-        if (grid->getZone(a + 1, b)->getTower() != zone->getTower()){
-        path->add(grid->getZone(a + 1, b));
-        return BackTrack(grid, a + 1, b);
+        if (grid->getZone(xo + 1, yo)->isBlocked() ==false){
+            path->add(grid->getZone(xo + 1, yo));
+            return BackTrack(grid, xo + 1, yo,grid->getN(),grid->getM());
 
     }
         else
         path->deleteEndNode();
-        return BackTrack(grid, a, b - 1);
+        return BackTrack(grid, xo, yo - 1,grid->getN(),grid->getM());
 
 
+
+}
+
+float PathSolver::getA_starTime() {
+    return this->timerA->getTime()/CLOCKS_PER_SEC;
 }
 
 

@@ -143,7 +143,6 @@ template<class T>
 void GenericLinkedList<T>::deleteEndNode(){
     GenericNode<T>*ptr;
     GenericNode<T>*prev;
-
     if ( header== nullptr)
         std::cout << "The list is empty, cant delete nack node.\n";
     else {
@@ -155,6 +154,7 @@ void GenericLinkedList<T>::deleteEndNode(){
         prev->setNext(nullptr);
         delete(ptr);
     }
+    this->length--;
 }
 
 

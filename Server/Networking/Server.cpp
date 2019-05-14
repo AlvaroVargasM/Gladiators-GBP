@@ -6,17 +6,30 @@
 #include "../Logic/GenericLinkedList.h"
 
 
+std::string  convertStringToSubstr(std::string data, char limit){
+    std::stringstream ss(data);
+    std::string list = "";
+
+    while( ss.good() )
+    {
+        std::string substr;
+        getline( ss, substr, limit );
+        list += substr;
+    }
+    return list;
+}
+
 int convertCommandToInt(std::string data) {
     enum commands {
         getStats = 0,
-        getChampions,
+        getCharts,
         getSteps,
     };
     if (data == "getStats") {
         return getStats;
     }
-    if (data == "getChampions") {
-        return getChampions;
+    if (data == "getCharts") {
+        return getCharts;
     }
     if (data == "getSteps") {
         return getSteps;
@@ -38,9 +51,6 @@ int Server::start()
 
     //set of socket descriptors
     fd_set readfds;
-
-    //a message
-    char *message = "ECHO Daemon v1.0 \r\n";
 
     //initialise all client_socket[] to 0 so not checked
     for (i = 0; i < max_clients; i++)
@@ -205,15 +215,16 @@ int Server::start()
                             send(sd , final.c_str() , strlen(final.c_str()), 0 );}
                             break;
                         case 1:
-                        {GenericLinkedList<std::string> champions ;
-                            netpack->setCommand("steps");
+                        {std::string stats = game->getStats();
+                            std::string statsNew = convertStringToSubstr(stats, '/');
+                            netpack->setCommand("setCharts");
                             std::string finalData = "";
-                            finalData += champions.get(0)->getData();
+                            /*finalData += champions.get(0)->getData();
                             for(int i = 1; i < *champions.getLength(); i++){
                                 finalData += ',' + champions.get(i)->getData();
                             }
                             netpack->setData(finalData);
-                            send(master_socket, finalData.c_str(), strlen(finalData.c_str()), 0);}
+                            send(master_socket, finalData.c_str(), strlen(finalData.c_str()), 0);*/}
                             break;
                         case 2:
                         {
