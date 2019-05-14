@@ -110,7 +110,7 @@ std::string Game::getChampions() {
             std::to_string(champ_1.getPhysicalCondition()) + "," + std::to_string(champ_2.getPhysicalCondition()) + "," +
             std::to_string(champ_1.getUpperBodyStrength()) + "," + std::to_string(champ_1.getLowerBodyStrength()) + "," +
             std::to_string(champ_2.getUpperBodyStrength()) + "," + std::to_string(champ_2.getLowerBodyStrength()) + "," +
-            std::to_string(this->pths.getA_starTime());
+            std::to_string(this->pths.getA_starTime()) + "0";
     return champs;
 }
 
@@ -152,7 +152,7 @@ GenericLinkedList<std::string> Game::getTowers() {
  * @return final stats
  */
 std::string Game::getStats() {
-    std::string stats = this->averageGensRes + "/" + this->averageGensEI + "/" + this->averageGensPC + "/" + this->averageGensStr;
+    std::string stats = this->averageGensRes + ",/" + this->averageGensEI + ",/" + this->averageGensPC + ",/" + this->averageGensStr;
 
     return stats;
 }
