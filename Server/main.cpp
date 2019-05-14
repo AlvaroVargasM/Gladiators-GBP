@@ -15,7 +15,7 @@ int main () {
     //std::cout << rng.getRandomNumber(0,5);
 
     Game myGame;
-    myGame.generateTowers();
+    myGame.getTowers();
     myGame.saveGenStats();
 
 

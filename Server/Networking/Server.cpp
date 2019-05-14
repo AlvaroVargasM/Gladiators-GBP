@@ -218,7 +218,6 @@ int Server::start()
                         case 2:
                         {
                             NetPackage* netpack = new NetPackage;
-                            game->generateTowers();
                             GenericLinkedList<std::string> towers = game->getTowers();
                             GenericLinkedList<std::string> *list = new GenericLinkedList<std::string>;
                             for(int i = 0; i < *towers.getLength(); i++){

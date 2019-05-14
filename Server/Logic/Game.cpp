@@ -142,15 +142,23 @@ void Game::generateNewGUITower(int i,int j,int type) {
  * @return GUI towers recently added
  */
 GenericLinkedList<std::string> Game::getTowers() {
+    generateTowers();
     return new_GUI_Towers;
 }
 
+/**
+ * Gives a string with all the stats saved during the game
+ * @return final stats
+ */
 std::string Game::getStats() {
     std::string stats = this->averageGensRes + "/" + this->averageGensEI + "/" + this->averageGensPC + "/" + this->averageGensStr;
 
     return stats;
 }
 
+/**
+ * Saves the averages stats of the curent generation in each GA pool
+ */
 void Game::saveGenStats() {
     if (this->averageGensRes == " ")
         this->averageGensRes = std::to_string(this->pool_A.averageResistance()) + "," + std::to_string(this->pool_B.averageResistance());
@@ -173,6 +181,7 @@ void Game::saveGenStats() {
                                std::to_string(this->pool_B.averageUpperBodyStrength()) + "," +
                                std::to_string(this->pool_B.averageLowerBodyStrength());
     }
+
     else
         this->averageGensStr += "," + std::to_string(this->pool_A.averageUpperBodyStrength()) + "," +
                                std::to_string(this->pool_A.averageLowerBodyStrength()) + "," +
@@ -186,6 +195,12 @@ GA &Game::getPoolA() {
 
 GA &Game::getPoolB() {
     return pool_B;
+}
+
+std::string Game::calculateSteps() {
+
+
+    return "!202GAME";
 }
 
 

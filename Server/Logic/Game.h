@@ -10,19 +10,25 @@
 
 #include "GA.h"
 #include "IntimidationZone.h"
+#include "PathSolver.h"
 
 class Game {
 private:
     RNG rng;
 
+    PathSolver pths;
+
     GA pool_A;
+
     GA pool_B;
 
     std::string averageGensRes;
-    std::string averageGensEI;
-    std::string averageGensPC;
-    std::string averageGensStr;
 
+    std::string averageGensEI;
+
+    std::string averageGensPC;
+
+    std::string averageGensStr;
 
     IntimidationZone* game_Zone = new IntimidationZone(N_ROWS,N_COLUMNS);
 
@@ -32,11 +38,11 @@ private:
 
     int n_Towers;
 
+    void generateTowers();
+
     void putTower(int i,int j,int type);
 
     void generateNewGUITower(int i,int j,int type);
-
-
 
 public:
     void saveGenStats();
@@ -45,11 +51,9 @@ public:
 
     std::string getChampions();
 
-    void generateTowers();
-
     GenericLinkedList<std::string> getTowers();
 
-    GenericLinkedList<std::string> calculateSteps();
+    std::string calculateSteps();
 
     std::string getStats();
 
