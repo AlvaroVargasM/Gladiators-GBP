@@ -19,8 +19,6 @@ int heuristic(int x0, int y0, int x1, int y1){
 
 
 GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, int x_i, int y_i, int x_f, int y_f) {
-    this->timerA->reset();
-    this->timerA->start();
     for(int i = 0; i < grid->getN(); i++){
         for(int j = 0; j < grid->getM(); j++){
             Zone* z = grid->getZone(i, j);
@@ -80,7 +78,6 @@ GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, 
         grid->printGridProgress(current->getId(), finish);
 
         if(current->getId() == finish){
-            this->timerA->stop();
             GenericLinkedList<Zone*>* path = new GenericLinkedList<Zone*>;
             Zone* temp = current;
             while(temp->getParent() != nullptr){
@@ -147,13 +144,14 @@ GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, 
  * @return bool
  */
 bool PathSolver::visited(Zone *zone, GenericLinkedList<Zone*> *node) {
-    if(*node->getLength()==0){
-        return false;
-    }
+
 
     if (node->includes(zone)){
-    return true;
-}
+        return true;
+    }
+    else
+        return false;
+
 
 }
 
@@ -167,42 +165,98 @@ bool PathSolver::visited(Zone *zone, GenericLinkedList<Zone*> *node) {
  *
  * @return GenericLinkedList<Zone *>
  */
+
+
 GenericLinkedList<Zone *> *path = new GenericLinkedList<Zone *>;
 
 GenericLinkedList<Zone*>*PathSolver::BackTrack(IntimidationZone *grid, int xo, int yo,int  xf,int yf) {
 
+/**
+ * Stop condition of the recursive method, in this case the list of
+ * pointers to area is returned with the free path that is in the zone of intimidation
+ *
+ * */
 
-    Zone *zone = new Zone;
-    //zone->setTower(00);
-
-    // condicion de parada.-
-    if (xo==xf && yo==yf){
+if (xo == xf && yo == yf) {
+    path->add(grid->getZone(xo,yo));
         return path;
 
+}
+/**
+ *They validate movements to the right and verify that the area has not been previously verified.
+ * If the conditions are met, the zones are added to a list with zones free of blockages.
+ *
+ *
+ * */
+   /** if(xo==xf-1&&yo==yf-1){
+        if ((grid->getZone(xo, yo + 1)->isBlocked() == false) && (visited(grid->getZone(xo, yo), path))) {
+            path->add(grid->getZone(xo, yo));
+            return BackTrack(grid, xo, yo + 1, xf, yf);
+
     }
+    }**/
 
-    if ((grid->getZone(xo,yo + 1)->isBlocked()==false)  && (visited(grid->getZone(xo, yo), path))) {
-        path->add(grid->getZone(xo,yo ));
-        return BackTrack(grid, xo,yo+1,grid->getN(),grid->getM());
+if ((grid->getZone(xo, yo + 1)->isBlocked() == false) && !(visited(grid->getZone(xo, yo), path))&& yo<yf) {
+     path->add(grid->getZone(xo, yo));
+     return BackTrack(grid, xo, yo + 1, xf, yf);
 
+}
+if(yo==yf) {
+    if (grid->getZone(xo + 1, yo)->isBlocked() == false&& !(visited(grid->getZone(xo, yo), path))) {
+        path->add(grid->getZone(xo, yo));
+        return BackTrack(grid,xo + 1, yo, xf, yf);
     }
     else
+        if (!path->includes(grid->getZone(xo, yo))) {
+        path->add(grid->getZone(xo, yo));}
 
-        if (grid->getZone(xo + 1, yo)->isBlocked() ==false){
-            path->add(grid->getZone(xo + 1, yo));
-            return BackTrack(grid, xo + 1, yo,grid->getN(),grid->getM());
+    path->deleteEndNode();
+    return BackTrack(grid, xo, yo - 1, xf, yf);
+
+}
+if(yo+1==yf){
+    if ((grid->getZone(xo, yo + 1)->isBlocked() == false) && !(visited(grid->getZone(xo, yo), path))&& yo<yf) {
+        path->add(grid->getZone(xo, yo));
+        return BackTrack(grid, xo, yo + 1, xf, yf);
+
 
     }
-        else
-        path->deleteEndNode();
-        return BackTrack(grid, xo, yo - 1,grid->getN(),grid->getM());
+}
+
+
+
+        /**
+         * If there is no possibility of movements to the right, this condition verifies that movements
+         * can be made downwards in the zone of intimidation, or also when it is a zone already visited
+         * where the method is being returned.
+         */
+else
+    if (grid->getZone(xo + 1, yo)->isBlocked() == false) {
+        path->add(grid->getZone(xo , yo));
+        return BackTrack(grid, xo + 1, yo, xf, yf);
+
+}
+        /**
+         * In this part of the algorithm, when it is validated that the nodes have already been verified
+         * and meet with towers and must be returned, the list patterns will be removed, only to leave
+         * those who have a clean path
+         */
+     else
+         if(!path->includes(grid->getZone(xo , yo))){
+             path->add(grid->getZone(xo , yo));
+
+         }
+         path->deleteEndNode();
+         return BackTrack(grid, xo, yo - 1, xf, yf);
 
 
 
 }
 
+
+
 float PathSolver::getA_starTime() {
-    return this->timerA->getTime()/CLOCKS_PER_SEC;
+    return 0,2;
 }
 
 

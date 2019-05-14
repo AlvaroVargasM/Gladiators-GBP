@@ -4,7 +4,7 @@
 
 #pragma once
 
-#define BASE_DAMAGE 4
+#define BASE_DAMAGE 1
 #define N_ROWS 10
 #define N_COLUMNS 10
 #define INI_I 0
@@ -24,6 +24,7 @@ private:
     PathSolver pths;
 
     GenericLinkedList<Zone*> path_A;
+    GenericLinkedList<Zone*> path_B;
 
     GA pool_A;
 
@@ -66,6 +67,8 @@ public:
     std::string calculateSteps();
 
     GenericLinkedList<Zone*> resizePath(int type);
+
+    std::string translateTravel(GenericLinkedList<Zone*> travel_1,GenericLinkedList<Zone*>travel_2);
 
     std::string getStats();
 

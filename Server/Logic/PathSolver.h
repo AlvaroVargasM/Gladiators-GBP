@@ -19,6 +19,7 @@ public:
     bool visited(Zone *zone,GenericLinkedList<Zone*> *p);
 
     float getA_starTime();
+
 private:
     timer* timerA = new timer;
     timer* timerB = new timer;
