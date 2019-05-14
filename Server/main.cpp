@@ -5,58 +5,19 @@
 #include "Logic/IntimidationZone.h"
 #include "Logic/PathSolver.h"
 #include "Networking/Server.h"
-#include "Logic/Game.h"
 
 int main () {
-    srand(time(nullptr));
-    //Server::start();
-    RNG rng;
+    IntimidationZone* intimidationZone = new IntimidationZone(4, 4);
+    //intimidationZone->getZoneByID(5)->setBlocked(true);
+    //intimidationZone->getZoneByID(6)->setBlocked(true);
+    //intimidationZone->getZoneByID(7)->setBlocked(true);
+    //intimidationZone->getZoneByID(11)->setBlocked(true);
 
-    //std::cout << rng.getRandomNumber(0,5);
-
-    Game myGame;
-    myGame.getTowers();
-
-    std::cout << "\n\n--------------------------------------------------------------------------------------------\n\n";
-
-    std::cout << myGame.getTowers().get(0)->getData() << std::endl;
-    std::cout << myGame.getTowers().get(1)->getData() << std::endl;
-    std::cout << myGame.getTowers().get(2)->getData() << std::endl;
-
-    std::cout << "\n\n--------------------------------------------------------------------------------------------\n\n";
-
-    std::cout << myGame.getChampions();
-
-    std::cout << "\n\n--------------------------------------------------------------------------------------------\n\n";
-
-    myGame.getPoolA().printGenerations(2);
-
-    std::cout << "\n\n--------------------------------------------------------------------------------------------\n\n";
-
-    myGame.getPoolB().printGenerations(2);
-
-    std::cout << "\n\n--------------------------------------------------------------------------------------------\n\n";
-
-    myGame.getPoolA().newGen();
-    myGame.getPoolB().newGen();
-    myGame.saveGenStats();
-    myGame.getPoolA().newGen();
-    myGame.getPoolB().newGen();
-    myGame.saveGenStats();
-    myGame.getPoolA().newGen();
-    myGame.getPoolB().newGen();
-    myGame.saveGenStats();
-    myGame.getPoolA().newGen();
-    myGame.getPoolB().newGen();
-    myGame.saveGenStats();
-    myGame.getPoolA().newGen();
-    myGame.getPoolB().newGen();
-    myGame.saveGenStats();
-    myGame.getPoolA().newGen();
-    myGame.getPoolB().newGen();
-    myGame.saveGenStats();
-
-
-    std::cout << myGame.getStats() << std::endl;
-
+    PathSolver* solver = new PathSolver;
+    GenericLinkedList<Zone*>* list = solver->BackTrack(intimidationZone, 0, 0, 3,2);
+    for(int i = 0; i < *list->getLength(); i++){
+        std::cout << list->get(i)->getData()->getId() << std::endl;
+    }
+    std::cout << solver->getA_starTime() << std::endl;
+  //  Server::start();
 }

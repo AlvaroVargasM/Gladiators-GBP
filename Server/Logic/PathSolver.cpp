@@ -142,13 +142,14 @@ GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, 
  * @return bool
  */
 bool PathSolver::visited(Zone *zone, GenericLinkedList<Zone*> *node) {
-    if(*node->getLength()==0){
-        return false;
-    }
+
 
     if (node->includes(zone)){
-    return true;
-}
+        return true;
+    }
+    else
+        return false;
+
 
 }
 
@@ -174,44 +175,86 @@ GenericLinkedList<Zone*>*PathSolver::BackTrack(IntimidationZone *grid, int xo, i
  *
  * */
 
-    if (xo==xf && yo==yf){
+if (xo == xf && yo == yf) {
+    path->add(grid->getZone(xo,yo));
         return path;
 
-    }
+}
 /**
  *They validate movements to the right and verify that the area has not been previously verified.
  * If the conditions are met, the zones are added to a list with zones free of blockages
  *
  *
  * */
-    if ((grid->getZone(xo,yo + 1)->isBlocked()==false)  && (visited(grid->getZone(xo, yo), path))) {
-        path->add(grid->getZone(xo,yo ));
-        return BackTrack(grid, xo,yo+1,grid->getN(),grid->getM());
+   /** if(xo==xf-1&&yo==yf-1){
+        if ((grid->getZone(xo, yo + 1)->isBlocked() == false) && (visited(grid->getZone(xo, yo), path))) {
+            path->add(grid->getZone(xo, yo));
+            return BackTrack(grid, xo, yo + 1, xf, yf);
 
     }
+    }**/
+
+if ((grid->getZone(xo, yo + 1)->isBlocked() == false) && !(visited(grid->getZone(xo, yo), path))&& yo<yf) {
+     path->add(grid->getZone(xo, yo));
+     return BackTrack(grid, xo, yo + 1, xf, yf);
+
+}
+if(yo==yf) {
+    if (grid->getZone(xo + 1, yo)->isBlocked() == false&& !(visited(grid->getZone(xo, yo), path))) {
+        path->add(grid->getZone(xo, yo));
+        return BackTrack(grid,xo + 1, yo, xf, yf);
+    }
     else
+        if (!path->includes(grid->getZone(xo, yo))) {
+        path->add(grid->getZone(xo, yo));}
+
+    path->deleteEndNode();
+    return BackTrack(grid, xo, yo - 1, xf, yf);
+
+}
+if(yo+1==yf){
+    if ((grid->getZone(xo, yo + 1)->isBlocked() == false) && !(visited(grid->getZone(xo, yo), path))&& yo<yf) {
+        path->add(grid->getZone(xo, yo));
+        return BackTrack(grid, xo, yo + 1, xf, yf);
+
+
+    }
+}
+
+
+
         /**
          * If there is no possibility of movements to the right, this condition verifies that movements
          * can be made downwards in the zone of intimidation, or also when it is a zone already visited
          * where the method is being returned.
          */
+else
+    if (grid->getZone(xo + 1, yo)->isBlocked() == false) {
+        path->add(grid->getZone(xo , yo));
+        return BackTrack(grid, xo + 1, yo, xf, yf);
 
-        if (grid->getZone(xo + 1, yo)->isBlocked() ==false){
-            path->add(grid->getZone(xo + 1, yo));
-            return BackTrack(grid, xo + 1, yo,grid->getN(),grid->getM());
-
-    }
+}
         /**
          * In this part of the algorithm, when it is validated that the nodes have already been verified
          * and meet with towers and must be returned, the list patterns will be removed, only to leave
          * those who have a clean path
          */
-        else
-            path->deleteEndNode();
-            return BackTrack(grid, xo, yo - 1,grid->getN(),grid->getM());
+     else
+         if(!path->includes(grid->getZone(xo , yo))){
+             path->add(grid->getZone(xo , yo));
+
+         }
+         path->deleteEndNode();
+         return BackTrack(grid, xo, yo - 1, xf, yf);
 
 
 
+}
+
+
+
+float PathSolver::getA_starTime() {
+    return 0,2;
 }
 
 
