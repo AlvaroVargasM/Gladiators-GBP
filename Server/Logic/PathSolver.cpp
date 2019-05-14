@@ -17,6 +17,7 @@ int heuristic(int x0, int y0, int x1, int y1){
 
 
 GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, int x_i, int y_i, int x_f, int y_f) {
+    this->timerA->reset();
     this->timerA->start();
     for(int i = 0; i < grid->getN(); i++){
         for(int j = 0; j < grid->getM(); j++){
@@ -77,6 +78,7 @@ GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, 
         grid->printGridProgress(current->getId(), finish);
 
         if(current->getId() == finish){
+            this->timerA->stop();
             GenericLinkedList<Zone*>* path = new GenericLinkedList<Zone*>;
             Zone* temp = current;
             while(temp->getParent() != nullptr){
@@ -198,7 +200,7 @@ GenericLinkedList<Zone*>*PathSolver::BackTrack(IntimidationZone *grid, int xo, i
 }
 
 float PathSolver::getA_starTime() {
-    return this->timerA->getTime();
+    return this->timerA->getTime()/CLOCKS_PER_SEC;
 }
 
 
