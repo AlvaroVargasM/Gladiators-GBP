@@ -167,6 +167,7 @@ bool PathSolver::visited(Zone *zone, GenericLinkedList<Zone*> *node) {
 
 
 GenericLinkedList<Zone *> *path = new GenericLinkedList<Zone *>;
+GenericLinkedList<Zone *> *fpath = new GenericLinkedList<Zone *>;
 GenericLinkedList<Zone *> *PathSolver::BackTrack(IntimidationZone *grid, int xo, int yo, int xf, int yf) {
 
 /**
@@ -177,18 +178,11 @@ GenericLinkedList<Zone *> *PathSolver::BackTrack(IntimidationZone *grid, int xo,
 
 if (xo == xf && yo == yf) {
 
-    path->add(grid->getZone(xf, yf));
-    return  path;
 
-
-
-
-
+    path->add(grid->getZone(xf, xf));
+    return path;
 
 }
-
-
-
 
 /**
  *They validate movements to the right and verify that the area has not been previously verified.
@@ -207,6 +201,7 @@ if (xo == xf && yo == yf) {
 if (yo < yf) {
     if ((grid->getZone(xo, yo + 1)->isBlocked() == false) &&!(visited(grid->getZone(xo , yo ), path))) {
         path->add(grid->getZone(xo, yo));
+
         return BackTrack(grid, xo, yo + 1, xf, yf);
     }
     else
@@ -218,7 +213,7 @@ if (yo < yf) {
 
          }
         else
-        if (!visited(grid->getZone(xo, yo), path)) {
+            if (!visited(grid->getZone(xo, yo), path)) {
             path->add(grid->getZone(xo, yo));
         }
             path->deleteEndNode();
