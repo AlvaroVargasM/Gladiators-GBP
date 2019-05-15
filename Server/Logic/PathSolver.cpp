@@ -146,13 +146,14 @@ GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, 
  */
 bool PathSolver::visited(Zone *zone, GenericLinkedList<Zone*> *node) {
     for(int i = 0; i < *node->getLength(); i++) {
+        if(i==*node->getLength()){return false;}
         if (zone->getId() == node->get(i)->getData()->getId()) {
             return true;
         }
-        return false;
+
 
     }
-
+    return false;
 
 
 }
@@ -170,7 +171,7 @@ bool PathSolver::visited(Zone *zone, GenericLinkedList<Zone*> *node) {
 
 
 GenericLinkedList<Zone *> *path = new GenericLinkedList<Zone *>;
-GenericLinkedList<Zone *> *fpath = new GenericLinkedList<Zone *>;
+GenericLinkedList<Zone *> *historial = new GenericLinkedList<Zone *>;
 GenericLinkedList<Zone *> *PathSolver::BackTrack(IntimidationZone *grid, int xo, int yo, int xf, int yf) {
 
 /**
@@ -187,6 +188,7 @@ if (xo == xf && yo == yf) {
 
 }
 
+
 /**
  *They validate movements to the right and verify that the area has not been previously verified.
  * If the conditions are met, the zones are added to a list with zones free of blockages.
@@ -201,33 +203,57 @@ if (xo == xf && yo == yf) {
              }
              }**/
 
-if (yo < yf) {
-    if ((grid->getZone(xo, yo + 1)->isBlocked() == false) &&!(visited(grid->getZone(xo , yo ), path))) {
-        path->add(grid->getZone(xo, yo));
+  /**  if(visited(grid->getZone(xo , yo ), path)){
 
-        return BackTrack(grid, xo, yo + 1, xf, yf);
+        if (!visited(grid->getZone(xo, yo), path)) {
+            path->add(grid->getZone(xo, yo));
+        }
+        path->deleteEndNode();
+        return BackTrack(grid, xo, yo - 1, xf, yf);
+    }*/
+
+if (yo < yf) {
+    // si tiene  que devolverse, para no volver hasta el  origen, esta sentencia  toma  la desición de   recortar camino
+/**
+    if(!grid->getZone(xo , yo-1)->isBlocked()&& visited(grid->getZone(xo, yo),historial )){
+        // path->deleteEndNode();
+        return BackTrack(grid, xo, yo-1 , xf, yf);
+    }*/
+
+    if ((!grid->getZone(xo, yo + 1)->isBlocked()) &&!(visited(grid->getZone(xo , yo ), path))) {
+        path->add(grid->getZone(xo, yo));
+        historial->add(grid->getZone(xo, yo));
+
+        return BackTrack(grid,xo,yo+1, xf, yf);
     }
-    else
+
+
         if (grid->getZone(xo + 1, yo)->isBlocked() == false) {
             if (!visited(grid->getZone(xo, yo), path)) {
                         path->add(grid->getZone(xo, yo));
+                        historial->add(grid->getZone(xo, yo));
             }
             return BackTrack(grid, xo + 1, yo, xf, yf);
 
          }
         else
+
             if (!visited(grid->getZone(xo, yo), path)) {
             path->add(grid->getZone(xo, yo));
+            historial->add(grid->getZone(xo, yo));
         }
             path->deleteEndNode();
             return BackTrack(grid, xo, yo - 1, xf, yf);
 
 
-            }
+
+
+}
 
 if (yo == yf ) {
     if (grid->getZone(xo + 1, yo)->isBlocked() == false && !(visited(grid->getZone(xo, yo), path))) {
         path->add(grid->getZone(xo, yo));
+        historial->add(grid->getZone(xo, yo));
         return BackTrack(grid, xo + 1, yo, xf, yf);
 
     }
@@ -236,11 +262,24 @@ if (yo == yf ) {
     else
         if (!visited(grid->getZone(xo, yo), path)) {
             path->add(grid->getZone(xo, yo));
+            historial->add(grid->getZone(xo, yo));
     }
         path->deleteEndNode();
         return BackTrack(grid, xo, yo - 1, xf, yf);
 
             }
+// nuevas variaciones al  algortimo
+/**
+if (grid->getZone(xo + 1, yo)->isBlocked() != false && (grid->getZone(xo + 1, yo)->isBlocked() != false )){
+    if (!visited(grid->getZone(xo, yo), path)) {
+        path->add(grid->getZone(xo, yo));
+        historial->add(grid->getZone(xo, yo));
+    }
+
+    path->deleteEndNode();
+    return BackTrack(grid, xo, yo - 1, xf, yf);
+
+}*/
 
 
 
