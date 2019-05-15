@@ -31,6 +31,7 @@ private:
     GA pool_B;
 
     bool completed_A;
+    
     bool completed_B;
 
     std::string averageGensRes;
@@ -81,4 +82,7 @@ public:
     bool isCompletedA();
 
     bool isCompletedB();
+
+
+    IntimidationZone *getGameZone();
 };

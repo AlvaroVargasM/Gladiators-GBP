@@ -8,41 +8,8 @@
 
 int main () {
     Game g;
-    //g.getTowers();
-    //std::cout << g.calculateSteps();
-    // Server::start();
-    PathSolver *pathSolver;
-    IntimidationZone *intimidationZone = new IntimidationZone(10, 10);
 
-  //  intimidationZone->getZoneByID(2)->setBlocked(true);
-    intimidationZone->getZoneByID(1)->setBlocked(true);
-    intimidationZone->getZoneByID(4)->setBlocked(true);
-    intimidationZone->getZoneByID(9)->setBlocked(true);
-    intimidationZone->getZoneByID(8)->setBlocked(true);
-    intimidationZone->getZoneByID(11)->setBlocked(true);
+    g.getTowers();
 
-
-
-
-    //intimidationZone->getZoneByID(5)->setBlocked(true);
-
-     GenericLinkedList<Zone*>*list= pathSolver->BackTrack(intimidationZone,0,0,9,9);
-    for(int i = 0; i < *list->getLength(); i++){
-
-        std:: cout<<list->get(i)->getData()->getId()<<"\n";
-
-    }
-
-
-
-
-
-
-
-
-
-
+    std::cout << g.calculateSteps();
 }
-
-
-

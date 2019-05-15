@@ -102,12 +102,12 @@ void Zone::setParent(Zone* zone) {
 
 int Zone::getX(int n) {
     int x = this->id / n;
-    std::cout << "Found this x " << x << std::endl;
+    //std::cout << "Found this x " << x << std::endl;
     return  x;
 }
 
 int Zone::getY(int n, int m) {
     int y = this->id - (this->getX(n)*m);
-    std::cout << "Found this y " << y << std::endl;
+    //std::cout << "Found this y " << y << std::endl;
     return y;
 }

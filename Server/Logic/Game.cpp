@@ -14,6 +14,8 @@ Game::Game() {
     this->averageGensEI = " ";
     this->averageGensPC = " ";
     this->averageGensStr = " ";
+    this->completed_A = false;
+    this->completed_B = false;
     saveGenStats();
 }
 
@@ -220,7 +222,7 @@ GenericLinkedList<Zone*> Game::resizePath(int type) {
         int glife = this->pool_A.getStrongest().getResistance();
 
         for (int i = 0;i < *this->path_A.getLength();i++) {
-            for (int x = 0; x < *this->path_A.get(i)->getData()->getDamage()->getLength();i++) {
+            for (int x = 0; x < *this->path_A.get(i)->getData()->getDamage()->getLength() - 1;i++) {
                 glife -= this->path_A.get(i)->getData()->getDamage()->get(x)->getData()->get(1)->getData();
                 x++;
             }
@@ -231,12 +233,11 @@ GenericLinkedList<Zone*> Game::resizePath(int type) {
         if (cutPath.getLast()->getData()->getId() == this->path_A.getLast()->getData()->getId())
             this->completed_A = true;
     }
-
     if (type == 2) { // RESIZE Bt
         int glife = this->pool_B.getStrongest().getResistance();
 
         for (int i = 0;i < *this->path_B.getLength();i++) {
-            for (int x = 0; x < *this->path_B.get(i)->getData()->getDamage()->getLength();i++) {
+            for (int x = 0; x < *this->path_B.get(i)->getData()->getDamage()->getLength() - 1;i++) {
                 glife -= this->path_B.get(i)->getData()->getDamage()->get(x)->getData()->get(1)->getData();
                 x++;
             }
@@ -247,8 +248,6 @@ GenericLinkedList<Zone*> Game::resizePath(int type) {
         if (cutPath.getLast()->getData()->getId() == this->path_B.getLast()->getData()->getId())
             this->completed_B = true;
     }
-    else
-        std::cout << "!219GAME";
 
     return cutPath;
 }
@@ -263,24 +262,49 @@ std::string Game::translateTravel(GenericLinkedList<Zone *> travel_A,GenericLink
     GenericLinkedList<std::string> commands_B;
 
     // We fill the command list of A
-    for (int i = 1;i < *travel_A.getLength();i++) {
+    for (int i = 0;i < *travel_A.getLength();i++) {
         std::string command;
         int current_i = travel_A.get(i)->getData()->getX(N_COLUMNS);
         int current_j = travel_A.get(i)->getData()->getY(N_COLUMNS,N_ROWS);
 
-        if (*commands_A.getLength() == 0)
-            command += "move.a";
-        else
-            command += ".move.a";
-
-        if (current_i == last_i && current_j > last_j)
+        if (current_i == last_i && current_j > last_j) {
+            if (*commands_A.getLength() == 0)
+                command += "move.a";
+            else
+                command += ".move.a";
             command += ".right";
-        if (current_i == last_i && current_j < last_j)
+            last_i = current_i;
+            last_j = current_j;
+        }
+        if (current_i == last_i && current_j < last_j) {
+            if (*commands_A.getLength() == 0)
+                command += "move.a";
+            else
+                command += ".move.a";
             command += ".left";
-        if (current_i == last_i && current_j == last_j)
+            last_i = current_i;
+            last_j = current_j;
+        }
+        if (current_i < last_i && current_j == last_j) {
+            if (*commands_A.getLength() == 0)
+                command += "move.a";
+            else
+                command += ".move.a";
             command += ".up";
-        if (current_i == last_i && current_j == last_j)
+            last_i = current_i;
+            last_j = current_j;
+        }
+        if (current_i > last_i && current_j == last_j) {
+            if (*commands_A.getLength() == 0)
+                command += "move.a";
+            else
+                command += ".move.a";
             command += ".down";
+            last_i = current_i;
+            last_j = current_j;
+        }
+
+        commands_A.add(command);
     }
 
     // We fill the command list of B
@@ -289,16 +313,34 @@ std::string Game::translateTravel(GenericLinkedList<Zone *> travel_A,GenericLink
         int current_i = travel_B.get(i)->getData()->getX(N_COLUMNS);
         int current_j = travel_B.get(i)->getData()->getY(N_COLUMNS,N_ROWS);
 
-        command += ".move.b";
 
-        if (current_i == last_i && current_j > last_j)
+
+        if (current_i == last_i && current_j > last_j) {
+            command += ".move.b";
             command += ".right";
-        if (current_i == last_i && current_j < last_j)
+            last_i = current_i;
+            last_j = current_j;
+        }
+        if (current_i == last_i && current_j < last_j) {
+            command += ".move.b";
             command += ".left";
-        if (current_i == last_i && current_j == last_j)
+            last_i = current_i;
+            last_j = current_j;
+        }
+        if (current_i < last_i && current_j == last_j) {
+            command += ".move.b";
             command += ".up";
-        if (current_i == last_i && current_j == last_j)
+            last_i = current_i;
+            last_j = current_j;
+        }
+        if (current_i > last_i && current_j == last_j) {
+            command += ".move.b";
             command += ".down";
+            last_i = current_i;
+            last_j = current_j;
+        }
+
+        commands_B.add(command);
     }
 
     int index = 0;
@@ -309,10 +351,11 @@ std::string Game::translateTravel(GenericLinkedList<Zone *> travel_A,GenericLink
     if (*commands_A.getLength() > *commands_B.getLength())
         index = *commands_A.getLength();
 
-    for (int i = 0;i < index;i++) {
+    for (int i = 0;i < index - 1;i++) {
         final_Command_Line += commands_A.get(i)->getData();
         final_Command_Line += commands_B.get(i)->getData();
     }
+    std::cout << final_Command_Line;
     return final_Command_Line;
 }
 
@@ -322,6 +365,10 @@ bool Game::isCompletedA() {
 
 bool Game::isCompletedB() {
     return this->completed_B;
+}
+
+IntimidationZone *Game::getGameZone() {
+    return game_Zone;
 }
 
 
