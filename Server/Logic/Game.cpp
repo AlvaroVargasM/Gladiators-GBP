@@ -55,10 +55,12 @@ void Game::generateTowers() {
             // Fijese si logra desbloquear completar el path
             if (this->pths.findPathByA_Star(this->game_Zone,INI_I,INI_J,FIN_I,FIN_J) != nullptr) { //BTR
 
-                // Si lo logra ponga la torre
-                putTower(i,j,type);
                 // Sumele a las torres totales
                 n_Towers++;
+
+                // Si lo logra ponga la torre
+                putTower(i,j,type);
+
                 // Genere torre para gui
                 generateNewGUITower(i, j, type);
 
@@ -247,7 +249,7 @@ GenericLinkedList<Zone*> Game::resizePath(int type) {
         int glife = this->pool_A.getStrongest().getResistance();
 
         for (int i = 0;i < *this->path_A.getLength();i++) {
-            for (int x = 0; x < *this->path_A.get(i)->getData()->getDamage()->getLength() - 1;i++) {
+            for (int x = 0; x < *this->path_A.get(i)->getData()->getDamage()->getLength();i++) {
                 glife -= this->path_A.get(i)->getData()->getDamage()->get(x)->getData()->get(1)->getData();
                 x++;
             }

@@ -12,6 +12,21 @@ int main () {
     Game g;
 
     g.getTowers();
-
-    std::cout << g.getSteps();
+    std::cout << g.getSteps() << "\n\n";
+    g.getTowers();
+    std::cout << g.getSteps() << "\n\n";
+    g.getTowers();
+    std::cout << g.getSteps() << "\n\n";
+    g.getTowers();
+    std::cout << g.getSteps() << "\n\n";
+    g.getTowers();
+    std::cout << g.getSteps() << "\n\n";
+    g.getTowers();
+    std::cout << g.getSteps() << "\n\n";
+    g.getTowers();
+    std::cout << g.getSteps() << "\n\n";
+    g.getTowers();
+    std::cout << g.getSteps() << "\n\n";
+    g.getTowers();
+    std::cout << g.getSteps() << "\n\n";
 }

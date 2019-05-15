@@ -59,7 +59,7 @@ GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, 
 
     openSet->add(grid->getZoneByID(start));
     while(*openSet->getLength() > 0){
-        std::cout << "Analizando..." << std::endl;
+        //std::cout << "Analizando..." << std::endl;
         Zone* lowest = openSet->get(0)->getData();
         int lowest_i = 0;
         for(int i = 0; i < *openSet->getLength(); i++){
@@ -67,15 +67,15 @@ GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, 
             if(temp->getF() < lowest->getF()){
                 lowest = temp;
                 lowest_i = i;
-                std::cout << "Nuevo mejor " << lowest->getId() << std::endl;
+        //        std::cout << "Nuevo mejor " << lowest->getId() << std::endl;
             }
         }
 
-        std::cout << "Viendo a nodo " << lowest->getId() << std::endl;
+        //std::cout << "Viendo a nodo " << lowest->getId() << std::endl;
 
         Zone* current = lowest;
 
-        grid->printGridProgress(current->getId(), finish);
+        //grid->printGridProgress(current->getId(), finish);
 
         if(current->getId() == finish){
             GenericLinkedList<Zone*>* path = new GenericLinkedList<Zone*>;
@@ -97,32 +97,32 @@ GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, 
         GenericLinkedList<Zone*>* neighbors = current->getNeighbors();
         for(int i = 0; i < *neighbors->getLength(); i++){
             Zone* temp = neighbors->get(i)->getData();
-            std::cout << "Analizando vecino " << temp->getId() << std::endl;
+            //std::cout << "Analizando vecino " << temp->getId() << std::endl;
             if(!temp->isBlocked()){
                 if(!closedSet->includes(temp)) {
-                    std::cout << "No esta en el closed set" << std::endl;
+            //        std::cout << "No esta en el closed set" << std::endl;
                     int tempG = current->getG() + 1;
-                    std::cout << "linea 99" << std::endl;
+            //        std::cout << "linea 99" << std::endl;
                     if (openSet->includes(temp)) {
-                        std::cout << "Ya esta en el open set" << std::endl;
+            //            std::cout << "Ya esta en el open set" << std::endl;
                         if (tempG < temp->getG()) {
-                            std::cout << "Tengo una mejor G" << std::endl;
+            //                std::cout << "Tengo una mejor G" << std::endl;
                             temp->setG(tempG);
                             temp->setParent(current);
                         }
                     } else {
-                        std::cout << "linea 108" << std::endl;
+            //            std::cout << "linea 108" << std::endl;
                         temp->setG(tempG);
-                        std::cout << "Tiene una g de " << tempG << std::endl;
+            //            std::cout << "Tiene una g de " << tempG << std::endl;
                         int nX = temp->getX(grid->getM());
                         int nY = temp->getY(grid->getN(), grid->getM());
                         int fX = grid->getZoneByID(finish)->getX(grid->getM());
                         int fY = grid->getZoneByID(finish)->getY(grid->getN(), grid->getM());
                         int hrtic = heuristic(nX, nY, fX, fY);
-                        std::cout << "Tiene heurista de " << hrtic << std::endl;
+            //            std::cout << "Tiene heurista de " << hrtic << std::endl;
                         temp->setH(hrtic);
                         temp->setF(tempG + hrtic);
-                        std::cout << "Tiene una F de " << temp->getF() << std::endl;
+            //            std::cout << "Tiene una F de " << temp->getF() << std::endl;
                         temp->setParent(current);
                         openSet->add(temp);
                     }
