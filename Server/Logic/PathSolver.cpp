@@ -57,6 +57,9 @@ GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, 
     int start = grid->getZone(x_i, y_i)->getId();
     int finish = grid->getZone(x_f, x_f)->getId();
 
+    int fX = grid->getZoneByID(finish)->getX(grid->getM());
+    int fY = grid->getZoneByID(finish)->getY(grid->getN(), grid->getM());
+
     openSet->add(grid->getZoneByID(start));
     while(*openSet->getLength() > 0){
         //std::cout << "Analizando..." << std::endl;
@@ -117,8 +120,6 @@ GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, 
                         //std::cout << "Tiene una g de " << tempG << std::endl;
                         int nX = temp->getX(grid->getM());
                         int nY = temp->getY(grid->getN(), grid->getM());
-                        int fX = grid->getZoneByID(finish)->getX(grid->getM());
-                        int fY = grid->getZoneByID(finish)->getY(grid->getN(), grid->getM());
                         int hrtic = heuristic(nX, nY, fX, fY);
                         //std::cout << "Tiene heurista de " << hrtic << std::endl;
                         temp->setH(hrtic);
