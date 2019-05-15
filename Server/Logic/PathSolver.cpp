@@ -146,6 +146,7 @@ GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, 
  */
 bool PathSolver::visited(Zone *zone, GenericLinkedList<Zone*> *node) {
     for(int i = 0; i < *node->getLength(); i++) {
+        if(i==*node->getLength()){return false;}
         if (zone->getId() == node->get(i)->getData()->getId()) {
             return true;
         }
@@ -213,17 +214,19 @@ if (xo == xf && yo == yf) {
 
 if (yo < yf) {
     // si tiene  que devolverse, para no volver hasta el  origen, esta sentencia  toma  la desición de   recortar camino
-
+/**
     if(!grid->getZone(xo , yo-1)->isBlocked()&& visited(grid->getZone(xo, yo),historial )){
         // path->deleteEndNode();
         return BackTrack(grid, xo, yo-1 , xf, yf);
-    }
+    }*/
+
     if ((!grid->getZone(xo, yo + 1)->isBlocked()) &&!(visited(grid->getZone(xo , yo ), path))) {
         path->add(grid->getZone(xo, yo));
         historial->add(grid->getZone(xo, yo));
 
         return BackTrack(grid,xo,yo+1, xf, yf);
     }
+
 
         if (grid->getZone(xo + 1, yo)->isBlocked() == false) {
             if (!visited(grid->getZone(xo, yo), path)) {
