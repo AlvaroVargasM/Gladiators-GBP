@@ -445,7 +445,6 @@ void Display::gameLoop()
 
         clear(false);
 
-        //test();
         setInfo(Connector::get("setStats"));
         runCommands(Connector::get("setSteps"));
     }
@@ -464,42 +463,6 @@ void Display::showEvent(QShowEvent *event)
     QMainWindow::showEvent(event);
     QTimer::singleShot(500, this, SLOT(restart()));
     return;
-}
-
-void Display::test()
-{
-    //GenericLinkedList<std::string> *infoList = Connector::get("setStats");
-    /*GenericLinkedList<std::string> *infoList = new GenericLinkedList<std::string>;
-    infoList->add("30");
-    infoList->add("30");
-    infoList->add("Startacus");
-    infoList->add("Backtracking");
-    infoList->add("26");
-    infoList->add("30");
-    infoList->add("60");
-    infoList->add("50");
-    infoList->add("4");
-    infoList->add("3");
-    infoList->add("High");
-    infoList->add("Medium");
-    infoList->add("Outstanding");
-    infoList->add("Average");
-    infoList->add("8");
-    infoList->add("7");
-    infoList->add("6");
-    infoList->add("9");
-    infoList->add("2.25");
-    infoList->add("5.33");*/
-    //setInfo(infoList);
-
-    //GenericLinkedList<std::string>* list = Connector::get("setSteps");
-    /*GenericLinkedList<std::string> *list = new GenericLinkedList<std::string>;
-    list->add("create.1.explosive.2.2");
-    list->add("create.2.normal.3.2");
-    list->add("create.3.explosive.4.2");
-    list->add("move.1.up");
-    list->add("shoot.4.a");
-    runCommands(list);*/
 }
 
 void Display::restart()

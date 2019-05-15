@@ -120,7 +120,6 @@ private:
     Statistics *statisticsWin; /**< Reference to the statistic window displayed at the end of the game. */
 
     public slots:
-        void test();
         /**
          * @brief restart Slots function called when the window is shown. Restarts the game flow.
          */

@@ -10,7 +10,7 @@ void Tower::setPos(int xpos, int ypos)
 {
 
     int x = xpos*52 + 3;
-    int y = ypos*52 - 88 +93;
+    int y = ypos*52 -48;
 
     setGeometry(x,y,43,129);
     setAttribute(Qt::WA_NoSystemBackground);
