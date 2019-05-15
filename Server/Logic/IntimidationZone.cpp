@@ -36,7 +36,7 @@ Zone *IntimidationZone::getZone(int i, int j) {
     return zone;
 }
 
-void IntimidationZone::printGrid() {
+void IntimidationZone::printGridDmg() {
     for(int i = 0; i < *this->zoneMatrix->getLength(); i++){
         GenericLinkedList<Zone*>* row = this->zoneMatrix->get(i)->getData();
         for(int j = 0; j < *this->zoneMatrix->getLength(); j++){
@@ -45,6 +45,19 @@ void IntimidationZone::printGrid() {
         }
         std::cout << std::endl;
     }
+    std::cout << std::endl;
+}
+
+void IntimidationZone::printGridBlocked() {
+    for(int i = 0; i < *this->zoneMatrix->getLength(); i++){
+        GenericLinkedList<Zone*>* row = this->zoneMatrix->get(i)->getData();
+        for(int j = 0; j < *this->zoneMatrix->getLength(); j++){
+            Zone* current = row->get(j)->getData();
+            std::cout << std::setw(4) << current->isBlocked() << " . ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
 }
 
 int IntimidationZone::getM() {

@@ -67,7 +67,7 @@ GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, 
             if(temp->getF() < lowest->getF()){
                 lowest = temp;
                 lowest_i = i;
-        //        std::cout << "Nuevo mejor " << lowest->getId() << std::endl;
+                //std::cout << "Nuevo mejor " << lowest->getId() << std::endl;
             }
         }
 
@@ -88,6 +88,7 @@ GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, 
             for(int i = *path->getLength()-1; i >= 0; i--){
                 reversedPath->add(path->get(i)->getData());
             }
+            std::cout << "Logre terminar" << std::endl;
             return reversedPath;
         }
 
@@ -100,29 +101,29 @@ GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, 
             //std::cout << "Analizando vecino " << temp->getId() << std::endl;
             if(!temp->isBlocked()){
                 if(!closedSet->includes(temp)) {
-            //        std::cout << "No esta en el closed set" << std::endl;
+                    //std::cout << "No esta en el closed set" << std::endl;
                     int tempG = current->getG() + 1;
-            //        std::cout << "linea 99" << std::endl;
+                    //std::cout << "linea 99" << std::endl;
                     if (openSet->includes(temp)) {
-            //            std::cout << "Ya esta en el open set" << std::endl;
+                        //std::cout << "Ya esta en el open set" << std::endl;
                         if (tempG < temp->getG()) {
-            //                std::cout << "Tengo una mejor G" << std::endl;
+                            //std::cout << "Tengo una mejor G" << std::endl;
                             temp->setG(tempG);
                             temp->setParent(current);
                         }
                     } else {
-            //            std::cout << "linea 108" << std::endl;
+                        //std::cout << "linea 108" << std::endl;
                         temp->setG(tempG);
-            //            std::cout << "Tiene una g de " << tempG << std::endl;
+                        //std::cout << "Tiene una g de " << tempG << std::endl;
                         int nX = temp->getX(grid->getM());
                         int nY = temp->getY(grid->getN(), grid->getM());
                         int fX = grid->getZoneByID(finish)->getX(grid->getM());
                         int fY = grid->getZoneByID(finish)->getY(grid->getN(), grid->getM());
                         int hrtic = heuristic(nX, nY, fX, fY);
-            //            std::cout << "Tiene heurista de " << hrtic << std::endl;
+                        //std::cout << "Tiene heurista de " << hrtic << std::endl;
                         temp->setH(hrtic);
                         temp->setF(tempG + hrtic);
-            //            std::cout << "Tiene una F de " << temp->getF() << std::endl;
+                        //std::cout << "Tiene una F de " << temp->getF() << std::endl;
                         temp->setParent(current);
                         openSet->add(temp);
                     }

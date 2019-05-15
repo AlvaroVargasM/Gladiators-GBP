@@ -7,26 +7,6 @@
 #include "Networking/Server.h"
 
 int main () {
-    srand(time((nullptr)));
-
-    Game g;
-
-    g.getTowers();
-    std::cout << g.getSteps() << "\n\n";
-    g.getTowers();
-    std::cout << g.getSteps() << "\n\n";
-    g.getTowers();
-    std::cout << g.getSteps() << "\n\n";
-    g.getTowers();
-    std::cout << g.getSteps() << "\n\n";
-    g.getTowers();
-    std::cout << g.getSteps() << "\n\n";
-    g.getTowers();
-    std::cout << g.getSteps() << "\n\n";
-    g.getTowers();
-    std::cout << g.getSteps() << "\n\n";
-    g.getTowers();
-    std::cout << g.getSteps() << "\n\n";
-    g.getTowers();
-    std::cout << g.getSteps() << "\n\n";
+    srand(time(nullptr));
+    Server::start();
 }

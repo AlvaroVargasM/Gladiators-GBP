@@ -23,7 +23,8 @@ public:
     IntimidationZone(int n, int m);
     Zone* getZone(int i, int j);
     Zone* getZoneByID(int id);
-    void printGrid();
+    void printGridDmg();
+    void printGridBlocked();
     void printGridProgress(int idi, int idf);
     int getN();
     int getM();

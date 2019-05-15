@@ -27,18 +27,21 @@ CONFIG += c++11
 SOURCES += \
     connector.cpp \
     genericlinkedlist.cpp \
+    graphpac.cpp \
         main.cpp \
         display.cpp \
     genericnode.cpp \
     menu.cpp \
     netpackage.cpp \
-    statistics.cpp
+    statistics.cpp \
+    tower.cpp
 
 HEADERS += \
     connector.h \
         display.h \
     genericnode.h \
     genericlinkedlist.h \
+    graphpac.h \
     libraries/rapidjson/allocators.h \
     libraries/rapidjson/cursorstreamwrapper.h \
     libraries/rapidjson/document.h \
@@ -77,7 +80,8 @@ HEADERS += \
     libraries/rapidjson/writer.h \
     menu.h \
     netpackage.h \
-    statistics.h
+    statistics.h \
+    tower.h
 
 FORMS += \
         display.ui \

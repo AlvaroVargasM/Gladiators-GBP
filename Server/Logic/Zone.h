@@ -11,9 +11,10 @@
 class Zone {
 private:
     int id;
-    bool blocked;
+    bool blocked = false;
     int tower;
-    GenericLinkedList<GenericLinkedList<int>*>* damage = new GenericLinkedList<GenericLinkedList<int>*>;
+    int damage;
+    int shooter;
     int g;
     int h;
     int f;
@@ -37,7 +38,13 @@ public:
 
     void setTower(int tower);
 
-    GenericLinkedList<GenericLinkedList<int>*>* getDamage();
+    int getDamage();
+
+    void setDamage(int damage);
+
+    int getShooter();
+
+    void setShooter(int shooter);
 
     int getG() const;
 

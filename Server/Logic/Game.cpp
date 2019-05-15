@@ -27,8 +27,11 @@ Game::Game() {
  */
 GenericLinkedList<std::string> Game::getTowers() {
     generateTowers();
+    this->game_Zone->printGridDmg();
+    this->game_Zone->printGridBlocked();
     this->path_A = *this->pths.findPathByA_Star(this->game_Zone,INI_I,INI_J,FIN_I,FIN_J);
     // this->path_B = *this->pths.BackTrack(this->game_Zone,INI_I,INI_J,FIN_I,FIN_J); BTR
+
     return new_GUI_Towers;
 }
 
@@ -47,7 +50,7 @@ void Game::generateTowers() {
         int type = this->rng.getRandomNumber(1,3);
 
         // Checkee si no ponen en el inicio o fin o sobre otra torre
-        if ((i != INI_I && j != INI_J) && (i != FIN_I && j != FIN_J) && !this->game_Zone->getZone(i, j)->isBlocked()) {
+        if (!this->game_Zone->getZone(i, j)->isBlocked()) {
 
             // Blockee el espacio
             this->game_Zone->getZone(i, j)->setBlocked(true);
@@ -101,36 +104,100 @@ void Game::putTower(int i, int j, int type) {
     }
     this->game_Zone->getZone(i,j)->setBlocked(true);
 
-    GenericLinkedList<int>* arrow = new GenericLinkedList<int>;
-    arrow->add(n_Towers);
-    arrow->add(damage);
-
-    this->game_Zone->getZone(i,j)->getDamage()->add(arrow);
+    for(int x = 1;x < (type + 1);x++) {
+        if (i - x >= 0) {
+            if (!this->game_Zone->getZone(i - x, j)->isBlocked()) {
+                if (this->game_Zone->getZone(i - x, j)->getShooter() == 0) {
+                    this->game_Zone->getZone(i - x, j)->setDamage(damage);
+                    this->game_Zone->getZone(i - x, j)->setShooter(n_Towers);
+                }
+            } else
+                break;
+        }
+    }
 
     for(int x = 1;x < (type + 1);x++) {
-        if (i - x >= 0 && !this->game_Zone->getZone(i - x,j)->isBlocked())
-            this->game_Zone->getZone(i - x,j)->getDamage()->add(arrow);
+        if (i + x < N_ROWS) {
+            if (!this->game_Zone->getZone(i + x, j)->isBlocked()) {
+                if (this->game_Zone->getZone(i + x, j)->getShooter() == 0) {
+                    this->game_Zone->getZone(i + x, j)->setDamage(damage);
+                    this->game_Zone->getZone(i + x, j)->setShooter(n_Towers);
+                }
+            } else
+                break;
+        }
+    }
 
-        if (i + x < N_ROWS && !this->game_Zone->getZone(i + x,j)->isBlocked())
-            this->game_Zone->getZone(i + x,j)->getDamage()->add(arrow);
+    for(int x = 1;x < (type + 1);x++) {
+        if (j - x >= 0) {
+            if (!this->game_Zone->getZone(i, j - x)->isBlocked()) {
+                if (this->game_Zone->getZone(i, j - x)->getShooter() == 0) {
+                    this->game_Zone->getZone(i, j - x)->setDamage(damage);
+                    this->game_Zone->getZone(i, j - x)->setShooter(n_Towers);
+                }
+            } else
+                break;
+        }
+    }
 
-        if (j - x >= 0 && !this->game_Zone->getZone(i,j - x)->isBlocked())
-            this->game_Zone->getZone(i,j - x)->getDamage()->add(arrow);
+    for(int x = 1;x < (type + 1);x++) {
+        if (j + x < N_COLUMNS) {
+            if (!this->game_Zone->getZone(i, j + x)->isBlocked()) {
+                if (this->game_Zone->getZone(i, j + x)->getShooter() == 0) {
+                    this->game_Zone->getZone(i, j + x)->setDamage(damage);
+                    this->game_Zone->getZone(i, j + x)->setShooter(n_Towers);
+                }
+            } else
+                break;
+        }
+    }
 
-        if (j + x < N_COLUMNS && !this->game_Zone->getZone(i,j + x)->isBlocked())
-            this->game_Zone->getZone(i,j + x)->getDamage()->add(arrow);
+    for(int x = 1;x < (type + 1);x++) {
+        if (i - x >= 0 && j - x >= 0) {
+            if (!this->game_Zone->getZone(i - x, j - x)->isBlocked()) {
+                if (this->game_Zone->getZone(i - x, j - x)->getShooter() == 0) {
+                    this->game_Zone->getZone(i - x, j - x)->setDamage(damage);
+                    this->game_Zone->getZone(i - x, j - x)->setShooter(n_Towers);
+                }
+            } else
+                break;
+        }
+    }
 
-        if (i - x >= 0 && j - x >= 0 && !this->game_Zone->getZone(i - x,j - x)->isBlocked())
-            this->game_Zone->getZone(i - x,j - x)->getDamage()->add(arrow);
+    for(int x = 1;x < (type + 1);x++) {
+        if (i - x >= 0 && j + x < N_COLUMNS) {
+            if (!this->game_Zone->getZone(i - x, j + x)->isBlocked()) {
+                if (this->game_Zone->getZone(i - x, j + x)->getShooter() == 0) {
+                    this->game_Zone->getZone(i - x, j + x)->setDamage(damage);
+                    this->game_Zone->getZone(i - x, j + x)->setShooter(n_Towers);
+                }
+            } else
+                break;
+        }
+    }
 
-        if (i - x >= 0 && j + x < N_COLUMNS && !this->game_Zone->getZone(i - x,j + x)->isBlocked())
-            this->game_Zone->getZone(i - x,j + x)->getDamage()->add(arrow);
+    for(int x = 1;x < (type + 1);x++) {
+        if (i + x < N_ROWS && j - x >= 0) {
+            if (!this->game_Zone->getZone(i + x, j - x)->isBlocked()) {
+                if (this->game_Zone->getZone(i + x, j - x)->getShooter() == 0) {
+                    this->game_Zone->getZone(i + x, j - x)->setDamage(damage);
+                    this->game_Zone->getZone(i + x, j - x)->setShooter(n_Towers);
+                }
+            } else
+                break;
+        }
+    }
 
-        if (i + x < N_ROWS && j - x >= 0 && !this->game_Zone->getZone(i + x,j - x)->isBlocked())
-            this->game_Zone->getZone(i + x,j - x)->getDamage()->add(arrow);
-
-        if (i + x < N_ROWS && j + x < N_COLUMNS && !this->game_Zone->getZone(i + x,j + x)->isBlocked())
-            this->game_Zone->getZone(i + x,j + x)->getDamage()->add(arrow);
+    for(int x = 1;x < (type + 1);x++) {
+        if (i + x < N_ROWS && j + x < N_COLUMNS) {
+            if (!this->game_Zone->getZone(i + x, j + x)->isBlocked()) {
+                if (this->game_Zone->getZone(i + x, j + x)->getShooter() == 0) {
+                    this->game_Zone->getZone(i + x, j + x)->setDamage(damage);
+                    this->game_Zone->getZone(i + x, j + x)->setShooter(n_Towers);
+                }
+            } else
+                break;
+        }
     }
 }
 
@@ -155,7 +222,7 @@ void Game::generateNewGUITower(int i,int j,int type) {
         default:
             stype = "!117GAME";
     }
-    this->new_GUI_Towers.add("create." + std::to_string(this->n_Towers) + "." + stype +"." + std::to_string(i) + "." + std::to_string(j));
+    this->new_GUI_Towers.add("create." + std::to_string(this->n_Towers) + "." + stype +"." + std::to_string(j) + "." + std::to_string(i));
 }
 
 // C H A M P I O N S ---------------------------------------------------------------------------------------------------
@@ -251,15 +318,15 @@ GenericLinkedList<Zone*> Game::resizePath(int type) {
         int glife = this->pool_A.getStrongest().getResistance();
 
         for (int i = 0;i < *this->path_A.getLength();i++) {
-            for (int x = 0; x < *this->path_A.get(i)->getData()->getDamage()->getLength();i++) {
-                glife -= this->path_A.get(i)->getData()->getDamage()->get(x)->getData()->get(1)->getData();
-                x++;
-            }
+            glife -= this->path_A.get(i)->getData()->getDamage();
+
             if (glife > 0) {
                 cutPath.add(this->path_A.get(i)->getData());
             }
         }
-        if (cutPath.getLast()->getData()->getId() == this->path_A.getLast()->getData()->getId())
+
+        if (cutPath.getLast()->getData()->getX(N_COLUMNS) == FIN_I &&
+        cutPath.getLast()->getData()->getY(N_COLUMNS,N_ROWS) == FIN_J)
             this->completed_A = true;
     }
     /*
@@ -323,11 +390,9 @@ std::string Game::translateTravel(GenericLinkedList<Zone *> travel_A,GenericLink
 
         commands_A.add(move_Command);
 
-        if (*travel_A.get(i)->getData()->getDamage()->getLength() != 0) {
-            for (int y = 0;y < *travel_A.get(i)->getData()->getDamage()->getLength();y++) {
-                shoot_Command += ",shoot." + std::to_string(travel_A.get(i)->getData()->getDamage()->get(y)->getData()->get(1)->getData()) + ".a";
-                commands_A.add(shoot_Command);
-            }
+        if (travel_A.get(i)->getData()->getDamage() != 0) {
+            shoot_Command += ",shoot." + std::to_string(travel_A.get(i)->getData()->getShooter()) + ".a";
+            commands_A.add(shoot_Command);
         }
     }
 
