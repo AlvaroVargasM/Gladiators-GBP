@@ -132,6 +132,7 @@ GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, 
             }
         }
     }
+    return nullptr;
 
 }
 
