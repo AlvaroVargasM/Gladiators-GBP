@@ -4,6 +4,8 @@
 
 #include "Game.h"
 
+
+
 /**
  * Constructs the game class and initializes some of the members
  */
@@ -102,16 +104,21 @@ std::string Game::getChampions() {
     Gladiator champ_1 = this->pool_A.getStrongest();
     Gladiator champ_2 = this->pool_B.getStrongest();
 
-    std::string champs = std::to_string(champ_1.getResistance()) + "," + std::to_string(champ_2.getResistance()) + "," +
-            std::to_string(this->pool_A.getGeneration()) + "," + std::to_string(this->pool_B.getGeneration()) + "," +
-            std::to_string(champ_1.getAge()) + "," + std::to_string(champ_2.getAge()) + "," +
-            "0" + "," + "0" + "," +
-            "0" + "," + "0" + "," +
-            std::to_string(champ_1.getEmotionalIntelligence()) + "," + std::to_string(champ_2.getEmotionalIntelligence()) + "," +
-            std::to_string(champ_1.getPhysicalCondition()) + "," + std::to_string(champ_2.getPhysicalCondition()) + "," +
-            std::to_string(champ_1.getUpperBodyStrength()) + "," + std::to_string(champ_1.getLowerBodyStrength()) + "," +
-            std::to_string(champ_2.getUpperBodyStrength()) + "," + std::to_string(champ_2.getLowerBodyStrength()) + "," +
-            std::to_string(this->pths.getA_starTime()) + "0";
+    std::string champs;
+    champs = std::to_string(champ_1.getResistance()) + "," + std::to_string(champ_2.getResistance()) + "," +
+             std::to_string(this->pool_A.getGeneration()) + "," + std::to_string(this->pool_B.getGeneration()) + "," +
+             std::to_string(champ_1.getAge()) + "," + std::to_string(champ_2.getAge()) + "," +
+             "0" + "," + "0" + "," +
+             "0" + "," + "0" + "," +
+             std::to_string(champ_1.getEmotionalIntelligence()) + "," +
+             std::to_string(champ_2.getEmotionalIntelligence()) + "," +
+             std::to_string(champ_1.getPhysicalCondition()) + "," + std::to_string(champ_2.getPhysicalCondition()) +
+             "," +
+             std::to_string(champ_1.getUpperBodyStrength()) + "," + std::to_string(champ_1.getLowerBodyStrength()) +
+             "," +
+             std::to_string(champ_2.getUpperBodyStrength()) + "," + std::to_string(champ_2.getLowerBodyStrength()) +
+             "," +
+             std::to_string(this->pths.getA_starTime()) + "0";
     return champs;
 }
 
