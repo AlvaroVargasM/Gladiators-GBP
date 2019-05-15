@@ -268,38 +268,22 @@ std::string Game::translateTravel(GenericLinkedList<Zone *> travel_A,GenericLink
         int current_j = travel_A.get(i)->getData()->getY(N_COLUMNS,N_ROWS);
 
         if (current_i == last_i && current_j > last_j) {
-            if (*commands_A.getLength() == 0)
-                command += "move.a";
-            else
-                command += ".move.a";
-            command += ".right";
+            command += ",move.a.right";
             last_i = current_i;
             last_j = current_j;
         }
         if (current_i == last_i && current_j < last_j) {
-            if (*commands_A.getLength() == 0)
-                command += "move.a";
-            else
-                command += ".move.a";
-            command += ".left";
+            command += ",move.a.left";
             last_i = current_i;
             last_j = current_j;
         }
         if (current_i < last_i && current_j == last_j) {
-            if (*commands_A.getLength() == 0)
-                command += "move.a";
-            else
-                command += ".move.a";
-            command += ".up";
+            command += ",move.a.up";
             last_i = current_i;
             last_j = current_j;
         }
         if (current_i > last_i && current_j == last_j) {
-            if (*commands_A.getLength() == 0)
-                command += "move.a";
-            else
-                command += ".move.a";
-            command += ".down";
+            command += ",move.a.down";
             last_i = current_i;
             last_j = current_j;
         }
@@ -316,26 +300,22 @@ std::string Game::translateTravel(GenericLinkedList<Zone *> travel_A,GenericLink
 
 
         if (current_i == last_i && current_j > last_j) {
-            command += ".move.b";
-            command += ".right";
+            command += ",move.b.right";
             last_i = current_i;
             last_j = current_j;
         }
         if (current_i == last_i && current_j < last_j) {
-            command += ".move.b";
-            command += ".left";
+            command += ",move.b.left";
             last_i = current_i;
             last_j = current_j;
         }
         if (current_i < last_i && current_j == last_j) {
-            command += ".move.b";
-            command += ".up";
+            command += ",move.b.up";
             last_i = current_i;
             last_j = current_j;
         }
         if (current_i > last_i && current_j == last_j) {
-            command += ".move.b";
-            command += ".down";
+            command += ",move.b.down";
             last_i = current_i;
             last_j = current_j;
         }
