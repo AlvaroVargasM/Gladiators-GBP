@@ -65,7 +65,7 @@ public:
 
     GenericLinkedList<std::string> getTowers();
 
-    std::string calculateSteps();
+    std::string getSteps();
 
     GenericLinkedList<Zone*> resizePath(int type);
 

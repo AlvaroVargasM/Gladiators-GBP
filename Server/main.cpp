@@ -11,5 +11,5 @@ int main () {
 
     g.getTowers();
 
-    std::cout << g.calculateSteps();
+    std::cout << g.getSteps();
 }
