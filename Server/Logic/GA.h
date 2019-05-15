@@ -4,12 +4,12 @@
 
 #pragma once
 
-#define POP_SIZE 20
+#define POP_SIZE 100
 #define FITTEST_SIZE 20
-#define BIT_SET_SIZE 8
+#define BIT_SET_SIZE 10
 #define BEST_GENE_SURVIVABILITY 70
 #define MUTATION_PORCENTAGE 25
-#define INVERSION_PORCENTAGE 5
+#define INVERSION_PORCENTAGE 1
 
 #include <iostream>
 #include <string>
@@ -27,11 +27,6 @@ private:
      * The main pool of gladiators to be analyzed and used by by the GA
      */
     Gladiator population [POP_SIZE];
-
-    /**
-     * An array of gladiators used to store the best individuals of the pop
-     */
-    Gladiator fittest [FITTEST_SIZE];
 
     /**
      * An array of gladiators used to store the children of the fittest
@@ -84,12 +79,6 @@ private:
      * @return index for the partition
      */
     void quickSort(int low, int high);
-
-    /**
-     * Takes the top 20% of individuals of the pop and puts them on the fittest array, it assumens that the pop has already
-     * been sorted and the fist 20 are the best of the population.
-     */
-    void selection();
 
     /**
      * Takes a pair of gladiators to create a new unique gladiator from their genes, applies mutation and inversion to
