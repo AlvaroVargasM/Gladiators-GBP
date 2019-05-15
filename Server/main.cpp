@@ -15,7 +15,7 @@ int main () {
     IntimidationZone *intimidationZone = new IntimidationZone(10, 10);
 
   //  intimidationZone->getZoneByID(2)->setBlocked(true);
-   intimidationZone->getZoneByID(1)->setBlocked(true);
+    intimidationZone->getZoneByID(1)->setBlocked(true);
     intimidationZone->getZoneByID(4)->setBlocked(true);
     intimidationZone->getZoneByID(9)->setBlocked(true);
     intimidationZone->getZoneByID(8)->setBlocked(true);
