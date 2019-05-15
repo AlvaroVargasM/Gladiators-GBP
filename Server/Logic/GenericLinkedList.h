@@ -92,22 +92,19 @@ template <class T>
 void GenericLinkedList<T>::remove(int i) {
     if(this->length == 1){
         this->header = nullptr;
-        this->length--;
     }else{
         GenericNode<T>* temp = get(i);
-        if(i == 1){
-            this->header->setNext(temp->getNext());
-            this->length--;
-            //delete(temp);
-        }if(i == 0) {
+        if(temp == header){
             this->header = this->header->getNext();
-            this->length--;
-        }else{
-            get(i-1)->setNext(get(i+1));
-            this->length--;
-            //delete(temp);
+        }else {
+            if (temp->getNext() != nullptr) {
+                this->get(i - 1)->setNext(temp->getNext());
+            } else {
+                this->get(i - 1)->setNext(nullptr);
+            }
         }
     }
+    this->length--;
 }
 
 /**
@@ -127,6 +124,13 @@ GenericNode<T> *GenericLinkedList<T>::getHead() {
  */
 template <class T>
 int* GenericLinkedList<T>::getLength() {
+    int i = 0;
+    GenericNode<T>* temp = this->get(0);
+    while(temp != nullptr){
+        i++;
+        temp = temp->getNext();
+    }
+    this->length = i;
     return &this->length;
 }
 
