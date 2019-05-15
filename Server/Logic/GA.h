@@ -203,6 +203,10 @@ public:
      */
     void printFittest();
 
+    /**
+     * Prints a set of generations
+     * @param n_gens amount of generations to print
+     */
     void printGenerations(int n_gens);
 
     Gladiator *getPopulation();

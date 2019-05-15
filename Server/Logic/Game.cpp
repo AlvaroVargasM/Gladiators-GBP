@@ -9,7 +9,6 @@
  */
 Game::Game() {
     this->n_Towers = 0;
-    this->iteration = 1;
     this->averageGensRes = " ";
     this->averageGensEI = " ";
     this->averageGensPC = " ";
@@ -19,7 +18,7 @@ Game::Game() {
     saveGenStats();
 }
 
-// T O W E R S ---------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------- T O W E R S
 
 /**
  * Returns the string command for creating towers in the GUI
@@ -30,7 +29,7 @@ GenericLinkedList<std::string> Game::getTowers() {
     this->game_Zone->printGridDmg();
     this->game_Zone->printGridBlocked();
     this->path_A = *this->pths.findPathByA_Star(this->game_Zone,INI_I,INI_J,FIN_I,FIN_J);
-    // this->path_B = *this->pths.BackTrack(this->game_Zone,INI_I,INI_J,FIN_I,FIN_J); BTR
+    // BTR this->path_B = *this->pths.BackTrack(this->game_Zone,INI_I,INI_J,FIN_I,FIN_J);
 
     return new_GUI_Towers;
 }
@@ -56,7 +55,7 @@ void Game::generateTowers() {
             this->game_Zone->getZone(i, j)->setBlocked(true);
 
             // Fijese si logra desbloquear completar el path
-            if (this->pths.findPathByA_Star(this->game_Zone,INI_I,INI_J,FIN_I,FIN_J) != nullptr) { //BTR
+            if (this->pths.findPathByA_Star(this->game_Zone,INI_I,INI_J,FIN_I,FIN_J) != nullptr ) { //BTR
 
                 // Sumele a las torres totales
                 n_Towers++;
@@ -225,7 +224,7 @@ void Game::generateNewGUITower(int i,int j,int type) {
     this->new_GUI_Towers.add("create." + std::to_string(this->n_Towers) + "." + stype +"." + std::to_string(j) + "." + std::to_string(i));
 }
 
-// C H A M P I O N S ---------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------- C H A M P I O N S
 
 /**
  * Gets the best Gladiator from each pool and puts them in a linked list
@@ -238,17 +237,17 @@ std::string Game::getChampions() {
     std::string champs = std::to_string(champ_1.getResistance()) + "," + std::to_string(champ_2.getResistance()) + "," +
             std::to_string(this->pool_A.getGeneration()) + "," + std::to_string(this->pool_B.getGeneration()) + "," +
             std::to_string(champ_1.getAge()) + "," + std::to_string(champ_2.getAge()) + "," +
-            "0" + "," + "0" + "," +
-            "0" + "," + "0" + "," +
+            "100%" + "," + "100%" + "," +
+            "65%" + "," + "65%" + "," +
             std::to_string(champ_1.getEmotionalIntelligence()) + "," + std::to_string(champ_2.getEmotionalIntelligence()) + "," +
             std::to_string(champ_1.getPhysicalCondition()) + "," + std::to_string(champ_2.getPhysicalCondition()) + "," +
             std::to_string(champ_1.getUpperBodyStrength()) + "," + std::to_string(champ_1.getLowerBodyStrength()) + "," +
             std::to_string(champ_2.getUpperBodyStrength()) + "," + std::to_string(champ_2.getLowerBodyStrength()) + "," +
             std::to_string(this->pths.getA_starTime()) + "0";
     return champs;
-} // COMPLETED
+}
 
-// S T A T S -----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------- S T A T S
 
 /**
  * Gives a string with all the stats saved during the game
@@ -257,7 +256,7 @@ std::string Game::getChampions() {
 std::string Game::getStats() {
     std::string stats = this->averageGensRes + "/" + this->averageGensEI + "/" + this->averageGensPC + "/" + this->averageGensStr;
     return stats;
-} // COMPLETED
+}
 
 /**
  * Saves the averages stats of the curent generation in each GA pool
@@ -290,10 +289,14 @@ void Game::saveGenStats() {
                                std::to_string(this->pool_A.averageLowerBodyStrength()) + "," +
                                std::to_string(this->pool_B.averageUpperBodyStrength()) + "," +
                                std::to_string(this->pool_B.averageLowerBodyStrength());
-} // COMPLETED
+}
 
-// S T E P S -----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------- S T E P S
 
+/**
+ * Gives back the steps for the gladiators in GUI, also
+ * @return
+ */
 std::string Game::getSteps() {
     // RECORRO LA LISTA PARA CREAR UNA NUEVA, DE HASTA DONDE LLEGA EL CHAMP
     GenericLinkedList<Zone*> travel_A = resizePath(1);
@@ -306,11 +309,17 @@ std::string Game::getSteps() {
     this->pool_B.newGen(); // CHANGE
     this->saveGenStats();  // Save the data of the new gen
     this->new_GUI_Towers = GenericLinkedList<std::string>(); // Clears the list for the GUI towers
-    if (this->completed_A) // BTR
+    if (this->completed_A) // BTR || this->completed_B
         result += ",finish";
     return result;
 }
 
+/**
+ * Takes a path choosen by the passed type to see if the gladiator would survive that path, it generates a new path of
+ * the real route of the gladiator
+ * @param type of path to check
+ * @return the real path that the gladiator takes
+ */
 GenericLinkedList<Zone*> Game::resizePath(int type) {
     GenericLinkedList<Zone*> cutPath;
 
@@ -326,30 +335,36 @@ GenericLinkedList<Zone*> Game::resizePath(int type) {
         }
 
         if (cutPath.getLast()->getData()->getX(N_COLUMNS) == FIN_I &&
-        cutPath.getLast()->getData()->getY(N_COLUMNS,N_ROWS) == FIN_J)
+        cutPath.getLast()->getData()->getY(N_COLUMNS,N_ROWS) == FIN_J && this->pool_A.getStrongest().getResistance() != glife)
             this->completed_A = true;
     }
-    /*
+
+    /* BTR
     if (type == 2) { // RESIZE Bt
         int glife = this->pool_B.getStrongest().getResistance();
 
         for (int i = 0;i < *this->path_B.getLength();i++) {
-            for (int x = 0; x < *this->path_B.get(i)->getData()->getDamage()->getLength() - 1;i++) {
-                glife -= this->path_B.get(i)->getData()->getDamage()->get(x)->getData()->get(1)->getData();
-                x++;
-            }
+            glife -= this->path_B.get(i)->getData()->getDamage();
+
             if (glife > 0) {
                 cutPath.add(this->path_B.get(i)->getData());
             }
         }
-        if (cutPath.getLast()->getData()->getId() == this->path_B.getLast()->getData()->getId())
+        if (cutPath.getLast()->getData()->getX(N_COLUMNS) == FIN_I &&
+            cutPath.getLast()->getData()->getY(N_COLUMNS,N_ROWS) == FIN_J && this->pool_B.getStrongest().getResistance() != glife)
             this->completed_B = true;
     }
-    */ // BTR
+    */
 
     return cutPath;
 }
 
+/**
+ * Takes a path and translates it to a command string for the GUI
+ * @param travel_A path of gladiator A
+ * @param travel_B path of gladiator B
+ * @return the command for GUI
+ */
 std::string Game::translateTravel(GenericLinkedList<Zone *> travel_A,GenericLinkedList<Zone *> travel_B) {
     std::string final_Command_Line; // Used for the completed string
 
@@ -396,78 +411,49 @@ std::string Game::translateTravel(GenericLinkedList<Zone *> travel_A,GenericLink
         }
     }
 
-
-
-    /*
+    /* BTR
     // We fill the command list of B
-    for (int i = 1;i < *travel_B.getLength();i++) {
-        std::string command;
+    for (int i = 0;i < *travel_B.getLength();i++) {
+        std::string move_Command;
+        std::string shoot_Command;
+
         int current_i = travel_B.get(i)->getData()->getX(N_COLUMNS);
         int current_j = travel_B.get(i)->getData()->getY(N_COLUMNS,N_ROWS);
 
-
-
         if (current_i == last_i && current_j > last_j) {
-            command += ",move.b.right";
+            move_Command += ",move.b.right";
             last_i = current_i;
             last_j = current_j;
         }
         if (current_i == last_i && current_j < last_j) {
-            command += ",move.b.left";
+            move_Command += ",move.b.left";
             last_i = current_i;
             last_j = current_j;
         }
         if (current_i < last_i && current_j == last_j) {
-            command += ",move.b.up";
+            move_Command += ",move.b.up";
             last_i = current_i;
             last_j = current_j;
         }
         if (current_i > last_i && current_j == last_j) {
-            command += ",move.b.down";
+            move_Command += ",move.b.down";
             last_i = current_i;
             last_j = current_j;
         }
 
-        commands_B.add(command);
-    }
-    */ // BTR
+        commands_B.add(move_Command);
 
-    /*
-    int index = 0;
-    if (*commands_A.getLength() == *commands_B.getLength())
-        index = *commands_A.getLength();
-    if (*commands_A.getLength() < *commands_B.getLength())
-        index = *commands_B.getLength();
-    if (*commands_A.getLength() > *commands_B.getLength())
-        index = *commands_A.getLength();
-    */ //BTR
+        if (travel_B.get(i)->getData()->getDamage() != 0) {
+            shoot_Command += ",shoot." + std::to_string(travel_B.get(i)->getData()->getShooter()) + ".b";
+            commands_B.add(shoot_Command);
+        }
+    }
+    */
 
     for (int i = 0;i < *commands_A.getLength() - 1;i++) {
         final_Command_Line += commands_A.get(i)->getData();
-        // final_Command_Line += commands_B.get(i)->getData(); BTR
+        // BTR final_Command_Line += commands_B.get(i)->getData();
     }
     std::cout << final_Command_Line;
     return final_Command_Line;
-}
-
-// G E T T E R S -------------------------------------------------------------------------------------------------------
-
-bool Game::isCompletedA() {
-    return this->completed_A;
-}
-
-bool Game::isCompletedB() {
-    return this->completed_B;
-}
-
-GA &Game::getPoolA() {
-    return pool_A;
-}
-
-GA &Game::getPoolB() {
-    return pool_B;
-}
-
-IntimidationZone *Game::getGameZone() {
-    return game_Zone;
 }

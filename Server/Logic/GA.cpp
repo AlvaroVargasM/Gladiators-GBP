@@ -280,10 +280,6 @@ void GA::newGen() {
     quickSort(0,POP_SIZE);
 }
 
-/**
- * Gives the number of generation the GA is currently in
- * @return generation number
- */
 int GA::getGeneration() {
     return this->generation;
 }
@@ -377,6 +373,10 @@ int GA::averageLowerBodyStrength() {
     return albs / POP_SIZE;
 }
 
+/**
+ * Prints a set of generations
+ * @param n_gens amount of generations to print
+ */
 void GA::printGenerations(int n_gens) {
     for (int i = 0;i < n_gens;i++) {
         std::cout << "\n\n GEN " << this->getGeneration() << " RESISTANCE: " << std::endl;
