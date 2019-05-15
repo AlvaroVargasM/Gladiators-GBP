@@ -239,6 +239,8 @@ std::string Game::getSteps() {
     this->pool_B.newGen(); // CHANGE
     this->saveGenStats();  // Save the data of the new gen
     this->new_GUI_Towers = GenericLinkedList<std::string>(); // Clears the list for the GUI towers
+    if (this->completed_A) // BTR
+        result += ",finish";
     return result;
 }
 
