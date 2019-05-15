@@ -7,6 +7,8 @@
 #include "Networking/Server.h"
 
 int main () {
+    srand(time((nullptr)));
+
     Game g;
 
     g.getTowers();
