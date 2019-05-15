@@ -36,18 +36,41 @@ GenericLinkedList<std::string> Game::getTowers() {
  * Generates three random towers in the game zones of random type
  */
 void Game::generateTowers() {
+    int tries = 0;
     for (int x = 0;x < 3;x++) {
+
+        if (tries >= 15)
+            break;
+
         int i = rng.getRandomNumber(0,N_ROWS);
         int j = rng.getRandomNumber(0,N_COLUMNS);
         int type = this->rng.getRandomNumber(1,3);
 
+        // Checkee si no ponen en el inicio o fin o sobre otra torre
         if ((i != INI_I && j != INI_J) && (i != FIN_I && j != FIN_J) && !this->game_Zone->getZone(i, j)->isBlocked()) {
-            putTower(i,j,type);
+
+            // Blockee el espacio
+            this->game_Zone->getZone(i, j)->setBlocked(true);
+
+            // Fijese si logra desbloquear completar el path
             if (this->pths.findPathByA_Star(this->game_Zone,INI_I,INI_J,FIN_I,FIN_J) != nullptr) { //BTR
+
+                // Si lo logra ponga la torre
+                putTower(i,j,type);
+                // Sumele a las torres totales
                 n_Towers++;
+                // Genere torre para gui
                 generateNewGUITower(i, j, type);
-            }
+
+            // Si no
+            } else
+
+                // Desbloquee torre
+                this->game_Zone->getZone(i, j)->setBlocked(false);
+
+          // Vuelva a poner torre
         } else --x;
+        tries++;
     }
 }
 
