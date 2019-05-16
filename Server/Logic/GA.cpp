@@ -87,6 +87,18 @@ void GA::quickSort(int low, int high) {
 }
 
 /**
+ * Takes the top 20% of individuals of the pop and puts them on the fittest array, it assumens that the pop has already
+ * been sorted and the fist 20 are the best of the population.
+ */
+void GA::selection() {
+    int x = POP_SIZE - 1;
+    for (int i = 0;i < FITTEST_SIZE;i++) {
+        this->fittest[i] = this->population[x];
+        --x;
+    }
+}
+
+/**
  * Takes a pair of gladiators to create a new unique gladiator from their genes, applies mutation and inversion to
  * the new gladiator
  * @param parent_1 first gladiator to cross
@@ -220,17 +232,12 @@ std::bitset<BIT_SET_SIZE> GA::bitInversion(std::bitset<BIT_SET_SIZE> child) {
  * population replacing the worse gladiators, by doing that a new generation is created.
  */
 void GA::reproduction() {
-    int x = POP_SIZE - 1;
-    int y = POP_SIZE - FITTEST_SIZE - 1;
-    int z = FITTEST_SIZE - 1;
+    int x = FITTEST_SIZE - 1;
     for (int i = 0;i < (FITTEST_SIZE / 2);i++) {
 
         // Takes two parents from fittest
-        Gladiator parent_1 = this->population[x];
-        Gladiator parent_2 = this->population[y];
-
-        x--;
-        y++;
+        Gladiator parent_1 = this->fittest[i];
+        Gladiator parent_2 = this->fittest[-x];
 
         // Creates two new gladiators from the parents
         Gladiator newGladiator1 = crossover(parent_1,parent_2);
@@ -238,8 +245,8 @@ void GA::reproduction() {
 
         // Adds the new gladiators to the newborns
         this->newborns[i] = newGladiator1;
-        this->newborns[z] = newGladiator2;
-        --z;
+        this->newborns[x] = newGladiator2;
+        --x;
     }
 }
 
@@ -266,16 +273,13 @@ Gladiator GA::getStrongest() {
  * children replace te worst individuals of the pop, the pop is then sorted by their fitness
  */
 void GA::newGen() {
+    selection();
     reproduction();
     generationChange();
     calculateFitness();
     quickSort(0,POP_SIZE);
 }
 
-/**
- * Gives the number of generation the GA is currently in
- * @return generation number
- */
 int GA::getGeneration() {
     return this->generation;
 }
@@ -295,6 +299,15 @@ void GA::printPopResistance() {
 void GA::printPopFitness() {
     for(int i = 0; i < POP_SIZE;i++)
         std::cout << this->population[i].getFitness() << " / ";
+    std::cout << std::endl;
+}
+
+/**
+ * Prints the each individual of the fitness list to console
+ */
+void GA::printFittest() {
+    for(int i = 0; i < FITTEST_SIZE;i++)
+        std::cout << this->fittest[i].getFitness() << " / ";
     std::cout << std::endl;
 }
 
@@ -360,6 +373,10 @@ int GA::averageLowerBodyStrength() {
     return albs / POP_SIZE;
 }
 
+/**
+ * Prints a set of generations
+ * @param n_gens amount of generations to print
+ */
 void GA::printGenerations(int n_gens) {
     for (int i = 0;i < n_gens;i++) {
         std::cout << "\n\n GEN " << this->getGeneration() << " RESISTANCE: " << std::endl;

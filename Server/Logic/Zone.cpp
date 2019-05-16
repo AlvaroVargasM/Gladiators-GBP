@@ -13,6 +13,7 @@ Zone::Zone() {
     this->start = false;
     this->end = false;
     this->previous = nullptr;
+    this->damage = 0;
 
 }
 
@@ -40,7 +41,7 @@ void Zone::setTower(int tower) {
     this->tower = tower;
 }
 
-GenericLinkedList<GenericLinkedList<int>*>* Zone::getDamage() {
+int Zone::getDamage() {
     return this->damage;
 }
 
@@ -110,4 +111,16 @@ int Zone::getY(int n, int m) {
     int y = this->id - (this->getX(n)*m);
     //std::cout << "Found this y " << y << std::endl;
     return y;
+}
+
+void Zone::setDamage(int damage) {
+    Zone::damage = damage;
+}
+
+int Zone::getShooter() {
+    return shooter;
+}
+
+void Zone::setShooter(int shooter) {
+    Zone::shooter = shooter;
 }

@@ -229,7 +229,7 @@ int Server::start()
                             break;
                         case 1:
                         {netpack->setCommand("setCharts");
-                            std::string stats = "14,14,28,37,33,35,40,41,46,48,51,57,60,69/3,3,4,6,6,7,8,7,9,8,10,11,14,12/4,3,8,7,9,9,10,10,11,12,13,13,15,15/3,3,3,3,7,8,8,5,8,9,12,7,9,12,15,8,10,14,18,8,11,15,23,10,12,18,28,12";
+                            std::string stats = game->getStats();
                             netpack->setData(stats);
                             std::string final = netpack->getJSONPackage();
                             send(sd, final.c_str(), strlen(final.c_str()), 0);
@@ -270,12 +270,16 @@ int Server::start()
                         {
                             NetPackage* netpack = new NetPackage;
                             GenericLinkedList<std::string> towers = game->getTowers();
-                            GenericLinkedList<std::string> *list = new GenericLinkedList<std::string>;
+                            std::string test = "";
                             for(int i = 0; i < *towers.getLength(); i++){
-                                std::string temp = towers.get(i)->getData();
-                                list->add(temp);
+                                if(i == 0){
+                                    test += towers.get(i)->getData();
+                                }else{
+                                    test += ',' + towers.get(i)->getData();
+                                }
                             }
-                            list->add("move.a.right");
+                            std::cout << "Now test is " << std::endl;
+                            /*list->add("move.a.right");
                             list->add("move.a.right");
                             list->add("move.a.right");
                             list->add("move.a.down");
@@ -286,12 +290,9 @@ int Server::start()
                             list->add("create.1.explosive.2.2");
                             list->add("shoot.1.b");
                             list->add("shoot.1.a");
-                            list->add("finish");
-                            std::string test = "";
-                            test += list->get(i)->getData();
-                            for(int i = 1; i < *list->getLength()-1; i++){
-                                test += ',' + list->get(i)->getData();
-                            }test += ',' +  list->get(*list->getLength()-1)->getData();
+                            list->add("finish");*/
+                            test += ',' + game->getSteps();
+                            std::cout << "Now test is " << std::endl;
                             netpack->setData(test);
                             std::string final = netpack->getJSONPackage();
                             std::cout << "Voy a enviar " << test << std::endl;

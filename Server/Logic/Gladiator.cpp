@@ -5,9 +5,15 @@
 #include "Gladiator.h"
 #include <iostream>
 
-
+/**
+ * Default constructor
+ */
 Gladiator::Gladiator() {}
 
+/**
+ * Constructor that creates the gladiator depending on the passed value
+ * @param type of gladiator to create
+ */
 Gladiator::Gladiator(int type) {
     RNG rng;
 
