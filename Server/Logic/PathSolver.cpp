@@ -214,15 +214,14 @@ GenericLinkedList<Zone *> *PathSolver::BackTrack(IntimidationZone *grid, int xo,
 
     if (yo < yf) {
         // si tiene  que devolverse, para no volver hasta el  origen, esta sentencia  toma  la desición de   recortar camino
-/**
-    if(!grid->getZone(xo , yo-1)->isBlocked()&& visited(grid->getZone(xo, yo),historial )){
-        // path->deleteEndNode();
-        return BackTrack(grid, xo, yo-1 , xf, yf);
-    }*/
+
+        if(grid->getZone(xo , yo+1)->isBlocked()&& grid->getZone(xo +1, yo)->isBlocked()){
+            path->add(grid->getZone(xo, yo));
+            path->add(grid->getZone(xo, yo-1));
+            return BackTrack(grid, xo+1,yo-1,xf,yf);}
 
         if ((!grid->getZone(xo, yo + 1)->isBlocked()) &&!(visited(grid->getZone(xo , yo ), path))) {
             path->add(grid->getZone(xo, yo));
-            historial->add(grid->getZone(xo, yo));
 
             return BackTrack(grid,xo,yo+1, xf, yf);
         }
@@ -251,7 +250,7 @@ GenericLinkedList<Zone *> *PathSolver::BackTrack(IntimidationZone *grid, int xo,
     }
 
     if (yo == yf ) {
-        if (grid->getZone(xo + 1, yo)->isBlocked() == false && !(visited(grid->getZone(xo, yo), path))) {
+        if (!grid->getZone(xo + 1, yo)->isBlocked() && !(visited(grid->getZone(xo, yo), path))) {
             path->add(grid->getZone(xo, yo));
             historial->add(grid->getZone(xo, yo));
             return BackTrack(grid, xo + 1, yo, xf, yf);
