@@ -6,9 +6,9 @@
 
 #include <string>
 #include "RNG.h"
-#define WEAK_RANGE 4
-#define NORMAL_RANGE 7
-#define STRONG_RANGE 10
+#define WEAK_RANGE 2
+#define NORMAL_RANGE 5
+#define STRONG_RANGE 8
 
 /**
  * Gladiator class used for the GA and to be tested in a route giveng by a path finding algorithm

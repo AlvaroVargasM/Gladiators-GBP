@@ -318,9 +318,7 @@ void Display::setInfo(GenericLinkedList<std::string> *infoList)
                 break;
         }
     }
-
-    //Sends the gladiator's info to the Arduino.
-    //toArduino(data);
+    toArduino(data);
 }
 
 std::string Display::toRoman(int value)
@@ -429,11 +427,11 @@ void Display::hitGladiator(std::string gladiatorId, std::string arrowType)
 {
     int index=0;
     if(gladiatorId=="b")index=1;
-    int damage=1;
+    int damage=2;
     if(arrowType=="fire"){
-        damage=2;
-    }else if(arrowType=="explosive"){
         damage=4;
+    }else if(arrowType=="explosive"){
+        damage=8;
     }
 
     int health = infoLabels->at(index)->text().toInt();

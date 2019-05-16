@@ -247,7 +247,7 @@ std::string Game::getChampions() {
             std::to_string(champ_1.getPhysicalCondition()) + "," + std::to_string(champ_2.getPhysicalCondition()) + "," +
             std::to_string(champ_1.getUpperBodyStrength()) + "," + std::to_string(champ_1.getLowerBodyStrength()) + "," +
             std::to_string(champ_2.getUpperBodyStrength()) + "," + std::to_string(champ_2.getLowerBodyStrength()) + "," +
-            std::to_string(this->pths.getA_starTime()) + std::to_string(this->pths.getA_starTime());
+            std::to_string(this->pths.getA_starTime()) + "," + std::to_string(this->pths.getA_starTime());
     return champs;
 }
 
@@ -313,7 +313,7 @@ std::string Game::getSteps() {
     this->pool_B.newGen(); // CHANGE
     this->saveGenStats();  // Save the data of the new gen
     this->new_GUI_Towers = GenericLinkedList<std::string>(); // Clears the list for the GUI towers
-    if (this->completed_A) // BTR || this->completed_B
+    if (this->completed_A || this->completed_B) // BTR || this->completed_B
         result += ",finish";
     return result;
 }
@@ -333,8 +333,13 @@ GenericLinkedList<Zone*> Game::resizePath(int type) {
         for (int i = 0;i < *this->path_A.getLength();i++) {
             glife -= this->path_A.get(i)->getData()->getDamage();
 
+            //
             if (glife > 0) {
                 cutPath.add(this->path_A.get(i)->getData());
+            }
+            if (glife <= 0) {
+                cutPath.add(this->path_A.get(i)->getData());
+                break;
             }
         }
 
@@ -353,8 +358,13 @@ GenericLinkedList<Zone*> Game::resizePath(int type) {
         for (int i = 0;i < *this->path_B.getLength();i++) {
             glife -= this->path_B.get(i)->getData()->getDamage();
 
+            //
             if (glife > 0) {
                 cutPath.add(this->path_B.get(i)->getData());
+            }
+            if (glife <= 0) {
+                cutPath.add(this->path_B.get(i)->getData());
+                break;
             }
         }
 

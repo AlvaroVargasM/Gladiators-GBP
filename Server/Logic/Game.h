@@ -4,7 +4,7 @@
 
 #pragma once
 
-#define BASE_DAMAGE 1
+#define BASE_DAMAGE 2
 #define N_ROWS 10
 #define N_COLUMNS 10
 #define INI_I 0

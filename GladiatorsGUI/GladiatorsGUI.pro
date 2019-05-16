@@ -98,4 +98,5 @@ RESOURCES += \
 
 DISTFILES += \
     arena.jpg \
-    arena.jpg
+    arena.jpg \
+    properties
