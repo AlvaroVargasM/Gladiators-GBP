@@ -274,7 +274,11 @@ void Display::setInfo(GenericLinkedList<std::string> *infoList)
 
         infoLabels->at(i)->setText(QString::fromStdString(str));
 
-        int val = std::stoi(str);
+        int val=0;
+        if(i!=2 && i!=3){
+            val = std::stoi(str);
+            }
+
         switch (i) {
             case 0:
                 data[0]= val;
@@ -316,7 +320,7 @@ void Display::setInfo(GenericLinkedList<std::string> *infoList)
     }
 
     //Sends the gladiator's info to the Arduino.
-    toArduino(data);
+    //toArduino(data);
 }
 
 std::string Display::toRoman(int value)
