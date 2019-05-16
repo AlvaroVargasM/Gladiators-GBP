@@ -11,6 +11,7 @@
 #include <QtDebug>
 #include <iostream>
 #include <QTimer>
+#include <QTime>
 
 
 Display::Display(QWidget *parent) :
@@ -22,8 +23,6 @@ Display::Display(QWidget *parent) :
 
     this->setAttribute(Qt::WA_DeleteOnClose);
     active = true;
-
-    //connector = Connector();
 
     view = new QGraphicsView(this);
     scene = new QGraphicsScene(0,0,700,550,this);
@@ -260,6 +259,9 @@ void Display::runCommands(GenericLinkedList<std::string> *commands)
 
 void Display::setInfo(GenericLinkedList<std::string> *infoList)
 {
+    int data[13];
+    data[12]=0;
+
     for(int i=0;i<infoList->getLength();i++){
         std::string str = infoList->get(i)->getData();
 
@@ -271,7 +273,50 @@ void Display::setInfo(GenericLinkedList<std::string> *infoList)
         }
 
         infoLabels->at(i)->setText(QString::fromStdString(str));
+
+        int val = std::stoi(str);
+        switch (i) {
+            case 0:
+                data[0]= val;
+                break;
+            case 1:
+                data[1]= val;
+                break;
+            case 4:
+                data[2]= val;
+                break;
+            case 5:
+                data[3]= val;
+                break;
+            case 10:
+                data[4]= val;
+                break;
+            case 11:
+                data[5]= val;
+                break;
+            case 12:
+                data[6]= val;
+                break;
+            case 13:
+                data[7]= val;
+                break;
+            case 14:
+                data[8]= val;
+                break;
+            case 15:
+                data[9]= val;
+                break;
+            case 16:
+                data[10]= val;
+                break;
+            case 17:
+                data[11]= val;
+                break;
+        }
     }
+
+    //Sends the gladiator's info to the Arduino.
+    toArduino(data);
 }
 
 std::string Display::toRoman(int value)
@@ -380,11 +425,11 @@ void Display::hitGladiator(std::string gladiatorId, std::string arrowType)
 {
     int index=0;
     if(gladiatorId=="b")index=1;
-    int damage=4;
+    int damage=1;
     if(arrowType=="fire"){
-        damage=8;
+        damage=2;
     }else if(arrowType=="explosive"){
-        damage=16;
+        damage=4;
     }
 
     int health = infoLabels->at(index)->text().toInt();
@@ -456,6 +501,22 @@ void Display::gameLoop()
     statisticsWin->generateCharts(Connector::getCharts());
     this->hide();
     statisticsWin->show();
+}
+
+void Display::toArduino(int info[13])
+{
+    FILE *file;
+    file = fopen("/dev/ttyACM0","w");
+    int i = 0;
+     for(i = 0 ; i < 13 ; i++){
+         fprintf(file,"%i",info[i]);
+         fprintf(file,"%c",',');
+
+         QTime dieTime= QTime::currentTime().addMSecs(150);
+             while (QTime::currentTime() < dieTime)
+                 QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+     }
+     fclose(file);
 }
 
 void Display::showEvent(QShowEvent *event)
