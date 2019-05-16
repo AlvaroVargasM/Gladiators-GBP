@@ -1,13 +1,10 @@
 #include "connector.h"
 #include "string"
 #include <sstream>
-//prototypes
 
 Connector::Connector()
 {
 }
-
-//cambio 2
 
 GenericLinkedList<std::string>* convertStringToLL(std::string data){
     std::stringstream ss(data);
@@ -41,14 +38,10 @@ int convertCommandToInt(std::string data) {
 }
 
 GenericLinkedList<std::string>* Connector::get(std::string request){
-    //	Create a socket
         int sock = socket(AF_INET, SOCK_STREAM, 0);
         if (sock == -1)
         {
-            //return nullptr;
         }
-
-        //	Create a hint structure for the server we're connecting with
         int port = 8888;
         std::string ipAddress = "192.168.0.103";
 
@@ -57,15 +50,8 @@ GenericLinkedList<std::string>* Connector::get(std::string request){
         hint.sin_port = htons(port);
         inet_pton(AF_INET, ipAddress.c_str(), &hint.sin_addr);
 
-        //	Connect to the server on the socket
         int connectRes = connect(sock, (sockaddr*)&hint, sizeof(hint));
-        /*if (connectRes == -1)
-        {
-            std::cout <<
-            return nullptr;
-        }*/
 
-        //	While loop:
         char buf[4096];
         NetPackage netpack = NetPackage();
         netpack.setFrom("Client");
@@ -132,53 +118,18 @@ GenericLinkedList<std::string>* Connector::get(std::string request){
         }
             break;
         default:
-            //Default state
             break;
         }
 
-
-        /*do {
-            //		Enter lines of text
-            std::cout << "> ";
-            getline(std::cin, userInput);
-
-            //		Send to server
-            int sendRes = send(sock, userInput.c_str(), userInput.size() + 1, 0);
-            if (sendRes == -1)
-            {
-                std::cout << "Could not send to server! Whoops!\r\n";
-                continue;
-            }
-
-            //		Wait for response
-            memset(buf, 0, 4096);
-            int bytesReceived = recv(sock, buf, 4096, 0);
-            if (bytesReceived == -1)
-            {
-                std::cout << "There was an error getting response from server\r\n";
-            }
-            else
-            {
-                //		Display response
-                std::cout << "SERVER> " << std::string(buf, bytesReceived) << "\r\n";
-            }
-        } while(true);*/
-
-        //	Close the socket
         close(sock);
-
-        //return nullptr;
 }
 
 GraphPac Connector::getCharts(){
-    //	Create a socket
         int sock = socket(AF_INET, SOCK_STREAM, 0);
         if (sock == -1)
         {
-            //return nullptr;
         }
 
-        //	Create a hint structure for the server we're connecting with
         int port = 8888;
         std::string ipAddress = "127.0.0.1";
 
@@ -187,15 +138,8 @@ GraphPac Connector::getCharts(){
         hint.sin_port = htons(port);
         inet_pton(AF_INET, ipAddress.c_str(), &hint.sin_addr);
 
-        //	Connect to the server on the socket
         int connectRes = connect(sock, (sockaddr*)&hint, sizeof(hint));
-        /*if (connectRes == -1)
-        {
-            std::cout <<
-            return nullptr;
-        }*/
 
-        //	While loop:
         char buf[4096];
         NetPackage netpack = NetPackage();
         netpack.setFrom("Client");
@@ -274,10 +218,4 @@ GraphPac Connector::getCharts(){
         }
 
         return graphpac;
-
-
-
-
-
-
 }

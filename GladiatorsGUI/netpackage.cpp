@@ -1,5 +1,8 @@
 #include "netpackage.h"
 
+/**
+ * @brief NetPackage Default constructor.
+ */
 NetPackage::NetPackage() {
 }
 
@@ -79,6 +82,10 @@ void NetPackage::setCommand(std::string command) {
     this->command = command;
 }
 
+/**
+ * @brief convertToRJ_Document Converts JString to a Rapid JSON Document.
+ * @return A Rapid JSON version of the string.
+ */
 rapidjson::Document NetPackage::convertToRJ_Document(std::string json){
     rapidjson::Document doc;
     doc.Parse(json);

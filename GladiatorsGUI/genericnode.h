@@ -1,4 +1,4 @@
-//
+﻿//
 // Created by jondorito on 22/04/19.
 //
 
@@ -13,11 +13,33 @@ template<class T>
 class GenericNode
 {
 public:
+    /**
+     * Generic Node constructor
+     * @tparam T
+     * @param data
+     */
     GenericNode(T);
-    T getData();
-    GenericNode<T>* getNext();
-    void setNext(GenericNode<T>*);
 
+    /**
+     * Return a data on an existing node
+     * @tparam T
+     * @return T
+     */
+    T getData();
+
+    /**
+     * Returns the node next to this one
+     * @tparam T
+     * @return GenericNode<T>*
+     */
+    GenericNode<T>* getNext();
+
+    /**
+     * Sets a pointer to a newly created node with is going to be the next
+     * @tparam T
+     * @param next
+     */
+    void setNext(GenericNode<T>*);
 private:
     GenericNode* next;
     T data;

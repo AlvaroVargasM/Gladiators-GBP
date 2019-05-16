@@ -3,11 +3,29 @@
 
 #include "genericlinkedlist.h"
 
+/**
+ * @brief The GraphPac class Class that manages a set of ten linked lists. Used for ghraps creation.
+ */
 class GraphPac
 {
 public:
+    /**
+     * @brief GraphPac Default constructor.
+     */
     GraphPac();
+
+    /**
+      * @brief add Adds an integer into a given list.
+      * @param num Identification number of the list.
+      * @param data Integer to add to the list.
+      */
      void add(int num, int data);
+
+     /**
+      * @brief get Returns one of the lists.
+      * @param index List identification.
+      * @return A linked list.
+      */
      GenericLinkedList<int> get(int index);
 private:
     GenericLinkedList<int> gen1 = GenericLinkedList<int>();

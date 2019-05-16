@@ -397,7 +397,7 @@ void Display::shootArrow(std::string towerId, std::string gladiatorId)
 
 
     QPropertyAnimation *animation = new QPropertyAnimation(arrow, "pos");
-    animation->setDuration(1500);
+    animation->setDuration(600);
     animation->setStartValue(arrow->pos());
 
     int yoffset;
