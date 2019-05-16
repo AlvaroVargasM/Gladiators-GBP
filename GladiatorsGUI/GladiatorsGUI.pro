@@ -32,7 +32,9 @@ SOURCES += \
     genericnode.cpp \
     menu.cpp \
     netpackage.cpp \
-    statistics.cpp
+    statistics.cpp \
+    tower.cpp \
+    graphpac.cpp
 
 HEADERS += \
     connector.h \
@@ -77,7 +79,9 @@ HEADERS += \
     libraries/rapidjson/writer.h \
     menu.h \
     netpackage.h \
-    statistics.h
+    statistics.h \
+    tower.h \
+    graphpac.h
 
 FORMS += \
         display.ui \
