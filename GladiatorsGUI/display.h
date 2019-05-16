@@ -100,6 +100,11 @@ public:
      */
     void gameLoop();
 
+    /**
+     * @brief toArduino Sends the gladiators information to an Arduino UNO.
+     */
+    void toArduino(int info[13]);
+
     QGraphicsScene *scene; /**< Window QGraphicsScene. All the visual elements are added inside this scene for display. */
 
 protected:
