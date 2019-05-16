@@ -164,7 +164,6 @@ bool PathSolver::visited(Zone *zone, GenericLinkedList<Zone*> *node) {
  * This function takes an intimidation zone and looks for the route to
  * reach the lower right diagonal in an efficient way using the recursive logic of
  * BackTraking
-
  * @param IntimidationZone
  * @param  a,b index
  *
@@ -182,13 +181,13 @@ GenericLinkedList<Zone *> *PathSolver::BackTrack(IntimidationZone *grid, int xo,
  *
  * */
 
-if (xo == xf && yo == yf) {
+    if (xo == xf && yo == yf) {
 
 
-    path->add(grid->getZone(xf, xf));
-    return path;
+        path->add(grid->getZone(xf, xf));
+        return path;
 
-}
+    }
 
 
 /**
@@ -197,79 +196,77 @@ if (xo == xf && yo == yf) {
  *
  *
  * */
-            /** if(xo==xf-1&&yo==yf-1){
-                 if ((grid->getZone(xo, yo + 1)->isBlocked() == false) && (visited(grid->getZone(xo, yo), path))) {
-                     path->add(grid->getZone(xo, yo));
-                     return BackTrack(grid, xo, yo + 1, xf, yf);
+    /** if(xo==xf-1&&yo==yf-1){
+         if ((grid->getZone(xo, yo + 1)->isBlocked() == false) && (visited(grid->getZone(xo, yo), path))) {
+             path->add(grid->getZone(xo, yo));
+             return BackTrack(grid, xo, yo + 1, xf, yf);
+     }
+     }**/
 
-             }
-             }**/
+    /**  if(visited(grid->getZone(xo , yo ), path)){
+          if (!visited(grid->getZone(xo, yo), path)) {
+              path->add(grid->getZone(xo, yo));
+          }
+          path->deleteEndNode();
+          return BackTrack(grid, xo, yo - 1, xf, yf);
+      }*/
 
-  /**  if(visited(grid->getZone(xo , yo ), path)){
-
-        if (!visited(grid->getZone(xo, yo), path)) {
-            path->add(grid->getZone(xo, yo));
-        }
-        path->deleteEndNode();
-        return BackTrack(grid, xo, yo - 1, xf, yf);
-    }*/
-
-if (yo < yf) {
-    // si tiene  que devolverse, para no volver hasta el  origen, esta sentencia  toma  la desición de   recortar camino
+    if (yo < yf) {
+        // si tiene  que devolverse, para no volver hasta el  origen, esta sentencia  toma  la desición de   recortar camino
 /**
     if(!grid->getZone(xo , yo-1)->isBlocked()&& visited(grid->getZone(xo, yo),historial )){
         // path->deleteEndNode();
         return BackTrack(grid, xo, yo-1 , xf, yf);
     }*/
 
-    if ((!grid->getZone(xo, yo + 1)->isBlocked()) &&!(visited(grid->getZone(xo , yo ), path))) {
-        path->add(grid->getZone(xo, yo));
-        historial->add(grid->getZone(xo, yo));
+        if ((!grid->getZone(xo, yo + 1)->isBlocked()) &&!(visited(grid->getZone(xo , yo ), path))) {
+            path->add(grid->getZone(xo, yo));
+            historial->add(grid->getZone(xo, yo));
 
-        return BackTrack(grid,xo,yo+1, xf, yf);
-    }
+            return BackTrack(grid,xo,yo+1, xf, yf);
+        }
 
 
         if (grid->getZone(xo + 1, yo)->isBlocked() == false) {
             if (!visited(grid->getZone(xo, yo), path)) {
-                        path->add(grid->getZone(xo, yo));
-                        historial->add(grid->getZone(xo, yo));
+                path->add(grid->getZone(xo, yo));
+                historial->add(grid->getZone(xo, yo));
             }
             return BackTrack(grid, xo + 1, yo, xf, yf);
 
-         }
+        }
         else
 
-            if (!visited(grid->getZone(xo, yo), path)) {
-            path->add(grid->getZone(xo, yo));
-            historial->add(grid->getZone(xo, yo));
-        }
-            path->deleteEndNode();
-            return BackTrack(grid, xo, yo - 1, xf, yf);
-
-
-
-
-}
-
-if (yo == yf ) {
-    if (grid->getZone(xo + 1, yo)->isBlocked() == false && !(visited(grid->getZone(xo, yo), path))) {
-        path->add(grid->getZone(xo, yo));
-        historial->add(grid->getZone(xo, yo));
-        return BackTrack(grid, xo + 1, yo, xf, yf);
-
-    }
-
-
-    else
         if (!visited(grid->getZone(xo, yo), path)) {
             path->add(grid->getZone(xo, yo));
             historial->add(grid->getZone(xo, yo));
-    }
+        }
         path->deleteEndNode();
         return BackTrack(grid, xo, yo - 1, xf, yf);
 
-            }
+
+
+
+    }
+
+    if (yo == yf ) {
+        if (grid->getZone(xo + 1, yo)->isBlocked() == false && !(visited(grid->getZone(xo, yo), path))) {
+            path->add(grid->getZone(xo, yo));
+            historial->add(grid->getZone(xo, yo));
+            return BackTrack(grid, xo + 1, yo, xf, yf);
+
+        }
+
+
+        else
+        if (!visited(grid->getZone(xo, yo), path)) {
+            path->add(grid->getZone(xo, yo));
+            historial->add(grid->getZone(xo, yo));
+        }
+        path->deleteEndNode();
+        return BackTrack(grid, xo, yo - 1, xf, yf);
+
+    }
 // nuevas variaciones al  algortimo
 /**
 if (grid->getZone(xo + 1, yo)->isBlocked() != false && (grid->getZone(xo + 1, yo)->isBlocked() != false )){
@@ -277,44 +274,28 @@ if (grid->getZone(xo + 1, yo)->isBlocked() != false && (grid->getZone(xo + 1, yo
         path->add(grid->getZone(xo, yo));
         historial->add(grid->getZone(xo, yo));
     }
-
     path->deleteEndNode();
     return BackTrack(grid, xo, yo - 1, xf, yf);
-
 }*/
 
 
 
-            /**
-             * If there is no possibility of movements to the right, this condition verifies that movements
-             * can be made downwards in the zone of intimidation, or also when it is a zone already visited
-             * where the method is being returned.
-             */
+    /**
+     * If there is no possibility of movements to the right, this condition verifies that movements
+     * can be made downwards in the zone of intimidation, or also when it is a zone already visited
+     * where the method is being returned.
+     */
 
 
-            /**
-             * In this part of the algorithm, when it is validated that the nodes have already been verified
-             * and meet with towers and must be returned, the list patterns will be removed, only to leave
-             * those who have a clean path
-             */
-        }
-
-
-
-        float PathSolver::getA_starTime() {
-            return 0, 2;
-        }
+    /**
+     * In this part of the algorithm, when it is validated that the nodes have already been verified
+     * and meet with towers and must be returned, the list patterns will be removed, only to leave
+     * those who have a clean path
+     */
+}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+float PathSolver::getA_starTime() {
+    return 0, 2;
+}
