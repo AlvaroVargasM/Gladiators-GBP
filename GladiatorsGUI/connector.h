@@ -12,7 +12,7 @@
 
 #include "netpackage.h"
 #include "genericlinkedlist.h"
-#include "graphpac.h""
+#include "graphpac.h"
 
 /**
  * @brief Communication interface for server interaction.
