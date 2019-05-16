@@ -9,6 +9,9 @@
 #include "libraries/rapidjson/writer.h"
 #include "libraries/rapidjson/stringbuffer.h"
 
+/**
+ * @brief The NetPackage class Class used for formating server messages.
+ */
 class NetPackage {
 private:
     std::string from = "unassigned";

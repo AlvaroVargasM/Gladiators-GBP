@@ -5,11 +5,12 @@
 #include <iostream>
 
 
-/**
- * Class use for storing any type of object
- * @tparam T
- */
+
 template <class T>
+/**
+ * @brief Class use for storing any type of object
+ *
+ */
 class GenericLinkedList{
 public:
     /**

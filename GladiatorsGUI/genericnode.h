@@ -5,11 +5,10 @@
 #ifndef GENERICNODE_H
 #define GENERICNODE_H
 
-/**
- * GenericNode class for the GenericLinkedList
- * @tparam T
- */
 template<class T>
+/**
+ * @brief The GenericNode class GenericNode class for the GenericLinkedList.
+ */
 class GenericNode
 {
 public:
