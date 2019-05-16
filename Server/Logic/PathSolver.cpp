@@ -87,6 +87,7 @@ GenericLinkedList<Zone *> *PathSolver::findPathByA_Star(IntimidationZone *grid, 
                 path->add(temp);
                 temp = temp->getParent();
             }
+            path->add(grid->getZoneByID(start));
             GenericLinkedList<Zone*>* reversedPath = new GenericLinkedList<Zone*>;
             for(int i = *path->getLength()-1; i >= 0; i--){
                 reversedPath->add(path->get(i)->getData());

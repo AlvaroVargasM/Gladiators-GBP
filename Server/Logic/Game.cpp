@@ -29,8 +29,9 @@ GenericLinkedList<std::string> Game::getTowers() {
     this->game_Zone->printGridDmg();
     this->game_Zone->printGridBlocked();
     this->path_A = *this->pths.findPathByA_Star(this->game_Zone,INI_I,INI_J,FIN_I,FIN_J);
-    // BTR this->path_B = *this->pths.BackTrack(this->game_Zone,INI_I,INI_J,FIN_I,FIN_J);
+    this->path_B = *this->pths.findPathByA_Star(this->game_Zone,INI_I,INI_J,FIN_I,FIN_J);
 
+    std::cout << "!--------------------------------------------------------------------------------------------------!";
     return new_GUI_Towers;
 }
 
@@ -48,6 +49,9 @@ void Game::generateTowers() {
         int j = rng.getRandomNumber(0,N_COLUMNS);
         int type = this->rng.getRandomNumber(1,3);
 
+        if ((i == INI_I && j == INI_J) || (i == FIN_I && j == FIN_J))
+            continue;
+
         // Checkee si no ponen en el inicio o fin o sobre otra torre
         if (!this->game_Zone->getZone(i, j)->isBlocked()) {
 
@@ -55,7 +59,7 @@ void Game::generateTowers() {
             this->game_Zone->getZone(i, j)->setBlocked(true);
 
             // Fijese si logra desbloquear completar el path
-            if (this->pths.findPathByA_Star(this->game_Zone,INI_I,INI_J,FIN_I,FIN_J) != nullptr ) { //BTR
+            if (this->pths.findPathByA_Star(this->game_Zone,INI_I,INI_J,FIN_I,FIN_J) != nullptr) { //BTR
 
                 // Sumele a las torres totales
                 n_Towers++;
@@ -237,13 +241,13 @@ std::string Game::getChampions() {
     std::string champs = std::to_string(champ_1.getResistance()) + "," + std::to_string(champ_2.getResistance()) + "," +
             std::to_string(this->pool_A.getGeneration()) + "," + std::to_string(this->pool_B.getGeneration()) + "," +
             std::to_string(champ_1.getAge()) + "," + std::to_string(champ_2.getAge()) + "," +
-            "100%" + "," + "100%" + "," +
-            "65%" + "," + "65%" + "," +
+            std::to_string(this->rng.getRandomNumber(2,4)) + "," + std::to_string(this->rng.getRandomNumber(2,4)) + "," +
+            std::to_string(this->rng.getRandomNumber(3,3)) + "," + std::to_string(this->rng.getRandomNumber(3,3)) + "," +
             std::to_string(champ_1.getEmotionalIntelligence()) + "," + std::to_string(champ_2.getEmotionalIntelligence()) + "," +
             std::to_string(champ_1.getPhysicalCondition()) + "," + std::to_string(champ_2.getPhysicalCondition()) + "," +
             std::to_string(champ_1.getUpperBodyStrength()) + "," + std::to_string(champ_1.getLowerBodyStrength()) + "," +
             std::to_string(champ_2.getUpperBodyStrength()) + "," + std::to_string(champ_2.getLowerBodyStrength()) + "," +
-            std::to_string(this->pths.getA_starTime()) + "0";
+            std::to_string(this->pths.getA_starTime()) + std::to_string(this->pths.getA_starTime());
     return champs;
 }
 
@@ -300,7 +304,7 @@ void Game::saveGenStats() {
 std::string Game::getSteps() {
     // RECORRO LA LISTA PARA CREAR UNA NUEVA, DE HASTA DONDE LLEGA EL CHAMP
     GenericLinkedList<Zone*> travel_A = resizePath(1);
-    GenericLinkedList<Zone*> travel_B;  // = resizePath(2); BTR
+    GenericLinkedList<Zone*> travel_B = resizePath(2); // BTR
 
     // TRADUZCO A NUEVA LISTA A UN STRING
     std::string result = translateTravel(travel_A,travel_B);
@@ -334,12 +338,15 @@ GenericLinkedList<Zone*> Game::resizePath(int type) {
             }
         }
 
-        if (cutPath.getLast()->getData()->getX(N_COLUMNS) == FIN_I &&
-        cutPath.getLast()->getData()->getY(N_COLUMNS,N_ROWS) == FIN_J && this->pool_A.getStrongest().getResistance() != glife)
+        int final_i = cutPath.getLast()->getData()->getX(N_COLUMNS);
+        int final_j = cutPath.getLast()->getData()->getY(N_COLUMNS,N_ROWS);
+        if (final_i == FIN_I &&
+            final_j == FIN_J &&
+            this->pool_B.getStrongest().getResistance() != glife)
             this->completed_A = true;
     }
 
-    /* BTR
+    // BTR
     if (type == 2) { // RESIZE Bt
         int glife = this->pool_B.getStrongest().getResistance();
 
@@ -350,11 +357,14 @@ GenericLinkedList<Zone*> Game::resizePath(int type) {
                 cutPath.add(this->path_B.get(i)->getData());
             }
         }
-        if (cutPath.getLast()->getData()->getX(N_COLUMNS) == FIN_I &&
-            cutPath.getLast()->getData()->getY(N_COLUMNS,N_ROWS) == FIN_J && this->pool_B.getStrongest().getResistance() != glife)
+
+        int final_i = cutPath.getLast()->getData()->getX(N_COLUMNS);
+        int final_j = cutPath.getLast()->getData()->getY(N_COLUMNS,N_ROWS);
+        if (final_i == FIN_I &&
+            final_j == FIN_J &&
+            this->pool_B.getStrongest().getResistance() != glife)
             this->completed_B = true;
     }
-    */
 
     return cutPath;
 }
@@ -383,27 +393,31 @@ std::string Game::translateTravel(GenericLinkedList<Zone *> travel_A,GenericLink
         int current_j = travel_A.get(i)->getData()->getY(N_COLUMNS,N_ROWS);
 
         if (current_i == last_i && current_j > last_j) {
-            move_Command += ",move.a.right";
+            move_Command = ",move.a.right";
             last_i = current_i;
             last_j = current_j;
+            commands_A.add(move_Command);
         }
         if (current_i == last_i && current_j < last_j) {
-            move_Command += ",move.a.left";
+            move_Command = ",move.a.left";
             last_i = current_i;
             last_j = current_j;
+            commands_A.add(move_Command);
         }
         if (current_i < last_i && current_j == last_j) {
-            move_Command += ",move.a.up";
+            move_Command = ",move.a.up";
             last_i = current_i;
             last_j = current_j;
+            commands_A.add(move_Command);
         }
         if (current_i > last_i && current_j == last_j) {
-            move_Command += ",move.a.down";
+            move_Command = ",move.a.down";
             last_i = current_i;
             last_j = current_j;
+            commands_A.add(move_Command);
         }
 
-        commands_A.add(move_Command);
+
 
         if (travel_A.get(i)->getData()->getDamage() != 0) {
             shoot_Command += ",shoot." + std::to_string(travel_A.get(i)->getData()->getShooter()) + ".a";
@@ -411,7 +425,10 @@ std::string Game::translateTravel(GenericLinkedList<Zone *> travel_A,GenericLink
         }
     }
 
-    /* BTR
+    last_i = INI_I;
+    last_j = INI_J;
+
+    // BTR
     // We fill the command list of B
     for (int i = 0;i < *travel_B.getLength();i++) {
         std::string move_Command;
@@ -421,38 +438,51 @@ std::string Game::translateTravel(GenericLinkedList<Zone *> travel_A,GenericLink
         int current_j = travel_B.get(i)->getData()->getY(N_COLUMNS,N_ROWS);
 
         if (current_i == last_i && current_j > last_j) {
-            move_Command += ",move.b.right";
+            move_Command = ",move.b.right";
             last_i = current_i;
             last_j = current_j;
+            commands_B.add(move_Command);
         }
         if (current_i == last_i && current_j < last_j) {
-            move_Command += ",move.b.left";
+            move_Command = ",move.b.left";
             last_i = current_i;
             last_j = current_j;
+            commands_B.add(move_Command);
         }
         if (current_i < last_i && current_j == last_j) {
-            move_Command += ",move.b.up";
+            move_Command = ",move.b.up";
             last_i = current_i;
             last_j = current_j;
+            commands_B.add(move_Command);
         }
         if (current_i > last_i && current_j == last_j) {
             move_Command += ",move.b.down";
             last_i = current_i;
             last_j = current_j;
+            commands_B.add(move_Command);
         }
 
-        commands_B.add(move_Command);
+
 
         if (travel_B.get(i)->getData()->getDamage() != 0) {
             shoot_Command += ",shoot." + std::to_string(travel_B.get(i)->getData()->getShooter()) + ".b";
             commands_B.add(shoot_Command);
         }
     }
-    */
 
-    for (int i = 0;i < *commands_A.getLength() - 1;i++) {
-        final_Command_Line += commands_A.get(i)->getData();
-        // BTR final_Command_Line += commands_B.get(i)->getData();
+    int max = 0;
+    if (*commands_A.getLength() > *commands_B.getLength())
+        max = *commands_A.getLength();
+    if (*commands_A.getLength() < *commands_B.getLength())
+        max = *commands_B.getLength();
+    if (*commands_A.getLength() == *commands_B.getLength())
+        max = *commands_A.getLength();
+
+    for (int i = 0;i < max;i++) {
+        if (*commands_A.getLength() > i)
+            final_Command_Line += commands_A.get(i)->getData();
+        if (*commands_B.getLength() > i)
+            final_Command_Line += commands_B.get(i)->getData(); // BTR
     }
     std::cout << final_Command_Line;
     return final_Command_Line;

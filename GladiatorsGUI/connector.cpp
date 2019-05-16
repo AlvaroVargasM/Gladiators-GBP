@@ -1,4 +1,4 @@
-#include "connector.h"
+﻿#include "connector.h"
 #include "string"
 #include <sstream>
 
@@ -24,6 +24,7 @@ int convertCommandToInt(std::string data) {
         setStats = 0,
         setChampions,
         setSteps,
+        restart,
     };
     if (data == "setStats") {
         return setStats;
@@ -34,6 +35,9 @@ int convertCommandToInt(std::string data) {
     if (data == "setSteps") {
         return setSteps;
     }
+    if (data == "restart"){
+        return restart;
+    }
     return -1;
 }
 
@@ -43,7 +47,7 @@ GenericLinkedList<std::string>* Connector::get(std::string request){
         {
         }
         int port = 8888;
-        std::string ipAddress = "192.168.0.103";
+        std::string ipAddress = "127.0.0.1";
 
         sockaddr_in hint;
         hint.sin_family = AF_INET;
@@ -87,7 +91,7 @@ GenericLinkedList<std::string>* Connector::get(std::string request){
         case 1:
         {
             netpack.setCommand("getCharts");
-
+            close(sock);
         }
             break;
         case 2:
@@ -117,11 +121,20 @@ GenericLinkedList<std::string>* Connector::get(std::string request){
 
         }
             break;
+        case 3:
+        {
+            std::cout << "Llegue" << std::endl;
+            netpack.setCommand("restart");
+            std::string final = netpack.getJSONPackage();
+            send(sock, final.c_str(), strlen(final.c_str()), 0);
+            close(sock);
+        }
+            break;
         default:
             break;
         }
 
-        close(sock);
+        //close(sock);
 }
 
 GraphPac Connector::getCharts(){
@@ -216,6 +229,8 @@ GraphPac Connector::getCharts(){
                 graphpac.add(10, current);
             }
         }
+
+        close(sock);
 
         return graphpac;
 }

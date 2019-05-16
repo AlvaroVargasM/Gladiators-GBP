@@ -533,6 +533,8 @@ void Display::showEvent(QShowEvent *event)
 void Display::restart()
 {
     active = true;
+    std::cout << "I'm restarting" << std::endl;
+    Connector::get("restart");
     gameLoop();
 }
 
