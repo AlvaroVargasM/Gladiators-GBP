@@ -124,13 +124,13 @@ GenericNode<T> *GenericLinkedList<T>::getHead() {
  */
 template <class T>
 int* GenericLinkedList<T>::getLength() {
-    int i = 0;
+    /*int i = 0;
     GenericNode<T>* temp = this->get(0);
     while(temp != nullptr){
         i++;
         temp = temp->getNext();
     }
-    this->length = i;
+    this->length = i;*/
     return &this->length;
 }
 
@@ -157,7 +157,7 @@ void GenericLinkedList<T>::deleteEndNode(){
             ptr = ptr->getNext();
         }
         prev->setNext(nullptr);
-        delete(ptr);
+        //delete(ptr);
     }
     this->length--;
 }

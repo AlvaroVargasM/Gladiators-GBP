@@ -37,6 +37,7 @@ int convertCommandToInt(std::string data) {
         getStats = 0,
         getCharts,
         getSteps,
+        restart
     };
     if (data == "getStats") {
         return getStats;
@@ -46,6 +47,9 @@ int convertCommandToInt(std::string data) {
     }
     if (data == "getSteps") {
         return getSteps;
+    }
+    if (data == "restart"){
+        return restart;
     }
     return -1;
 }
@@ -298,6 +302,12 @@ int Server::start()
                             std::cout << "Voy a enviar " << test << std::endl;
                             send(sd , final.c_str() , strlen(final.c_str()), 0 );}
                             break;
+                        case 3:
+                        {
+                            std::cout << "Voy a reiniciar el juego" << std::endl;
+                            game = new Game();}
+                        break;
+
                     }
                 }
             }
