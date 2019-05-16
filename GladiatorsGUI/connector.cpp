@@ -7,6 +7,8 @@ Connector::Connector()
 {
 }
 
+//cambio 2
+
 GenericLinkedList<std::string>* convertStringToLL(std::string data){
     std::stringstream ss(data);
     GenericLinkedList<std::string>* list = new GenericLinkedList<std::string>;
@@ -279,5 +281,3 @@ GraphPac Connector::getCharts(){
 
 
 }
-
-
