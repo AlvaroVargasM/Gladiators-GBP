@@ -6,7 +6,7 @@
 #include "Logic/PathSolver.h"
 #include "Networking/Server.h"
 
-int main () {
+int run () {
     srand(time(nullptr));
     Server::start();
 }
