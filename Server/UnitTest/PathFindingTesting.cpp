@@ -26,12 +26,3 @@ TEST(intimidationZone, GetIntimidationM){
     int m = intimidationZone->getM();
     EXPECT_EQ(M, m);
 }
-
-
-
-
-int main(int argc, char* argv[]){
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
-

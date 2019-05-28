@@ -9,7 +9,7 @@
 #define BIT_SET_SIZE 10
 #define BEST_GENE_SURVIVABILITY 70
 #define MUTATION_PORCENTAGE 25
-#define INVERSION_PORCENTAGE 3
+#define INVERSION_PORCENTAGE 5
 
 #include <iostream>
 #include <string>
@@ -124,6 +124,7 @@ private:
     void generationChange();
 
 
+
 public:
     /**
      * Constructs the GA and its first generation
@@ -188,4 +189,6 @@ public:
      * @param n_gens amount of generations to print
      */
     void printGenerations(int n_gens);
+
+    Gladiator *getPopulation();
 };

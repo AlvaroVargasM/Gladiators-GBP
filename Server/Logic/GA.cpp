@@ -365,5 +365,6 @@ void GA::printGenerations(int n_gens) {
     }
 }
 
-
-
+Gladiator *GA::getPopulation() {
+    return population;
+}

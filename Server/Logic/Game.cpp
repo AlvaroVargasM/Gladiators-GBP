@@ -40,7 +40,7 @@ GenericLinkedList<std::string> Game::getTowers() {
  */
 void Game::generateTowers() {
     int tries = 0;
-    for (int x = 0;x < 3;x++) {
+    for (int x = 0;x < 20;x++) {
 
         if (tries >= 15)
             break;

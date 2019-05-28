@@ -235,6 +235,8 @@ int Server::start()
                         {netpack->setCommand("setCharts");
                             std::string stats = game->getStats();
                             netpack->setData(stats);
+                            std::cout << "Aqui deberia haber un print" << std::endl;
+                            std::cout << stats << std::endl;
                             std::string final = netpack->getJSONPackage();
                             send(sd, final.c_str(), strlen(final.c_str()), 0);
                             /*std::string statsNew = stats.substr(0, stats.find('/'));
